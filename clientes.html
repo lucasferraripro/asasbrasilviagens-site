@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossos Clientes — Asas Brasil Viagens</title>
+    <meta name="description" content="Confira os melhores momentos dos nossos clientes pelo mundo. Asas Brasil Viagens — transformando viagens em memórias.">
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap"></noscript>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <style>
+        :root {
+            --navy:      #1565C0;
+            --navy-dark: #0D47A1;
+            --accent:    #F97316;
+            --accent-d:  #EA6C0A;
+            --text:      #1A1F2E;
+            --muted:     #6B7280;
+            --bg:        #F8F9FC;
+            --white:     #FFFFFF;
+            --border:    #E5E9F2;
+            --wa:        #25D366;
+            --hh:        64px;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+        .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; max-width: 100%; }
+
+        /* HEADER */
+        header { position: sticky; top: 0; height: var(--hh); background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; z-index: 900; }
+        .hdr-inner { height: 100%; display: flex; items-center: center; justify-content: space-between; gap: 20px; width: 100%; }
+        .logo { display: flex; items-center: center; gap: 9px; font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+        .hdr-nav { display: flex; items-center: center; gap: 24px; }
+        .hdr-nav a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .2s; }
+        .hdr-nav a:hover { color: var(--accent); }
+        .btn-wa { background: var(--accent); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 13px; display: flex; items-center: center; gap: 8px; }
+
+        /* MOBILE HEADER */
+        .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .burger span { display: block; width: 22px; height: 2px; background: var(--navy); border-radius: 2px; }
+        #mobile-panel { display: none; position: fixed; top: var(--hh); left: 0; right: 0; background: white; padding: 16px 20px 28px; box-shadow: 0 8px 32px rgba(0,0,0,.1); z-index: 899; flex-direction: column; gap: 2px; }
+        #mobile-panel.open { display: flex; }
+        #mobile-panel a { padding: 13px 14px; font-size: 15px; font-weight: 600; color: var(--text); border-radius: 12px; }
+
+        /* HERO */
+        .page-hero { background: linear-gradient(135deg, var(--navy-dark), #1E3A8A); color: white; padding: 80px 0; text-align: center; }
+        .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; margin-bottom: 16px; }
+        .page-hero p { opacity: 0.85; font-size: 1.15rem; max-width: 600px; margin: 0 auto; }
+
+        /* GALLERY */
+        main { padding: 80px 0; }
+        .feed-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .insta-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.05); transition: transform .3s; border: 1px solid var(--border); }
+        .insta-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .insta-img { height: 400px; position: relative; overflow: hidden; }
+        .insta-img img { width: 100%; height: 100%; object-fit: cover; }
+        .insta-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); opacity: 0; display: flex; items-center: center; justify-content: center; transition: opacity .3s; }
+        .insta-card:hover .insta-overlay { opacity: 1; }
+        .insta-overlay i { color: white; font-size: 2rem; }
+        .insta-body { padding: 24px; }
+        .insta-user { display: flex; items-center: center; gap: 10px; margin-bottom: 14px; }
+        .insta-av { width: 32px; height: 32px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); }
+        .insta-user strong { font-size: 14px; color: var(--navy); }
+        .insta-text { font-size: 14px; color: var(--muted); line-height: 1.6; font-style: italic; }
+        .insta-btn { display: inline-flex; items-center: center; gap: 6px; margin-top: 20px; color: var(--accent); font-weight: 700; font-size: 13px; }
+
+        /* FOOTER */
+        footer { background: var(--navy-dark); color: rgba(255,255,255,.5); padding: 72px 0 24px; }
+        footer .container { text-align: center; }
+        footer h2 { color: white; margin-bottom: 12px; font-family: 'Playfair Display', serif; }
+        .ft-links { display: flex; items-center: center; justify-content: center; gap: 20px; margin: 32px 0; font-size: 14px; }
+        .ft-links a { transition: color .2s; }
+        .ft-links a:hover { color: var(--accent); }
+        .wa-float { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: var(--wa); border-radius: 50%; display: flex; items-center: center; justify-content: center; color: white; font-size: 1.5rem; z-index: 888; box-shadow: 0 6px 18px rgba(37,211,102,.4); }
+
+        @media(max-width:900px) {
+            .feed-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media(max-width:768px) {
+            .hdr-nav  { display: none; }
+            .burger   { display: flex; }
+            .feed-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
+            .insta-img { height: 350px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="hdr-inner">
+            <a href="index.html" class="logo">
+                <div style="width:50px;height:50px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" style="width:46px;height:46px;object-fit:contain;"></div>
+            </a>
+            <nav class="hdr-nav">
+                <a href="index.html">Início</a>
+                <a href="index.html#destinos">Destinos</a>
+                <a href="clientes.html" style="color:var(--accent)">Clientes</a>
+                <a href="sobre.html">Sobre</a>
+                <a href="index.html#contato">Orçamento</a>
+            </nav>
+            <a href="https://wa.me/5512997350810" class="btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </div>
+</header>
+
+<nav id="mobile-panel">
+    <a href="index.html">Início</a>
+    <a href="index.html#destinos">Destinos</a>
+    <a href="clientes.html">Clientes</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="index.html#contato">Orçamento</a>
+</nav>
+
+<div class="page-hero">
+    <div class="container">
+        <h1 data-eid="clientes-page-title" data-elabel="Título Página Clientes">Nossos Viajantes</h1>
+        <p data-eid="clientes-page-sub" data-elabel="Subtítulo Página Clientes">Roteiros pensados com carinho, momentos vividos com intensidade.</p>
+    </div>
+</div>
+
+<main>
+    <div class="container">
+        <div class="feed-grid">
+            
+            <!-- POST 1 -->
+            <div class="insta-card">
+                <div class="insta-img">
+                    <img src="https://instagram.ffor50-1.fna.fbcdn.net/v/t51.82787-15/610996218_18084481058164562_3741199386886853571_n.jpg?stp=dst-jpegr_e35_tt6&_nc_cat=104&ig_cache_key=MzgwNTcyODQ3NDI1NTA0ODc2Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5oZHIuQzMifQ%3D%3D&_nc_ohc=0-Az-qbqxwYQ7kNvwH97oSB&_nc_oc=AdqDxyVaexliHvlrFXjRgLZ-qn_b74D5mYRnXdzJEULvYIP_3LhcExABTrO1ZGzRlqUvywT-LVIbIKaFxvdnibsg&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.ffor50-1.fna&_nc_gid=KKA2tImf0VCmCBHkKtjlZQ&_nc_ss=7a32e&oh=00_Af2KWaCQjvChm6YWVOI1s7zA-H_VVqF_xEmjyPHvyO26kw&oe=69DF08B1" alt="Cliente Asas Brasil" data-eid="cpage-img-1" data-elabel="Foto Cliente 1">
+                    <a href="https://www.instagram.com/p/DTQqeI7j8A7/" target="_blank" class="insta-overlay"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="insta-body">
+                    <div class="insta-user">
+                        <div class="insta-av" style="background: url('https://unavatar.io/instagram/esthereesthefanyrodrigues') center/cover;"></div>
+                        <strong>@esthereesthefany</strong>
+                    </div>
+                    <p class="insta-text" data-eid="cpage-txt-1" data-elabel="Texto Cliente 1">"Primeiro Voo de Janeiro crendo que será muitos 2026 Deus ele é fiel Gratidão Sempre acompanhados @asasbrasilviagens obrigado por todo carinho e cuidado"</p>
+                    <a href="https://www.instagram.com/p/DTQqeI7j8A7/" target="_blank" class="insta-btn">Ver no Instagram <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+
+            <!-- POST 2 -->
+            <div class="insta-card">
+                <div class="insta-img">
+                    <img src="https://images.unsplash.com/photo-1539635278303-d4002c07dee3?auto=format&fit=crop&w=700&q=80" alt="Cliente Asas Brasil" data-eid="cpage-img-2" data-elabel="Foto Cliente 2">
+                    <a href="https://www.instagram.com/p/DRzUT9AkcGYimx-ApE4cuf7fHsnx6SAFapWaSI0/" target="_blank" class="insta-overlay"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="insta-body">
+                    <div class="insta-user">
+                        <div class="insta-av" style="background: url('https://unavatar.io/instagram/camile.trindade.737') center/cover;"></div>
+                        <strong>@camile.trindade.737</strong>
+                    </div>
+                    <p class="insta-text" data-eid="cpage-txt-2" data-elabel="Texto Cliente 2">A felicidade de realizar um sonho com segurança e suporte 24h. Mais um destino concluído com sucesso e o próximo já está sendo planejado!</p>
+                    <a href="https://www.instagram.com/p/DRzUT9AkcGYimx-ApE4cuf7fHsnx6SAFapWaSI0/" target="_blank" class="insta-btn">Ver no Instagram <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+
+            <!-- POST 3 -->
+            <div class="insta-card">
+                <div class="insta-img">
+                    <img src="https://instagram.ffor50-1.fna.fbcdn.net/v/t51.82787-15/658214146_18089048351337413_8564561480288424097_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=Mzg2NjY4NzQ0NDE4NDE5MDAxMA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTY0NC5zZHIuQzMifQ%3D%3D&_nc_ohc=w0QDY3ut1K0Q7kNvwGJClz6&_nc_oc=Adqtd2lEEJTwEw2PjuanPntKNLV1MhOpslQXTZVEFf1V3Q0h5Ol3lVlunwvRAFBNDxuXOgZQ0Wu_jwASm2Nj5Sqt&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.ffor50-1.fna&_nc_gid=tINFk5hiqRuYJodzw5HDRw&_nc_ss=7a32e&oh=00_Af3N8y4McnVaRGrBpXTnPb95Ag_EbryobsT7MBL4Ca1L1Q&oe=69DEFEF3" alt="Cliente Asas Brasil" data-eid="cpage-img-3" data-elabel="Foto Cliente 3">
+                    <a href="https://www.instagram.com/p/DWpO8fEj0bE/?img_index=1" target="_blank" class="insta-overlay"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="insta-body">
+                    <div class="insta-user">
+                        <div class="insta-av" style="background: url('https://unavatar.io/instagram/ju_sanfitness') center/cover;"></div>
+                        <strong>@ju_sanfitness</strong>
+                    </div>
+                    <p class="insta-text" data-eid="cpage-txt-3" data-elabel="Texto Cliente 3">"O Caribe Brasileiro espera por você. Maragogi - Alagoas. Uma experiência única com as piscinas naturais e os peixinhos. Obrigado Asas Brasil!"</p>
+                    <a href="https://www.instagram.com/p/DWpO8fEj0bE/?img_index=1" target="_blank" class="insta-btn">Ver no Instagram <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <h2>Pronto para ser o próximo?</h2>
+        <p>Realize seu sonho de viajar com quem entende do assunto.</p>
+        <div class="ft-links">
+            <a href="index.html">Início</a>
+            <a href="index.html#destinos">Destinos</a>
+            <a href="sobre.html">Sobre Nós</a>
+            <a href="https://wa.me/5512997350810">WhatsApp</a>
+        </div>
+        <p style="opacity:.4;font-size:12px;">© 2025 Asas Brasil Viagens · Todos os direitos reservados</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/5512997350810" class="wa-float" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+    const burger = document.getElementById('burger');
+    const panel = document.getElementById('mobile-panel');
+    burger.onclick = () => { panel.classList.toggle('open'); };
+</script>
+<script src="editor.js"></script>
+</body>
+</html>

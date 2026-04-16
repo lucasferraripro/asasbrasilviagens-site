@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacote — Asas Brasil Viagens</title>
+    <meta name="description" content="Conheça nossos roteiros exclusivos e personalizados. Asas Brasil Viagens — consultoria premium em Brasil.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap"></noscript>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script>
+    /* ── BANCO DE DADOS DOS PACOTES ── */
+    const SITE = {
+        nome:      'Asas Brasil Viagens',
+        whatsapp:  '5512997350810',
+        email:     'contato@asasbrasilviagens.com.br',
+        tel:       '(19) 99539-6281'
+    };
+
+    const DB = {
+        lencois: {
+            title:    'Lençóis Maranhenses',
+            subtitle: 'O deserto de dunas e lagoas cristalinas',
+            location: 'Maranhão, Brasil',
+            duration: '6 dias / 5 noites',
+            price:    '3.890,00',
+            parcelas: '10x de R$ 389',
+            flag:     'Brasil 🏖️',
+            images: [
+                'https://images.unsplash.com/photo-1619546952812-520e98064a52?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1586001695680-4e8c0ed5c7e6?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80'
+            ],
+            desc: 'Os Lençóis Maranhenses são uma das maravilhas naturais mais únicas do planeta. Dunas brancas e sinuosas se estendem por centenas de quilômetros, e entre elas se formam lagoas de água doce cristalina — um fenômeno só possível neste canto do Maranhão. Um cenário que parece saído de um sonho, onde o deserto encontra a vida em perfeita harmonia.',
+            incluso: ['Passagem aérea ida e volta', 'Transfer aeroporto-hotel em São Luís', 'Transfer São Luís–Barreirinhas (van privativa)', 'Hospedagem 5 noites com café da manhã', 'Passeio 4x4 pelas dunas', 'Passeio às lagoas Azul e Bonita', 'Passeio ao Rio Preguiças e Vassouras', 'Guia local especializado'],
+            nao_incluso: ['Seguro viagem', 'Almoços e jantares', 'Passeios opcionais', 'Gorjetas'],
+            roteiro: [
+                { dia: '1º Dia', title: 'Chegada ao Maranhão', desc: 'Desembarque em São Luís e transfer para Barreirinhas, porta de entrada dos Lençóis. Check-in na pousada e descanso.' },
+                { dia: '2º Dia', title: 'Lagoa Azul e Lagoa Bonita', desc: 'Passeio de 4x4 pelas dunas até as lagoas mais famosas do parque. Banho de água cristalina e paisagens de tirar o fôlego.' },
+                { dia: '3º Dia', title: 'Lagoas do Meio e Circuito Completo', desc: 'Tour pelas lagoas menos visitadas e mais preservadas, com paradas nas melhores vistas panorâmicas.' },
+                { dia: '4º Dia', title: 'Rio Preguiças e Vassouras', desc: 'Passeio de barco pelo Rio Preguiças até a vila de Vassouras, com parada na restinga e no farol de Mandacaru.' },
+                { dia: '5º Dia', title: 'São Luís — Centro Histórico', desc: 'Transfer de volta a São Luís. Visita ao centro histórico com arquitetura portuguesa tombado pela UNESCO.' },
+                { dia: '6º Dia', title: 'Retorno', desc: 'Café da manhã, transfer ao aeroporto e voo de retorno com memórias únicas deste paraíso natural.' }
+            ]
+        },
+        disney: {
+            title:    'Disney & Orlando',
+            subtitle: 'A magia que toda família merece viver',
+            location: 'Orlando, Florida, EUA',
+            duration: '8 dias / 7 noites',
+            price:    '9.900,00',
+            parcelas: '10x de R$ 990',
+            flag:     'EUA 🏰',
+            images: [
+                'https://images.unsplash.com/photo-1568092816214-02404ef89f59?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1576502200916-3808e07386a5?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1622468696594-fc5d43b9b2c5?auto=format&fit=crop&w=1200&q=80'
+            ],
+            desc: 'Realize o sonho da família inteira no maior complexo de parques temáticos do mundo! Magic Kingdom, EPCOT, Hollywood Studios e Animal Kingdom — quatro mundos de magia e diversão que encantam crianças e adultos. Universal Studios e Sea World completam uma semana inesquecível em Orlando, a capital mundial do entretenimento.',
+            incluso: ['Passagem aérea internacional ida e volta', 'Transfer aeroporto–hotel', 'Hospedagem 7 noites', 'Ingressos para 4 parques Disney (Park Hopper)', 'Orientação completa pré-viagem', 'Suporte da Asas Brasil durante toda a viagem'],
+            nao_incluso: ['Seguro viagem (fortemente recomendado)', 'Refeições nos parques', 'Universal Studios e Sea World', 'Passaporte e visto americano', 'Gorjetas'],
+            roteiro: [
+                { dia: '1º Dia', title: 'Chegada em Orlando', desc: 'Desembarque no aeroporto internacional de Orlando, transfer para o hotel e check-in. Tarde livre para descanso.' },
+                { dia: '2º Dia', title: 'Magic Kingdom', desc: 'O parque mais famoso do mundo! Cinderella Castle, Space Mountain, Haunted Mansion e o desfile das 3h. Um dia de pura magia.' },
+                { dia: '3º Dia', title: 'EPCOT', desc: 'Future World com atrações tecnológicas e World Showcase com gastronomia e cultura de 11 países em um só lugar.' },
+                { dia: '4º Dia', title: 'Hollywood Studios', desc: 'Galaxy\'s Edge (Star Wars), Toy Story Land, Tower of Terror e o incrível show da noite Fantasy in the Sky.' },
+                { dia: '5º Dia', title: 'Animal Kingdom', desc: 'O parque da natureza e dos animais. Pandora — The World of Avatar, safari ao vivo e shows imperdíveis.' },
+                { dia: '6º Dia', title: 'Dia Livre / Universal', desc: 'Dia livre para repetir o parque favorito, visitar Universal Studios (opcional) ou relaxar na piscina do hotel.' },
+                { dia: '7º Dia', title: 'Disney Springs & Compras', desc: 'Manhã no Disney Springs para últimas compras e souvenirs. Tarde livre antes da viagem de volta.' },
+                { dia: '8º Dia', title: 'Retorno ao Brasil', desc: 'Transfer ao aeroporto e voo de retorno carregado de memórias, fotos e histórias para contar.' }
+            ]
+        },
+        maceio: {
+            title:    'Maceió & Maragogi',
+            subtitle: 'O Caribe Brasileiro espera por você',
+            location: 'Alagoas, Brasil',
+            duration: '6 dias / 5 noites',
+            price:    '2.890,00',
+            parcelas: '10x de R$ 289',
+            flag:     'Brasil 🐠',
+            images: [
+                'https://images.unsplash.com/photo-1564939558297-fc396f18e5c7?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80'
+            ],
+            desc: 'Maceió é o paraíso das piscinas naturais! Águas quentinhas, cristalinas e esverdeadas formam piscinas ao longo de toda a orla, com peixes coloridos nadando entre os corais. E Maragogi, o Caribe Brasileiro, eleva ainda mais a experiência com águas tão azuis e transparentes que parecem impossíveis. Um destino que conquista para sempre.',
+            incluso: ['Passagem aérea ida e volta', 'Transfer aeroporto-hotel', 'Hospedagem 5 noites com café da manhã', 'Passeio às piscinas naturais de Pajuçara (jangada)', 'Passeio a Maragogi e piscinas dos Galés', 'Passeio à Praia do Francês e Barra de São Miguel', 'Guia local'],
+            nao_incluso: ['Seguro viagem', 'Almoços e jantares', 'Snorkel e equipamentos (cobrados nos pontos)', 'Gorjetas'],
+            roteiro: [
+                { dia: '1º Dia', title: 'Chegada a Maceió', desc: 'Desembarque, transfer para o hotel na Praia de Pajuçara ou Ponta Verde. Check-in e primeiro contato com as águas esverdeadas.' },
+                { dia: '2º Dia', title: 'Piscinas de Pajuçara', desc: 'Passeio de jangada até as piscinas naturais a 1km da praia. Nadar entre os peixes com a água cristalina pelos joelhos.' },
+                { dia: '3º Dia', title: 'Maragogi — Caribe Brasileiro', desc: 'Excursão para Maragogi, a 130km de Maceió. Piscinas dos Galés com águas azul-turquesa de tirar o fôlego.' },
+                { dia: '4º Dia', title: 'Praia do Francês & Barra', desc: 'Passeio pelas praias do sul: Praia do Francês, Barra de São Miguel e Praia de Guaxuma.' },
+                { dia: '5º Dia', title: 'Dia Livre em Maceió', desc: 'Dia livre para revisitar as praias favoritas, fazer compras no Mercado do Artesanato ou descansar.' },
+                { dia: '6º Dia', title: 'Retorno', desc: 'Café da manhã, transfer ao aeroporto e voo de retorno com saudades das águas mais cristalinas do Brasil.' }
+            ]
+        },
+        portogalinhas: {
+            title:    'Porto de Galinhas',
+            subtitle: 'A melhor praia do Brasil eleita por viajantes',
+            location: 'Pernambuco, Brasil',
+            duration: '6 dias / 5 noites',
+            price:    '3.290,00',
+            parcelas: '10x de R$ 329',
+            flag:     'Brasil 🐟',
+            images: [
+                'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
+            ],
+            desc: 'Eleita diversas vezes a melhor praia do Brasil, Porto de Galinhas encanta com suas famosas piscinas naturais formadas nos recifes de coral — onde é possível nadar entre peixinhos coloridos em águas rasas e mornas. Romântica para casais, divertida para famílias, inesquecível para todos. Um destino que fica no coração.',
+            incluso: ['Passagem aérea ida e volta', 'Transfer Recife–Porto de Galinhas', 'Hospedagem 5 noites com café da manhã', 'Passeio de jangada nas piscinas naturais', 'Snorkel incluso no passeio', 'Passeio a Muro Alto', 'Passeio a Carneiros (opcional)'],
+            nao_incluso: ['Seguro viagem', 'Almoços e jantares', 'Mergulho com cilindro (opcional)', 'Gorjetas'],
+            roteiro: [
+                { dia: '1º Dia', title: 'Chegada ao Recife', desc: 'Desembarque no Recife e transfer privativo para Porto de Galinhas (70km). Check-in e primeira caminhada pela orla.' },
+                { dia: '2º Dia', title: 'Piscinas Naturais de Jangada', desc: 'Passeio de jangada até as piscinas naturais nos recifes. Nadar com peixinhos coloridos em águas rasas e cristalinas.' },
+                { dia: '3º Dia', title: 'Muro Alto e Maracaípe', desc: 'Passeio às praias de Muro Alto (lagoa de águas calmas) e Maracaípe, famosa pelo surf e caranguejos.' },
+                { dia: '4º Dia', title: 'Carneiros e Passeio de Barco', desc: 'Excursão para Praia de Carneiros com passeio de barco e parada na igreja histórica à beira-mar.' },
+                { dia: '5º Dia', title: 'Dia Livre', desc: 'Dia livre para aproveitar a praia principal, buggys pela areia ou compras nas lojas da vila.' },
+                { dia: '6º Dia', title: 'Retorno ao Recife', desc: 'Transfer para o Recife e embarque de volta ao Brasil com muitas memórias e saudades das piscinas.' }
+            ]
+        },
+        riodejaneiro: {
+            title:    'Rio de Janeiro',
+            subtitle: 'A Cidade Maravilhosa em todo o seu esplendor',
+            location: 'Rio de Janeiro, Brasil',
+            duration: '6 dias / 5 noites',
+            price:    '3.490,00',
+            parcelas: '10x de R$ 349',
+            flag:     'Brasil 🏖️',
+            images: [
+                'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1544989164-31e55e5e7e8d?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?auto=format&fit=crop&w=1200&q=80'
+            ],
+            desc: 'A Cidade Maravilhosa é um convite permanente à beleza. Cristo Redentor abraçando a cidade do alto do Corcovado, Pão de Açúcar refletido nas águas da Baía de Guanabara, a areia dourada de Copacabana e Ipanema — o Rio é uma experiência única que combina natureza exuberante, cultura vibrante e alegria contagiante em cada esquina.',
+            incluso: ['Passagem aérea ida e volta', 'Transfer aeroporto–hotel em Copacabana ou Ipanema', 'Hospedagem 5 noites com café da manhã', 'Visita ao Cristo Redentor (trem do Corcovado)', 'Teleférico do Pão de Açúcar', 'City Tour guiado pela cidade', 'Passeio à Santa Teresa'],
+            nao_incluso: ['Seguro viagem', 'Almoços e jantares', 'Passeios noturnos opcionais', 'Gorjetas'],
+            roteiro: [
+                { dia: '1º Dia', title: 'Chegada ao Rio', desc: 'Desembarque no Galeão ou Santos Dumont, transfer para o hotel em Copacabana. Primeira caminhada pela orla.' },
+                { dia: '2º Dia', title: 'Cristo Redentor', desc: 'Subida de trem ao Corcovado para visitar o Cristo Redentor, com vista panorâmica de 360° da cidade.' },
+                { dia: '3º Dia', title: 'Pão de Açúcar', desc: 'Teleférico até o Pão de Açúcar com vista deslumbrante da Baía de Guanabara. Tarde em Urca e Santa Teresa.' },
+                { dia: '4º Dia', title: 'Ipanema & Leblon', desc: 'Manhã em Ipanema, Leblon e Jardim Botânico. À tarde, Lagoa Rodrigo de Freitas e arredores.' },
+                { dia: '5º Dia', title: 'Centro Histórico', desc: 'Lapa, Arcos, Escadaria Selarón, Museu do Amanhã e Porto Maravilha. A cultura do Rio em um dia.' },
+                { dia: '6º Dia', title: 'Retorno', desc: 'Último café da manhã carioca, transfer ao aeroporto e voo de retorno com o coração cheio de Rio.' }
+            ]
+        },
+        joaopessoa: {
+            title:    'João Pessoa',
+            subtitle: 'Onde o sol nasce primeiro no Brasil',
+            location: 'Paraíba, Brasil',
+            duration: '5 dias / 4 noites',
+            price:    '2.490,00',
+            parcelas: '10x de R$ 249',
+            flag:     'Brasil 🌊',
+            images: [
+                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?auto=format&fit=crop&w=1200&q=80'
+            ],
+            desc: 'João Pessoa é uma das cidades mais charmosas e acolhedoras do Nordeste. Conhecida como a cidade onde o sol nasce primeiro no Brasil, ela encanta com praias paradisíacas de águas mornas e cristalinas, piscinas naturais, mata atlântica e um povo hospitaleiro como poucos. Tambaba, Coqueirinho, Praia de Cabo Branco — cada praia é uma surpresa.',
+            incluso: ['Passagem aérea ida e volta', 'Transfer aeroporto–hotel', 'Hospedagem 4 noites com café da manhã', 'Passeio às piscinas naturais de Picãozinho', 'Passeio ao Cabo Branco (ponto mais oriental das Américas)', 'Passeio às praias de Tambaba e Coqueirinho', 'Guia local'],
+            nao_incluso: ['Seguro viagem', 'Almoços e jantares', 'Passeios adicionais', 'Gorjetas'],
+            roteiro: [
+                { dia: '1º Dia', title: 'Chegada a João Pessoa', desc: 'Desembarque e transfer para o hotel na Praia de Tambaú. Primeira caminhada pela orla ao pôr do sol.' },
+                { dia: '2º Dia', title: 'Piscinas de Picãozinho', desc: 'Passeio de barco até as piscinas naturais de Picãozinho — um aquário natural a céu aberto com peixes coloridos.' },
+                { dia: '3º Dia', title: 'Tambaba e Coqueirinho', desc: 'Excursão pelas praias do litoral sul: Coqueirinho com suas falésias e piscinas, e Tambaba com natureza preservada.' },
+                { dia: '4º Dia', title: 'Cabo Branco e Centro Histórico', desc: 'Visita ao Farol do Cabo Branco, ponto mais oriental das Américas. Tarde no centro histórico com igrejas coloniais.' },
+                { dia: '5º Dia', title: 'Retorno', desc: 'Último amanhecer na cidade onde o sol nasce primeiro. Transfer ao aeroporto e voo de retorno.' }
+            ]
+        }
+    };
+    </script>
+
+    <style>
+        /* ── RESET & BASE ── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy:      #1565C0;
+            --navy-dark: #0D47A1;
+            --accent:    #F97316;
+            --accent-d:  #EA6C0A;
+            --gold:      #F97316;
+            --text:      #1A1F2E;
+            --muted:     #6B7280;
+            --bg:        #F8F9FC;
+            --white:     #FFFFFF;
+            --border:    #E5E9F2;
+            --wa:        #25D366;
+            --hh:        64px;
+            --r:         16px;
+            --rl:        24px;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+                         'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+            font-size: 16px; line-height: 1.5;
+            color: var(--text); background: var(--white);
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
+        }
+        img { display: block; max-width: 100%; }
+        a { text-decoration: none; color: inherit; }
+        .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+        /* ── TYPE ── */
+        .serif { font-family: 'Playfair Display', Georgia, serif; }
+        .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+        .h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem,3vw,2.3rem); font-weight: 700; color: var(--navy); line-height: 1.2; margin-bottom: 14px; }
+
+        /* ── BTN ── */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 26px; border-radius: 50px; font-size: 14px;
+            font-weight: 600; border: none; cursor: pointer; transition: all .22s;
+            font-family: inherit;
+        }
+        .btn-wa    { background: var(--wa); color: #fff; }
+        .btn-wa:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(37,211,102,.35); }
+        .btn-navy  { background: var(--navy); color: #fff; }
+        .btn-navy:hover { background: var(--navy-dark); transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+        .btn-outline:hover { background: var(--navy); color: #fff; }
+        .btn-accent { background: var(--accent); color: #fff; }
+        .btn-accent:hover { background: var(--accent-d); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(232,130,74,.33); }
+        .btn-block  { width: 100%; justify-content: center; }
+
+        /* ════════════ HEADER ════════════ */
+        #header {
+            position: sticky; top: 0; height: var(--hh);
+            background: var(--white); border-bottom: 1px solid var(--border);
+            z-index: 900; display: flex; align-items: center;
+        }
+        .hdr-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .logo { display: flex; align-items: center; gap: 9px; font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+        .logo-dot { width: 30px; height: 30px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .logo-dot i { font-size: 12px; color: #fff; }
+        .hdr-nav { display: flex; align-items: center; gap: 24px; }
+        .hdr-nav a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .2s; }
+        .hdr-nav a:hover { color: var(--accent); }
+        .burger { display: none; flex-direction: column; gap: 5px; padding: 5px; background: none; border: none; cursor: pointer; }
+        .burger span { display: block; width: 20px; height: 2px; background: var(--navy); border-radius: 2px; transition: all .3s; }
+        .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        #mobile-panel { display: none; position: fixed; top: var(--hh); left: 0; right: 0; background: var(--white); padding: 14px 20px 24px; box-shadow: 0 8px 28px rgba(0,0,0,.1); z-index: 899; flex-direction: column; gap: 2px; }
+        #mobile-panel.open { display: flex; }
+        #mobile-panel a { padding: 12px 14px; font-size: 14px; font-weight: 600; color: var(--text); border-radius: 12px; }
+        #mobile-panel a:hover { background: var(--bg); color: var(--accent); }
+
+        /* ════════════ HERO MINI ════════════ */
+        .hero-mini {
+            background: var(--navy-dark);
+            padding: 52px 0 44px; color: #fff;
+        }
+        .breadcrumb { font-size: 12px; color: rgba(255,255,255,.5); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .breadcrumb a { color: rgba(255,255,255,.5); transition: color .2s; }
+        .breadcrumb a:hover { color: var(--accent); }
+        .breadcrumb i { font-size: 9px; }
+        .hero-mini h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,4vw,3rem); font-weight: 700; margin-bottom: 10px; }
+        .hero-mini-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; }
+        .meta-tag { display: flex; align-items: center; gap: 7px; font-size: 13px; color: rgba(255,255,255,.7); }
+        .meta-tag i { color: var(--accent); }
+
+        /* ════════════ LAYOUT ════════════ */
+        .pkg-layout { display: grid; grid-template-columns: 1fr 360px; gap: 40px; padding: 52px 0 80px; align-items: start; }
+
+        /* ── CARROSSEL ── */
+        .carousel { border-radius: var(--rl); overflow: hidden; margin-bottom: 36px; position: relative; }
+        .carousel-track { display: flex; transition: transform .42s cubic-bezier(.4,0,.2,1); }
+        .carousel-slide { flex: 0 0 100%; }
+        .carousel-slide img { width: 100%; height: 460px; object-fit: cover; display: block; }
+        .car-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(255,255,255,.88); backdrop-filter: blur(8px);
+            border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: var(--navy); font-size: 14px; transition: all .2s; z-index: 2;
+            box-shadow: 0 4px 14px rgba(0,0,0,.15);
+        }
+        .car-btn:hover { background: var(--accent); color: #fff; }
+        .car-prev { left: 14px; }
+        .car-next { right: 14px; }
+        .car-dots { display: flex; justify-content: center; gap: 8px; padding: 14px 0 0; }
+        .car-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); cursor: pointer; transition: all .2s; }
+        .car-dot.on { background: var(--accent); width: 24px; border-radius: 4px; }
+        .thumbnails { display: flex; gap: 10px; margin-top: 12px; }
+        .thumb { flex: 1; height: 72px; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: border .2s, opacity .2s; opacity: .65; }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb.on { border-color: var(--accent); opacity: 1; }
+
+        /* ── CONTENT BLOCKS ── */
+        .cblock { border: 1px solid var(--border); border-radius: var(--rl); padding: 32px; margin-bottom: 28px; background: var(--white); }
+        .cblock-title {
+            font-size: 1.05rem; font-weight: 700; color: var(--navy);
+            border-left: 4px solid var(--accent); padding-left: 14px;
+            margin-bottom: 20px;
+        }
+        .pkg-desc { font-size: 15px; color: var(--muted); line-height: 1.8; }
+        .incluso-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .incluso-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
+        .incluso-list li i { color: var(--wa); font-size: 13px; flex-shrink: 0; }
+        .nao-incluso-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .nao-incluso-list li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+        .nao-incluso-list li i { color: #f87171; font-size: 12px; flex-shrink: 0; }
+        .nao-incluso-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-top: 14px; margin-bottom: 4px; display: block; }
+
+        /* roteiro */
+        .roteiro-item { display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+        .roteiro-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .roteiro-day { flex-shrink: 0; text-align: center; }
+        .roteiro-day-num { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .roteiro-day-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+        .roteiro-body h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+        .roteiro-body p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+        /* ── SIDEBAR ── */
+        .sidebar { position: sticky; top: calc(var(--hh) + 20px); }
+        .price-card {
+            border: 1px solid var(--border); border-radius: var(--rl);
+            padding: 32px 28px; box-shadow: 0 8px 32px rgba(27,58,107,.09);
+            background: var(--white);
+        }
+        .price-from { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+        .price-num  { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+        .price-acc  { font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 28px; }
+        .price-meta { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; padding: 20px; background: var(--bg); border-radius: var(--r); }
+        .pm-row     { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text); }
+        .pm-row i   { color: var(--accent); width: 16px; text-align: center; flex-shrink: 0; }
+        .price-card .btn { width: 100%; justify-content: center; margin-bottom: 10px; height: 50px; font-size: 15px; }
+        .price-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 10px; }
+
+        /* ════════════ OUTROS DESTINOS ════════════ */
+        .outros { background: var(--bg); padding: 72px 0; }
+        .outros-hdr { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 36px; }
+        .cards-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+
+        .card-link {
+            display: block; border-radius: var(--r); overflow: hidden;
+            background: var(--white); box-shadow: 0 3px 14px rgba(0,0,0,.06);
+            transition: all .3s; color: inherit;
+        }
+        .card-link:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(0,0,0,.12); }
+        .card-img { position: relative; height: 180px; overflow: hidden; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s; }
+        .card-link:hover .card-img img { transform: scale(1.07); }
+        .card-flag { position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,.92); backdrop-filter: blur(6px); padding: 3px 10px; border-radius: 50px; font-size: 10px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: .05em; }
+        .card-body { padding: 16px; }
+        .card-loc  { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+        .card-loc i { color: var(--accent); font-size: 10px; }
+        .card-body h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+        .card-foot { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 12px; }
+        .card-price { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--accent); }
+        .card-price small { font-family: inherit; font-family: -apple-system, sans-serif; font-size: 10px; color: var(--muted); font-weight: 400; }
+        .card-arr { font-size: 11px; color: var(--navy); font-weight: 600; display: flex; align-items: center; gap: 4px; transition: gap .2s, color .2s; }
+        .card-link:hover .card-arr { gap: 8px; color: var(--accent); }
+
+        /* ════════════ FOOTER ════════════ */
+        footer { background: var(--navy-dark); color: rgba(255,255,255,.5); padding: 64px 0 0; }
+        .ft-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 48px; padding-bottom: 48px; }
+        .ft-brand p { font-size: 13px; line-height: 1.7; margin-top: 14px; max-width: 240px; }
+        .ft-brand .logo { color: #fff; }
+        footer h5 { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 18px; }
+        .ft-links { display: flex; flex-direction: column; gap: 10px; }
+        .ft-links a, .ft-links span { font-size: 13px; color: rgba(255,255,255,.58); transition: color .2s; }
+        .ft-links a:hover { color: var(--accent); }
+        .ft-social { display: flex; gap: 10px; margin-top: 6px; }
+        .ft-social a { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.55); font-size: 13px; transition: all .2s; }
+        .ft-social a:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .ft-bottom { border-top: 1px solid rgba(255,255,255,.07); padding: 20px 0; display: flex; justify-content: space-between; align-items: center; font-size: 12px; gap: 12px; }
+
+        /* ── WA FLOAT ── */
+        .wa { position: fixed; bottom: 22px; right: 22px; width: 54px; height: 54px; background: var(--wa); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.45rem; z-index: 888; box-shadow: 0 6px 18px rgba(37,211,102,.42); transition: transform .25s; }
+        .wa:hover { transform: scale(1.12); }
+        .wa::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; background: rgba(37,211,102,.22); animation: wap 2s infinite; }
+        @keyframes wap { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.35);opacity:0} }
+
+        /* ════════════ RESPONSIVE ════════════ */
+        @media(max-width:900px) {
+            .pkg-layout { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .cards-row { grid-template-columns: repeat(2,1fr); }
+        }
+        @media(max-width:768px) {
+            :root { --hh: 58px; }
+            .hdr-nav  { display: none; }
+            .hdr-cta  { display: none; }
+            .burger   { display: flex; }
+            .carousel-slide img { height: 280px; }
+            .thumbnails { gap: 7px; }
+            .thumb { height: 56px; }
+            .ft-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+            .ft-bottom { flex-direction: column; text-align: center; }
+            .outros-hdr { flex-direction: column; align-items: flex-start; }
+        }
+        @media(max-width:480px) {
+            .container { padding: 0 16px; }
+            .carousel-slide img { height: 240px; }
+            .cards-row { grid-template-columns: 1fr; }
+            .cblock { padding: 22px 18px; }
+            .price-card { padding: 24px 20px; }
+            .pkg-layout { padding: 32px 0 60px; }
+            .ft-top { grid-template-columns: 1fr; gap: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════ HEADER ════════════ -->
+<header id="header">
+    <div class="container">
+        <div class="hdr-inner">
+            <a href="index.html" class="logo">
+                <div style="width:50px;height:50px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" style="width:46px;height:46px;object-fit:contain;"></div>
+            </a>
+            <nav class="hdr-nav">
+                <a href="index.html">Início</a>
+                <a href="index.html#destinos">Destinos</a>
+                <a href="clientes.html">Clientes</a>
+                <a href="index.html#diferenciais">Por Que Nós</a>
+                <a href="index.html#contato">Orçamento</a>
+                <a href="sobre.html">Sobre</a>
+            </nav>
+            <div class="hdr-cta">
+                <a href="https://wa.me/5512997350810" class="btn btn-accent" style="padding:10px 20px;font-size:13px;">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+            <button class="burger" id="burger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+<nav id="mobile-panel">
+    <a href="index.html">Início</a>
+    <a href="index.html#destinos">Destinos</a>
+    <a href="clientes.html">Clientes</a>
+    <a href="index.html#diferenciais">Por Que Nós</a>
+    <a href="index.html#contato">Orçamento</a>
+    <a href="sobre.html">Sobre</a>
+</nav>
+
+<!-- ════════════ HERO MINI ════════════ -->
+<div class="hero-mini">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Início</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="index.html#destinos">Destinos</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span id="breadcrumb-title">Carregando…</span>
+        </div>
+        <h1 id="pkg-title" data-eid="pkg-title" data-elabel="Título Pacote">Carregando…</h1>
+        <p id="pkg-subtitle" data-eid="pkg-subtitle" data-elabel="Subtítulo Pacote" style="color:rgba(255,255,255,.65);font-size:1.05rem;margin-top:8px;"></p>
+        <div class="hero-mini-meta">
+            <div class="meta-tag"><i class="fa-solid fa-location-dot"></i><span id="meta-loc" data-eid="pkg-loc" data-elabel="Localização">—</span></div>
+            <div class="meta-tag"><i class="fa-solid fa-moon"></i><span id="meta-dur" data-eid="pkg-dur" data-elabel="Duração">—</span></div>
+            <div class="meta-tag"><i class="fa-solid fa-star"></i> Pacote Premium</div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════ CONTEÚDO ════════════ -->
+<div class="container">
+    <div class="pkg-layout">
+
+        <!-- COLUNA PRINCIPAL -->
+        <div class="main">
+
+            <!-- CARROSSEL -->
+            <div class="carousel" id="carousel">
+                <div class="carousel-track" id="track"></div>
+                <button class="car-btn car-prev" onclick="carMove(-1)" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="car-btn car-next" onclick="carMove(1)"  aria-label="Próximo"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="car-dots" id="car-dots"></div>
+            <div class="thumbnails" id="thumbs"></div>
+
+            <!-- SOBRE O DESTINO -->
+            <div class="cblock" style="margin-top:32px;">
+                <div class="cblock-title"><i class="fa-solid fa-earth-americas" style="color:var(--accent);margin-right:8px"></i>Sobre o Destino</div>
+                <p class="pkg-desc" id="pkg-desc" data-eid="pkg-desc" data-elabel="Descrição do Destino">Carregando…</p>
+            </div>
+
+            <!-- INCLUSO / NÃO INCLUSO -->
+            <div class="cblock">
+                <div class="cblock-title"><i class="fa-solid fa-list-check" style="color:var(--accent);margin-right:8px"></i>O que está incluso</div>
+                <ul class="incluso-list" id="incluso-list"></ul>
+                <span class="nao-incluso-label">Não incluso:</span>
+                <ul class="nao-incluso-list" id="nao-incluso-list"></ul>
+            </div>
+
+            <!-- ROTEIRO -->
+            <div class="cblock">
+                <div class="cblock-title"><i class="fa-solid fa-map-location-dot" style="color:var(--accent);margin-right:8px"></i>Roteiro Sugerido</div>
+                <div id="roteiro-list"></div>
+            </div>
+
+        </div><!-- /main -->
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="price-card">
+                <p class="price-from">A partir de:</p>
+                <div class="price-num" id="price-num" data-eid="pkg-price" data-elabel="Preço">R$ —</div>
+                <p class="price-acc" id="price-parc" data-eid="pkg-parcelas" data-elabel="Parcelamento"></p>
+                <div class="price-meta">
+                    <div class="pm-row"><i class="fa-solid fa-location-dot"></i><span id="sb-loc" data-eid="pkg-sb-loc" data-elabel="Sidebar Localização">—</span></div>
+                    <div class="pm-row"><i class="fa-solid fa-moon"></i><span id="sb-dur" data-eid="pkg-sb-dur" data-elabel="Sidebar Duração">—</span></div>
+                    <div class="pm-row"><i class="fa-solid fa-star"></i><span>Consultoria Personalizada</span></div>
+                    <div class="pm-row"><i class="fa-solid fa-headset"></i><span>Suporte 24h na Viagem</span></div>
+                </div>
+                <a href="#" id="btn-wa" class="btn btn-wa" style="font-size:15px;height:50px;margin-bottom:10px;">
+                    <i class="fab fa-whatsapp"></i> Reservar pelo WhatsApp
+                </a>
+                <a href="index.html#contato" class="btn btn-outline">
+                    <i class="fa-solid fa-envelope"></i> Falar com Consultor
+                </a>
+                <p class="price-note">*Valores por pessoa, sujeitos à disponibilidade.</p>
+            </div>
+        </aside>
+
+    </div><!-- /pkg-layout -->
+</div><!-- /container -->
+
+<!-- ════════════ OUTROS DESTINOS ════════════ -->
+<section class="outros">
+    <div class="container">
+        <div class="outros-hdr">
+            <div>
+                <span class="label">Explore mais</span>
+                <h2 class="h2" style="margin-bottom:0">Outros destinos incríveis</h2>
+            </div>
+            <a href="index.html#destinos" class="btn btn-navy" style="flex-shrink:0">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="cards-row" id="outros-cards"></div>
+    </div>
+</section>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer>
+    <div class="container">
+        <div class="ft-top">
+            <div class="ft-brand">
+                <a href="index.html" class="logo">
+                    <div style="width:50px;height:50px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" style="width:46px;height:46px;object-fit:contain;"></div>
+                </a>
+                <p>Viagens de lazer &amp; corporativas. Parceira oficial CVC com atendimento humanizado.</p>
+                <div class="ft-social">
+                    <a href="https://www.instagram.com/asasbrasilviagens" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/5512997350810" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+                <a href="https://chat.whatsapp.com/H2DpRM8lAtnGrNjwWWcFVj" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#25D366;color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;font-size:.85rem;">
+                    <i class="fab fa-whatsapp"></i> Grupo VIP de Promoções
+                </a>
+            </div>
+            <div>
+                <h5>Destinos</h5>
+                <div class="ft-links">
+                    <a href="pacote.html?id=noronha">Fernando de Noronha</a>
+                    <a href="pacote.html?id=maldivas">Maldivas</a>
+                    <a href="pacote.html?id=paris">Paris</a>
+                    <a href="pacote.html?id=santorini">Santorini</a>
+                    <a href="pacote.html?id=dubai">Dubai</a>
+                </div>
+            </div>
+            <div>
+                <h5>Empresa</h5>
+                <div class="ft-links">
+                    <a href="sobre.html">Sobre Nós</a>
+                    <a href="index.html#como-funciona">Como Funciona</a>
+                    <a href="index.html#depoimentos">Depoimentos</a>
+                    <a href="index.html#contato">Contato</a>
+                </div>
+            </div>
+            <div>
+                <h5>Contato</h5>
+                <div class="ft-links">
+                    <a href="https://wa.me/5512997350810"><i class="fab fa-whatsapp" style="color:var(--wa);margin-right:7px"></i>(19) 99539-6281</a>
+                    <span><i class="fa-solid fa-envelope" style="color:var(--accent);margin-right:7px"></i>contato@asasbrasilviagens.com.br</span>
+                    <span><i class="fa-solid fa-location-dot" style="color:var(--accent);margin-right:7px"></i>Brasil, CE</span>
+                    <span><i class="fa-solid fa-clock" style="color:var(--accent);margin-right:7px"></i>Seg–Sex 8h–20h</span>
+                </div>
+            </div>
+        </div>
+        <div class="ft-bottom">
+            <span>© 2025 Asas Brasil Viagens · Todos os direitos reservados</span>
+            <span>Feito com <i class="fa-solid fa-heart" style="color:var(--accent)"></i> para quem ama viajar &nbsp;·&nbsp; <a href="/admin/login.html" style="color:rgba(255,255,255,0.2);font-size:.75rem;text-decoration:none;" title="Admin">⚙</a></span>
+        </div>
+    </div>
+</footer>
+
+<a href="https://wa.me/5512997350810" class="wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+<!-- ════════════ SCRIPTS ════════════ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ── Obter pacote ──
+    const id  = new URLSearchParams(location.search).get('id') || 'noronha';
+    const pkg = DB[id] || DB.noronha;
+
+    // ── Meta ──
+    document.title = pkg.title + ' — Asas Brasil Viagens';
+    document.getElementById('breadcrumb-title').textContent = pkg.title;
+    document.getElementById('pkg-title').textContent        = pkg.title;
+    document.getElementById('pkg-subtitle').textContent     = pkg.subtitle;
+    document.getElementById('meta-loc').textContent         = pkg.location;
+    document.getElementById('meta-dur').textContent         = pkg.duration;
+    document.getElementById('pkg-desc').textContent         = pkg.desc;
+    document.getElementById('sb-loc').textContent           = pkg.location;
+    document.getElementById('sb-dur').textContent           = pkg.duration;
+    document.getElementById('price-num').textContent        = 'R$ ' + pkg.price;
+    document.getElementById('price-parc').textContent       = 'ou ' + pkg.parcelas;
+
+    // Prefixar data-eid com o ID do pacote para cada pacote ter seus próprios campos
+    const staticEids = ['pkg-title','pkg-subtitle','pkg-loc','pkg-dur','pkg-desc',
+                        'pkg-price','pkg-parcelas','pkg-sb-loc','pkg-sb-dur'];
+    staticEids.forEach(eid => {
+        const el = document.querySelector(`[data-eid="${eid}"]`);
+        if (el) el.dataset.eid = id + '-' + eid;
+    });
+
+    // ── WhatsApp ──
+    const waMsg = encodeURIComponent(
+        `Olá, Asas Brasil Viagens! Tenho interesse no pacote *${pkg.title}*\n\n` +
+        `📍 Destino: ${pkg.location}\n` +
+        `🌙 Período: ${pkg.duration}\n` +
+        `👥 Qtd de Pessoas: \n` +
+        `📅 Data Pretendida: \n\n` +
+        `Vim pelo site e aguardo retorno!`
+    );
+    document.getElementById('btn-wa').href = `https://wa.me/${SITE.whatsapp}?text=${waMsg}`;
+
+    // ── Carrossel ──
+    const track = document.getElementById('track');
+    const dotsEl = document.getElementById('car-dots');
+    const thumbsEl = document.getElementById('thumbs');
+    let cur = 0;
+
+    pkg.images.forEach((src, i) => {
+        // slide
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        const img = document.createElement('img');
+        img.src = src; img.alt = pkg.title + ' ' + (i+1);
+        img.loading = i === 0 ? 'eager' : 'lazy';
+        img.dataset.eid = id + '-pkg-img-' + i;
+        img.dataset.elabel = 'Foto ' + (i+1) + ' — ' + pkg.title;
+        slide.appendChild(img); track.appendChild(slide);
+
+        // dot
+        const dot = document.createElement('div');
+        dot.className = 'car-dot' + (i===0?' on':'');
+        dot.onclick = () => goTo(i);
+        dotsEl.appendChild(dot);
+
+        // thumb — mesma data-eid do slide para applyContent() atualizar ambos
+        const th = document.createElement('div');
+        th.className = 'thumb' + (i===0?' on':'');
+        th.onclick = () => goTo(i);
+        const ti = document.createElement('img');
+        ti.src = src; ti.alt = ''; ti.loading = 'lazy';
+        ti.dataset.eid = id + '-pkg-img-' + i;
+        th.appendChild(ti); thumbsEl.appendChild(th);
+    });
+
+    function goTo(idx) {
+        cur = idx;
+        track.style.transform = `translateX(-${idx * 100}%)`;
+        document.querySelectorAll('.car-dot').forEach((d,i) => d.classList.toggle('on', i===idx));
+        document.querySelectorAll('.thumb').forEach((t,i) => t.classList.toggle('on', i===idx));
+    }
+
+    window.carMove = (dir) => goTo((cur + dir + pkg.images.length) % pkg.images.length);
+
+    // Swipe suporte mobile
+    let startX = 0;
+    track.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
+    track.addEventListener('touchend',   e => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) carMove(diff > 0 ? 1 : -1);
+    });
+
+    // ── Incluso / Não Incluso ──
+    const inclEl = document.getElementById('incluso-list');
+    pkg.incluso.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.dataset.eid = `${id}-pkg-incluso-${i}`;
+        li.dataset.elabel = `Incluso ${i+1} — ${pkg.title}`;
+        li.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${item}`;
+        inclEl.appendChild(li);
+    });
+
+    if (pkg.nao_incluso) {
+        const nEl = document.getElementById('nao-incluso-list');
+        pkg.nao_incluso.forEach((item, i) => {
+            const li = document.createElement('li');
+            li.dataset.eid = `${id}-pkg-nao-incluso-${i}`;
+            li.dataset.elabel = `Não Incluso ${i+1} — ${pkg.title}`;
+            li.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> ${item}`;
+            nEl.appendChild(li);
+        });
+    }
+
+    // ── Roteiro ──
+    const rotEl = document.getElementById('roteiro-list');
+    pkg.roteiro.forEach((r, i) => {
+        const div = document.createElement('div');
+        div.className = 'roteiro-item';
+        const h4 = document.createElement('h4');
+        h4.dataset.eid = `${id}-pkg-rot-${i}-title`;
+        h4.dataset.elabel = `Dia ${i+1} Título — ${pkg.title}`;
+        h4.textContent = r.title;
+        const p = document.createElement('p');
+        p.dataset.eid = `${id}-pkg-rot-${i}-desc`;
+        p.dataset.elabel = `Dia ${i+1} Texto — ${pkg.title}`;
+        p.textContent = r.desc;
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'roteiro-day';
+        dayDiv.innerHTML = `<div class="roteiro-day-num">${r.dia.replace('º Dia','').replace('-','–')}</div><div class="roteiro-day-lbl">Dia</div>`;
+        const bodyDiv = document.createElement('div');
+        bodyDiv.className = 'roteiro-body';
+        bodyDiv.appendChild(h4);
+        bodyDiv.appendChild(p);
+        div.appendChild(dayDiv);
+        div.appendChild(bodyDiv);
+        rotEl.appendChild(div);
+    });
+
+    // ── Outros Destinos (exclui o atual) ──
+    // Mapeamento destino → data-eid da home (para herdar imagens editadas)
+    const destImgs = {
+        lencois:       'https://images.unsplash.com/photo-1619546952812-520e98064a52?auto=format&fit=crop&w=600&q=70',
+        disney:        'https://images.unsplash.com/photo-1568092816214-02404ef89f59?auto=format&fit=crop&w=600&q=70',
+        maceio:        'https://images.unsplash.com/photo-1564939558297-fc396f18e5c7?auto=format&fit=crop&w=600&q=70',
+        portogalinhas: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=600&q=70',
+        riodejaneiro:  'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=600&q=70',
+        joaopessoa:    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70'
+    };
+    // Mapeamento destino → data-eid da home (para herdar imagens editadas)
+    const destEid = {
+        lencois: 'card1-img', disney: 'card2-img', maceio: 'card3-img',
+        portogalinhas: 'card4-img', riodejaneiro: 'card5-img', joaopessoa: 'card6-img'
+    };
+    const outros = Object.keys(DB).filter(k => k !== id).slice(0, 4);
+    const cardsEl = document.getElementById('outros-cards');
+    outros.forEach(k => {
+        const p = DB[k];
+        const eid = destEid[k] || '';
+        const card = document.createElement('a');
+        card.href = `pacote.html?id=${k}`;
+        card.className = 'card-link';
+        card.innerHTML = `
+            <div class="card-img">
+                <img src="${destImgs[k]}" alt="${p.title}" loading="lazy"${eid ? ` data-eid="${eid}" data-elabel="Foto ${p.title}"` : ''}>
+                <div class="card-flag">${p.flag}</div>
+            </div>
+            <div class="card-body">
+                <div class="card-loc"><i class="fa-solid fa-location-dot"></i> ${p.location}</div>
+                <h3>${p.title}</h3>
+                <div class="card-foot">
+                    <div class="card-price">R$ ${p.price.split(',')[0]} <small>/ pessoa</small></div>
+                    <span class="card-arr">Ver <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </div>`;
+        cardsEl.appendChild(card);
+    });
+});
+
+// ── Mobile menu ──
+const burger = document.getElementById('burger');
+const panel  = document.getElementById('mobile-panel');
+burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    panel.classList.toggle('open');
+});
+</script>
+<!-- ═══ EDITOR VISUAL ASAS BRASIL ═══ -->
+<script src="editor.js"></script>
+</body>
+</html>

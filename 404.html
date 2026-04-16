@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página não encontrada — Asas Brasil Viagens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1565C0;
+            --accent:  #F97316;
+            --text:    #1A1F2E;
+            --muted:   #6B7280;
+            --bg:      #F8F9FC;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+        .logo { width: 80px; margin-bottom: 32px; }
+        .code {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(80px, 20vw, 140px);
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+        h1 {
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        p {
+            color: var(--muted);
+            font-size: 16px;
+            max-width: 420px;
+            line-height: 1.6;
+            margin-bottom: 36px;
+        }
+        .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 28px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all .2s;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover { background: #0D47A1; transform: translateY(-2px); }
+        .btn-outline {
+            background: #fff;
+            color: var(--text);
+            border: 2px solid #E5E9F2;
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <img class="logo" src="logo.png" alt="Asas Brasil Viagens" onerror="this.style.display='none'">
+    <div class="code">404</div>
+    <h1>Página não encontrada</h1>
+    <p>O endereço que você digitou não existe ou foi movido. Que tal explorar nossos destinos?</p>
+    <div class="actions">
+        <a href="/" class="btn btn-primary">🏠 Voltar ao início</a>
+        <a href="/#pacotes" class="btn btn-outline">✈️ Ver pacotes</a>
+    </div>
+</body>
+</html>
