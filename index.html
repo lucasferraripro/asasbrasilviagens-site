@@ -18,11 +18,11 @@
 
         /* ── TOKENS ── */
         :root {
-            --navy:       #1565C0;
-            --navy-dark:  #0D47A1;
-            --accent:     #F97316;
-            --accent-d:   #EA6C0A;
-            --gold:       #F97316;
+            --navy:       #0088A9;
+            --navy-dark:  #006B87;
+            --accent:     #7DC420;
+            --accent-d:   #69AB1A;
+            --gold:       #7DC420;
             --text:       #1A1F2E;
             --muted:      #6B7280;
             --bg:         #F8F9FC;
@@ -84,11 +84,11 @@
             font-family: inherit;
         }
         .btn-accent  { background: var(--accent); color: #fff; }
-        .btn-accent:hover  { background: var(--accent-d); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(232,130,74,.33); }
+        .btn-accent:hover  { background: var(--accent-d); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(125,196,32,.33); }
         .btn-ghost   { background: rgba(255,255,255,.14); color: #fff; border: 1.5px solid rgba(255,255,255,.5); backdrop-filter: blur(6px); }
         .btn-ghost:hover   { background: rgba(255,255,255,.22); }
         .btn-navy    { background: var(--navy); color: #fff; }
-        .btn-navy:hover    { background: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(27,58,107,.3); }
+        .btn-navy:hover    { background: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,136,169,.3); }
         .btn-sm { padding: 10px 20px; font-size: 14px; }
         .btn-block { width: 100%; justify-content: center; }
 
@@ -231,12 +231,12 @@
             border: 1px solid var(--border); border-radius: var(--r);
             padding: 40px 28px; text-align: center; transition: all .3s;
         }
-        .step:hover { border-color: var(--accent); box-shadow: 0 14px 40px rgba(232,130,74,.11); transform: translateY(-5px); }
+        .step:hover { border-color: var(--accent); box-shadow: 0 14px 40px rgba(125,196,32,.11); transform: translateY(-5px); }
         .step-num {
             width: 52px; height: 52px; background: var(--accent); color: #fff;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700;
-            margin: 0 auto 20px; box-shadow: 0 6px 18px rgba(232,130,74,.3);
+            margin: 0 auto 20px; box-shadow: 0 6px 18px rgba(125,196,32,.3);
         }
         .step h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
         .step p  { font-size: 14px; color: var(--muted); line-height: 1.65; }
@@ -298,7 +298,7 @@
         ══════════════════════════════════════ */
         .dif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
         .dif-img-wrap { position: relative; }
-        .dif-img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--rl); box-shadow: 0 20px 56px rgba(27,58,107,.18); }
+        .dif-img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--rl); box-shadow: 0 20px 56px rgba(0,136,169,.18); }
         .dif-badge {
             position: absolute; bottom: -18px; right: -18px;
             background: var(--navy-dark); color: #fff;
@@ -311,7 +311,7 @@
         .dif-item { display: flex; gap: 14px; align-items: flex-start; }
         .dif-icon {
             width: 44px; height: 44px; flex-shrink: 0;
-            background: rgba(232,130,74,.1); border-radius: 12px;
+            background: rgba(125,196,32,.1); border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             font-size: 16px; color: var(--accent);
         }
@@ -353,7 +353,7 @@
 
         .form-card {
             background: var(--white); border-radius: var(--rl);
-            padding: 40px 36px; box-shadow: 0 10px 44px rgba(27,58,107,.1);
+            padding: 40px 36px; box-shadow: 0 10px 44px rgba(0,136,169,.1);
         }
         .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .ig { margin-bottom: 16px; }
@@ -371,7 +371,7 @@
             -webkit-appearance: none;
         }
         .ig input:focus, .ig select:focus, .ig textarea:focus {
-            border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,130,74,.12);
+            border-color: var(--accent); box-shadow: 0 0 0 3px rgba(125,196,32,.12);
             background: #fff;
         }
         .ig textarea { resize: vertical; min-height: 80px; }

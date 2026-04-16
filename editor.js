@@ -75,12 +75,12 @@
         .ld-hint-text{color:rgba(255,255,255,.55);font-size:12px;white-space:nowrap;}
         .ld-btn{padding:7px 14px;border:none;border-radius:8px;background:transparent;color:rgba(255,255,255,.75);cursor:pointer;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap;outline:none;}
         .ld-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
-        .ld-btn.blue{background:#1565C0;color:#fff;}
-        .ld-btn.blue:hover{background:#0D47A1;}
+        .ld-btn.blue{background:#0088A9;color:#fff;}
+        .ld-btn.blue:hover{background:#006B87;}
         .ld-btn.green{background:#16A34A;color:#fff;}
         .ld-btn.green:hover{background:#15803D;}
-        .ld-btn.orange{background:#F97316;color:#fff;}
-        .ld-btn.orange:hover{background:#EA6C0A;}
+        .ld-btn.orange{background:#7DC420;color:#fff;}
+        .ld-btn.orange:hover{background:#69AB1A;}
         .ld-btn.red{color:rgba(255,255,255,.45);font-size:12px;}
         .ld-btn.red:hover{color:#F87171;background:rgba(248,113,113,.1);}
         .ld-sep{width:1px;height:28px;background:rgba(255,255,255,.12);margin:0 4px;flex-shrink:0;}
@@ -88,9 +88,9 @@
 
         body.ld-on{padding-top:52px!important;}
         body.ld-on [data-eid]{cursor:pointer!important;position:relative;transition:outline .1s;}
-        body.ld-on [data-eid]:hover{outline:2px dashed #F97316!important;outline-offset:3px;}
-        body.ld-on [data-eid]:hover::after{content:attr(data-elabel);position:absolute;top:-26px;left:0;background:#F97316;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;z-index:99997;pointer-events:none;font-family:-apple-system,sans-serif;}
-        body.ld-on [data-eid].ld-sel{outline:2px solid #1565C0!important;outline-offset:3px;}
+        body.ld-on [data-eid]:hover{outline:2px dashed #7DC420!important;outline-offset:3px;}
+        body.ld-on [data-eid]:hover::after{content:attr(data-elabel);position:absolute;top:-26px;left:0;background:#7DC420;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;z-index:99997;pointer-events:none;font-family:-apple-system,sans-serif;}
+        body.ld-on [data-eid].ld-sel{outline:2px solid #0088A9!important;outline-offset:3px;}
         body.ld-on .card-overlay,body.ld-on .card-flag{pointer-events:none!important;}
 
         .ld-panel{position:fixed;top:62px;right:18px;width:320px;background:#fff;border-radius:16px;z-index:99998;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden;}
@@ -102,9 +102,9 @@
         .ld-f{margin-bottom:13px;}
         .ld-f label{display:block;font-size:11px;font-weight:700;color:#374151;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;}
         .ld-f input[type=text],.ld-f input[type=url],.ld-f textarea,.ld-f select{width:100%;padding:8px 11px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;outline:none;font-family:inherit;resize:vertical;transition:border .15s;}
-        .ld-f input:focus,.ld-f textarea:focus,.ld-f select:focus{border-color:#1565C0;}
+        .ld-f input:focus,.ld-f textarea:focus,.ld-f select:focus{border-color:#0088A9;}
         .ld-rich{min-height:70px;padding:9px 11px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;outline:none;transition:border .15s;line-height:1.5;}
-        .ld-rich:focus{border-color:#1565C0;}
+        .ld-rich:focus{border-color:#0088A9;}
         .ld-fmts{display:flex;gap:5px;margin-top:6px;}
         .ld-fmts button{padding:4px 11px;border:1.5px solid #E5E7EB;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;font-weight:700;transition:background .1s;}
         .ld-fmts button:hover{background:#F3F4F6;}
@@ -113,8 +113,8 @@
         .ld-cr input[type=color]{width:40px;height:32px;padding:2px;border:1.5px solid #E5E7EB;border-radius:6px;cursor:pointer;}
         .ld-prev{width:100%;height:110px;object-fit:cover;border-radius:9px;margin-bottom:10px;background:#F3F4F6;display:block;}
         .ld-acts{display:flex;gap:8px;margin-top:14px;}
-        .ld-ok{flex:1;padding:9px;background:#1565C0;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;transition:background .15s;}
-        .ld-ok:hover{background:#0D47A1;}
+        .ld-ok{flex:1;padding:9px;background:#0088A9;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;transition:background .15s;}
+        .ld-ok:hover{background:#006B87;}
         .ld-ko{padding:9px 14px;background:#F3F4F6;color:#374151;border:none;border-radius:8px;font-size:13px;cursor:pointer;}
         .ld-ko:hover{background:#E5E7EB;}
         .ld-hint{font-size:11px;color:#9CA3AF;margin-top:4px;line-height:1.5;}
@@ -298,7 +298,7 @@
 
             // Botão abre seletor de arquivo
             btn.onclick = () => file.click();
-            btn.onmouseenter = () => btn.style.borderColor = '#1565C0';
+            btn.onmouseenter = () => btn.style.borderColor = '#0088A9';
             btn.onmouseleave = () => btn.style.borderColor = '#E5E7EB';
 
             // Upload quando arquivo selecionado
@@ -442,9 +442,9 @@
             const p = this.panel_('🎨 Cores Globais do Site');
             p.innerHTML += `<div class="ld-pb">
                 <div class="ld-info">Altera as cores em todo o site de uma vez.</div>
-                <div class="ld-cr"><label>🔵 Azul principal</label><input type="color" id="ldg1" value="${this.hex(g('--primary'))||'#1565C0'}"></div>
-                <div class="ld-cr"><label>🔵 Azul escuro</label><input type="color" id="ldg2" value="${this.hex(g('--primary-dark'))||'#0D47A1'}"></div>
-                <div class="ld-cr"><label>🟠 Laranja destaque</label><input type="color" id="ldg3" value="${this.hex(g('--accent'))||'#F97316'}"></div>
+                <div class="ld-cr"><label>🔵 Azul principal</label><input type="color" id="ldg1" value="${this.hex(g('--primary'))||'#0088A9'}"></div>
+                <div class="ld-cr"><label>🔵 Azul escuro</label><input type="color" id="ldg2" value="${this.hex(g('--primary-dark'))||'#006B87'}"></div>
+                <div class="ld-cr"><label>🟠 Laranja destaque</label><input type="color" id="ldg3" value="${this.hex(g('--accent'))||'#7DC420'}"></div>
                 <div class="ld-cr"><label>⬛ Texto principal</label><input type="color" id="ldg4" value="${this.hex(g('--text-dark'))||'#1A1F2E'}"></div>
                 <div class="ld-cr"><label>🟩 WhatsApp verde</label><input type="color" id="ldg5" value="${this.hex(g('--wa'))||'#25D366'}"></div>
                 <hr class="ld-hr">
