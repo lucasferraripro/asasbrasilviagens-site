@@ -162,13 +162,9 @@
             display: flex; align-items: center; overflow: hidden;
         }
         .hero-bg {
-            position: absolute; inset: 0;
-            background: url('https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            position: absolute; inset: 0; overflow: hidden;
         }
-        .hero-bg::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(15,36,71,.88) 0%, rgba(15,36,71,.46) 70%);
-        }
+        .hero-bg::after { display: none; }
         .hero-body { position: relative; z-index: 1; color: #fff; max-width: 680px; }
         .hero-badge {
             display: inline-flex; align-items: center; gap: 7px;
@@ -615,9 +611,9 @@
         </div>
         <div class="cards-grid">
 
-            <a href="pacote.html?id=lencois" class="card-link rv">
+            <a href="pacote.html?id=lencois" class="card-link rv" id="card-lencois">
                 <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1619546952812-520e98064a52?auto=format&fit=crop&w=700&q=80" alt="Lençóis Maranhenses" loading="lazy" decoding="async" data-eid="card1-img" data-elabel="Foto Lençóis">
+                    <img src="imagens/destinos/fortaleza-1.webp" alt="Lençóis Maranhenses" loading="lazy" decoding="async" data-eid="card1-img" data-elabel="Foto Lençóis">
                     <div class="card-flag" data-eid="card1-flag" data-elabel="País Lençóis">Brasil</div>
                     <div class="card-overlay"><span>Ver pacote <i class="fa-solid fa-arrow-right"></i></span></div>
                 </div>
@@ -631,9 +627,9 @@
                 </div>
             </a>
 
-            <a href="pacote.html?id=disney" class="card-link rv">
+            <a href="pacote.html?id=disney" class="card-link rv" id="card-disney">
                 <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1568092816214-02404ef89f59?auto=format&fit=crop&w=700&q=80" alt="Disney Orlando" loading="lazy" decoding="async" data-eid="card2-img" data-elabel="Foto Disney">
+                    <img src="imagens/destinos/cancun.png" alt="Disney Orlando" loading="lazy" decoding="async" data-eid="card2-img" data-elabel="Foto Disney">
                     <div class="card-flag" data-eid="card2-flag" data-elabel="País Disney">EUA</div>
                     <div class="card-overlay"><span>Ver pacote <i class="fa-solid fa-arrow-right"></i></span></div>
                 </div>
@@ -647,7 +643,7 @@
                 </div>
             </a>
 
-            <a href="pacote.html?id=maceio" class="card-link rv">
+            <a href="pacote.html?id=maceio" class="card-link rv" id="card-maceio">
                 <div class="card-img">
                     <img src="imagens/destinos/maceio.png" alt="Maceió" loading="lazy" decoding="async" data-eid="card3-img" data-elabel="Foto Maceió">
                     <div class="card-flag" data-eid="card3-flag" data-elabel="País Maceió">Brasil</div>
@@ -655,7 +651,7 @@
                 </div>
                 <div class="card-body">
                     <div class="card-loc" data-eid="card3-loc" data-elabel="Local Maceió"><i class="fa-solid fa-location-dot"></i> Alagoas, Brasil</div>
-                    <h3 data-eid="card3-title" data-elabel="Título Maceió">Maceió & Maragogi</h3>
+                    <h3 data-eid="card3-title" data-elabel="Título Maceió">Maceió &amp; Maragogi</h3>
                     <div class="card-foot">
                         <div class="card-price" data-eid="card3-price" data-elabel="Preço Maceió">R$ 2.890 <small>/ pessoa</small></div>
                         <span class="card-arrow">Saiba mais <i class="fa-solid fa-arrow-right"></i></span>
@@ -663,7 +659,7 @@
                 </div>
             </a>
 
-            <a href="pacote.html?id=portogalinhas" class="card-link rv">
+            <a href="pacote.html?id=portogalinhas" class="card-link rv" id="card-portogalinhas">
                 <div class="card-img">
                     <img src="imagens/destinos/portogalinhas-1.jpg" alt="Porto de Galinhas" loading="lazy" decoding="async" data-eid="card4-img" data-elabel="Foto Porto de Galinhas">
                     <div class="card-flag" data-eid="card4-flag" data-elabel="País Porto de Galinhas">Brasil</div>
@@ -679,9 +675,9 @@
                 </div>
             </a>
 
-            <a href="pacote.html?id=riodejaneiro" class="card-link rv">
+            <a href="pacote.html?id=riodejaneiro" class="card-link rv" id="card-riodejaneiro">
                 <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=700&q=80" alt="Rio de Janeiro" loading="lazy" decoding="async" data-eid="card5-img" data-elabel="Foto Rio de Janeiro">
+                    <img src="imagens/destinos/bariloche.png" alt="Rio de Janeiro" loading="lazy" decoding="async" data-eid="card5-img" data-elabel="Foto Rio de Janeiro">
                     <div class="card-flag" data-eid="card5-flag" data-elabel="País Rio de Janeiro">Brasil</div>
                     <div class="card-overlay"><span>Ver pacote <i class="fa-solid fa-arrow-right"></i></span></div>
                 </div>
@@ -695,9 +691,9 @@
                 </div>
             </a>
 
-            <a href="pacote.html?id=joaopessoa" class="card-link rv">
+            <a href="pacote.html?id=joaopessoa" class="card-link rv" id="card-joaopessoa">
                 <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80" alt="João Pessoa" loading="lazy" decoding="async" data-eid="card6-img" data-elabel="Foto João Pessoa">
+                    <img src="imagens/destinos/maceio_pajucara.png" alt="João Pessoa" loading="lazy" decoding="async" data-eid="card6-img" data-elabel="Foto João Pessoa">
                     <div class="card-flag" data-eid="card6-flag" data-elabel="País João Pessoa">Brasil</div>
                     <div class="card-overlay"><span>Ver pacote <i class="fa-solid fa-arrow-right"></i></span></div>
                 </div>

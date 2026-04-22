@@ -139,6 +139,8 @@
         body.ld-on [data-eid]:hover::after{content:attr(data-elabel);position:absolute;top:-26px;left:0;background:#7DC420;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;z-index:99997;pointer-events:none;font-family:-apple-system,sans-serif;}
         body.ld-on [data-eid].ld-sel{outline:2px solid #0088A9!important;outline-offset:3px;}
         body.ld-on .card-overlay,body.ld-on .card-flag{pointer-events:none!important;}
+        body.ld-on a.card-link{pointer-events:none!important;}
+        body.ld-on a.card-link [data-eid]{pointer-events:auto!important;}
 
         .ld-panel{position:fixed;top:62px;right:18px;width:320px;background:#fff;border-radius:16px;z-index:99998;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden;}
         .ld-ph{background:#111827;color:#fff;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:move;user-select:none;}
