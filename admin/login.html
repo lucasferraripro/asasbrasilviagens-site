@@ -142,6 +142,11 @@
     if (auth && auth.expires > Date.now()) {
         window.location.href = '../index.html?editor=1';
     }
+
+    // Botão para limpar rascunho corrompido
+    document.querySelector('.back').insertAdjacentHTML('beforeend',
+        '<br><a href="#" onclick="localStorage.removeItem(\'asasbrasil_cms_v3\');alert(\'Rascunho limpo!\');return false;" style="color:#DC2626;font-size:.8rem;">🗑️ Limpar rascunho salvo</a>'
+    );
 </script>
 </body>
 </html>
