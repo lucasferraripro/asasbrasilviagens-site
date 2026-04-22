@@ -320,12 +320,14 @@
 
         /* ── IMAGEM ── */
         pImage(el) {
-            const origSrc = el.src;
-            // Usa o atributo src original (não o absoluto do browser) se disponível
+            const origSrc  = el.src;
             const origAttr = el.getAttribute('src') || el.src;
             const p = this.panel_('🖼️ Trocar Imagem — ' + (el.dataset.elabel || ''));
             p.innerHTML += `<div class="ld-pb">
                 <img class="ld-prev" id="ldprev" src="${origSrc}" style="background:#F3F4F6;">
+                <div id="ld-img-status" style="display:none;background:#FEF9C3;border:1px solid #FDE047;border-radius:8px;padding:8px 12px;font-size:12px;color:#854D0E;margin-bottom:8px;">
+                    ⚠️ Imagem alterada — clique <strong>✓ Aplicar</strong> para salvar no rascunho
+                </div>
                 <div class="ld-f">
                     <label>Enviar do computador</label>
                     <button id="ldbtn" style="width:100%;padding:10px;border:2px dashed #E5E7EB;border-radius:8px;background:#F9FAFB;cursor:pointer;font-size:13px;color:#374151;transition:border .15s;">
@@ -412,6 +414,9 @@
             // Preview por URL digitada
             ui.oninput = () => {
                 clearTimeout(debounce);
+                // Mostra aviso que precisa clicar Aplicar
+                const statusDiv = p.querySelector('#ld-img-status');
+                if (statusDiv) statusDiv.style.display = 'block';
                 debounce = setTimeout(() => {
                     const v = ui.value.trim();
                     if (v) { el.src = v; pv.src = v; }
@@ -419,7 +424,8 @@
             };
             p.querySelector('#lda').onclick = () => {
                 clearTimeout(debounce);
-                const src = ui.value.trim() || origSrc;
+                // Usa o valor do campo URL; se vazio, usa o atributo src original (relativo)
+                const src = ui.value.trim() || el.getAttribute('src') || origSrc;
                 pv.src = src;
                 // Atualiza TODOS os elementos com o mesmo data-eid (ex: slide + miniatura)
                 document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
