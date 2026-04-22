@@ -212,8 +212,11 @@
 
         async start(srv) {
             injectCSS();
-            const draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}');
-            this.cms = { ...(srv || {}), ...draft };
+            // Reconstrói cms: servidor como base + rascunho local por cima
+            let draft = {};
+            try { draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}'); } catch (_) {}
+            // Rascunho local tem PRIORIDADE sobre servidor
+            this.cms = Object.assign({}, srv || {}, draft);
             document.body.classList.add('ld-on');
             sessionStorage.setItem('editor_active', '1');
             this.buildBar();
@@ -740,10 +743,15 @@
                 return;
             }
 
+            // Mostra o que será publicado incluindo imagens
+            const imgs = elems.filter(k => this.cms[k] && this.cms[k].src);
+            const txts = elems.filter(k => this.cms[k] && (this.cms[k].html != null || this.cms[k].text != null));
+
             let items = '';
-            if (elems.length) items += `<li>${elems.length} elemento(s) de texto/imagem editados</li>`;
-            if (hasCols) items += `<li>Cores globais do site</li>`;
-            if (hasWA)   items += `<li>Número do WhatsApp: ${this.cms.whatsapp}</li>`;
+            if (imgs.length)  items += `<li>🖼️ ${imgs.length} imagem(ns) trocada(s)</li>`;
+            if (txts.length)  items += `<li>✏️ ${txts.length} texto(s) editado(s)</li>`;
+            if (hasCols)      items += `<li>🎨 Cores globais do site</li>`;
+            if (hasWA)        items += `<li>📱 WhatsApp: ${this.cms.whatsapp}</li>`;
 
             const hasSavedSecret = !!localStorage.getItem('asasbrasil_secret');
             const p = this.panel_('🚀 Publicar no Site');
