@@ -47,13 +47,24 @@ export default async function handler(req, res) {
     };
 
     try {
-        // 1. Pega o SHA atual do arquivo
-        const getRes = await fetch(apiBase, { headers });
+        // 1. Pega o SHA e conteúdo atual do arquivo
+        const getRes  = await fetch(apiBase, { headers });
         const getJson = await getRes.json();
-        const sha = getJson.sha || null;
+        const sha     = getJson.sha || null;
 
-        // 2. Codifica o conteúdo em base64
-        const contentStr = JSON.stringify(content, null, 2);
+        // 2. Faz MERGE: conteúdo atual + novas alterações
+        // Isso garante que publicar nunca apaga dados anteriores
+        let existing = {};
+        if (getJson.content) {
+            try {
+                existing = JSON.parse(Buffer.from(getJson.content, 'base64').toString('utf-8'));
+            } catch (_) {}
+        }
+        // Merge profundo: novo conteúdo tem prioridade, mas mantém o que já existia
+        const merged = Object.assign({}, existing, content);
+
+        // 3. Codifica o conteúdo mesclado em base64
+        const contentStr = JSON.stringify(merged, null, 2);
         const contentB64 = Buffer.from(contentStr).toString('base64');
 
         // 3. Commita no GitHub

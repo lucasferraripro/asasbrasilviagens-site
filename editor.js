@@ -212,11 +212,15 @@
 
         async start(srv) {
             injectCSS();
-            // Reconstrói cms: servidor como base + rascunho local por cima
+            // cms = servidor (base) + rascunho local (prioridade)
             let draft = {};
             try { draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}'); } catch (_) {}
-            // Rascunho local tem PRIORIDADE sobre servidor
+            // srv já tem o conteúdo publicado, draft tem as edições não publicadas
             this.cms = Object.assign({}, srv || {}, draft);
+            // Garante que o cms nunca fica vazio se o servidor tem dados
+            if (srv && Object.keys(srv).length > 0 && Object.keys(this.cms).length === 0) {
+                this.cms = { ...srv };
+            }
             document.body.classList.add('ld-on');
             sessionStorage.setItem('editor_active', '1');
             this.buildBar();
