@@ -327,25 +327,28 @@
             const origAttr = el.getAttribute('src') || el.src;
             const p = this.panel_('🖼️ Trocar Imagem — ' + (el.dataset.elabel || ''));
             p.innerHTML += `<div class="ld-pb">
-                <img class="ld-prev" id="ldprev" src="${origSrc}" style="background:#F3F4F6;">
-                <div id="ld-img-status" style="display:none;background:#FEF9C3;border:1px solid #FDE047;border-radius:8px;padding:8px 12px;font-size:12px;color:#854D0E;margin-bottom:8px;">
-                    ⚠️ Imagem alterada — clique <strong>✓ Aplicar</strong> para salvar no rascunho
+                <div style="margin-bottom:10px;">
+                    <div style="font-size:11px;color:#6B7280;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Imagem atual</div>
+                    <img id="ldprev" src="${origSrc}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;background:#F3F4F6;display:block;">
                 </div>
                 <div class="ld-f">
-                    <label>Enviar do computador</label>
+                    <label>📂 Enviar do computador</label>
                     <button id="ldbtn" style="width:100%;padding:10px;border:2px dashed #E5E7EB;border-radius:8px;background:#F9FAFB;cursor:pointer;font-size:13px;color:#374151;transition:border .15s;">
-                        📂 Escolher arquivo (JPG, PNG, WEBP)
+                        Escolher arquivo (JPG, PNG, WEBP)
                     </button>
                     <input type="file" id="ldfile" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none">
-                    <div id="ldupstatus" class="ld-hint" style="margin-top:6px;"></div>
+                    <div id="ldupstatus" style="margin-top:6px;font-size:12px;"></div>
                 </div>
                 <div class="ld-f">
-                    <label>Ou cole uma URL de imagem</label>
-                    <input type="url" id="ldiu" value="${origAttr}" placeholder="https://site.com/foto.jpg">
-                    <p class="ld-hint">Cole qualquer URL de imagem da internet (JPG, PNG, WEBP)</p>
+                    <label>🔗 Ou cole uma URL de imagem</label>
+                    <input type="url" id="ldiu" value="" placeholder="https://images.unsplash.com/...">
+                    <p style="font-size:11px;color:#9CA3AF;margin-top:4px;">Cole a URL completa da nova imagem aqui</p>
+                </div>
+                <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:10px;font-size:12px;color:#166534;margin-bottom:12px;">
+                    ✅ Após escolher a imagem, clique <strong>✓ Salvar Imagem</strong>
                 </div>
                 <div class="ld-acts">
-                    <button class="ld-ok" id="lda">✓ Aplicar</button>
+                    <button class="ld-ok" id="lda">✓ Salvar Imagem</button>
                     <button class="ld-ko" id="ldc">Cancelar</button>
                 </div>
             </div>`;
@@ -427,16 +430,26 @@
             };
             p.querySelector('#lda').onclick = () => {
                 clearTimeout(debounce);
-                // Usa o valor do campo URL; se vazio, usa o atributo src original (relativo)
-                const src = ui.value.trim() || el.getAttribute('src') || origSrc;
+                // Pega a URL do campo — se vazio, usa o src atual do elemento (já pode ter sido trocado via upload)
+                const newUrl = ui.value.trim();
+                const currentSrc = el.getAttribute('src') || origAttr;
+                const src = newUrl || currentSrc;
+
+                // Verifica se realmente mudou
+                if (src === origAttr || src === origSrc) {
+                    // Nada mudou — avisa
+                    const hint = p.querySelector('p[style*="9CA3AF"]');
+                    if (hint) { hint.textContent = '⚠️ Cole uma URL nova ou faça upload de uma imagem diferente.'; hint.style.color = '#DC2626'; }
+                    return;
+                }
+
                 pv.src = src;
-                // Atualiza TODOS os elementos com o mesmo data-eid (ex: slide + miniatura)
                 document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
                     if (e.tagName === 'IMG') e.src = src;
                 });
                 this.store(el.dataset.eid, { src });
                 this.closePanel();
-                this.toast('✓ Imagem salva no rascunho', 'ok');
+                this.toast('✓ Imagem salva no rascunho — clique Publicar', 'ok');
             };
             p.querySelector('#ldc').onclick = () => {
                 el.src = origSrc;
