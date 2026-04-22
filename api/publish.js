@@ -36,8 +36,8 @@ export default async function handler(req, res) {
     }
 
     const token = process.env.GITHUB_TOKEN;
-    const owner = 'SEU_USUARIO_GITHUB';
-    const repo  = 'asasbrasilviagens-site';
+    const owner = process.env.GITHUB_OWNER || 'lucasferraripro';
+    const repo  = process.env.GITHUB_REPO  || 'asasbrasilviagens-site';
     const path  = 'content.json';
     const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
     const headers = {

@@ -7,8 +7,8 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
 
     const token = process.env.GITHUB_TOKEN;
-    const owner = 'SEU_USUARIO_GITHUB';
-    const repo  = 'asasbrasilviagens-site';
+    const owner = process.env.GITHUB_OWNER || 'lucasferraripro';
+    const repo  = process.env.GITHUB_REPO  || 'asasbrasilviagens-site';
     const path  = 'content.json';
 
     try {

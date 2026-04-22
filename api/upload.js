@@ -8,8 +8,8 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).end();
 
     const token  = process.env.GITHUB_TOKEN;
-    const owner  = 'SEU_USUARIO_GITHUB';
-    const repo   = 'asasbrasilviagens-site';
+    const owner  = process.env.GITHUB_OWNER || 'lucasferraripro';
+    const repo   = process.env.GITHUB_REPO  || 'asasbrasilviagens-site';
     const adminSecret = process.env.ADMIN_SECRET || 'AsasBrasil@2025';
 
     let body = '';

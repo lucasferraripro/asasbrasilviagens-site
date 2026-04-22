@@ -600,36 +600,83 @@
 
 <!-- ════════════ SCRIPTS ════════════ -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-    // ── Obter pacote ──
-    const id  = new URLSearchParams(location.search).get('id') || 'noronha';
-    const pkg = DB[id] || DB.noronha;
+    const id = new URLSearchParams(location.search).get('id') || 'lencois';
 
-    // ── Meta ──
-    document.title = pkg.title + ' — Asas Brasil Viagens';
-    document.getElementById('breadcrumb-title').textContent = pkg.title;
-    document.getElementById('pkg-title').textContent        = pkg.title;
-    document.getElementById('pkg-subtitle').textContent     = pkg.subtitle;
-    document.getElementById('meta-loc').textContent         = pkg.location;
-    document.getElementById('meta-dur').textContent         = pkg.duration;
-    document.getElementById('pkg-desc').textContent         = pkg.desc;
-    document.getElementById('sb-loc').textContent           = pkg.location;
-    document.getElementById('sb-dur').textContent           = pkg.duration;
-    document.getElementById('price-num').textContent        = 'R$ ' + pkg.price;
-    document.getElementById('price-parc').textContent       = 'ou ' + pkg.parcelas;
+    // 1. Busca CMS do servidor ANTES de renderizar
+    let srvCms = {};
+    try {
+        const r = await fetch('/api/content?_=' + Date.now());
+        if (r.ok) srvCms = await r.json();
+    } catch (_) {}
 
-    // Prefixar data-eid com o ID do pacote para cada pacote ter seus próprios campos
-    const staticEids = ['pkg-title','pkg-subtitle','pkg-loc','pkg-dur','pkg-desc',
-                        'pkg-price','pkg-parcelas','pkg-sb-loc','pkg-sb-dur'];
-    staticEids.forEach(eid => {
+    let localCms = {};
+    try { localCms = JSON.parse(localStorage.getItem('asasbrasil_cms_v3') || '{}'); } catch (_) {}
+
+    const cms = Object.assign({}, srvCms, localCms);
+    window.__ASAS_SRV_CMS = srvCms;
+
+    // 2. Aplica __db_overrides ao DB — sincroniza com a home
+    if (cms.__db_overrides) {
+        Object.entries(cms.__db_overrides).forEach(([pkgId, ov]) => {
+            if (DB[pkgId]) Object.assign(DB[pkgId], ov);
+        });
+    }
+
+    // 3. Adiciona pacotes novos criados pelo admin
+    if (cms.__new_packages) {
+        Object.entries(cms.__new_packages).forEach(([pkgId, pkg]) => {
+            DB[pkgId] = pkg;
+        });
+    }
+
+    // 4. Renderiza com DB já atualizado
+    renderPacote(id, cms);
+});
+
+function renderPacote(id, cms) {
+    cms = cms || {};
+    const pkg = DB[id] || DB.lencois;
+
+    // Helper: lê do CMS se existir, senão usa DB
+    function cmsText(eid) {
+        const d = cms[eid];
+        if (!d) return null;
+        const raw = d.html != null ? d.html : (d.text || '');
+        return raw.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+    }
+
+    // Prefixar data-eid com ID do pacote
+    ['pkg-title','pkg-subtitle','pkg-loc','pkg-dur','pkg-desc',
+     'pkg-price','pkg-parcelas','pkg-sb-loc','pkg-sb-dur'].forEach(eid => {
         const el = document.querySelector(`[data-eid="${eid}"]`);
         if (el) el.dataset.eid = id + '-' + eid;
     });
 
+    // Valores com prioridade: CMS > DB
+    const price    = cmsText(id+'-pkg-price')    || pkg.price;
+    const parcelas = cmsText(id+'-pkg-parcelas') || pkg.parcelas;
+    const title    = cmsText(id+'-pkg-title')    || pkg.title;
+    const subtitle = cmsText(id+'-pkg-subtitle') || pkg.subtitle;
+    const desc     = cmsText(id+'-pkg-desc')     || pkg.desc;
+
+    // ── Meta ──
+    document.title = title + ' — Asas Brasil Viagens';
+    document.getElementById('breadcrumb-title').textContent = title;
+    document.getElementById('pkg-title').textContent        = title;
+    document.getElementById('pkg-subtitle').textContent     = subtitle;
+    document.getElementById('meta-loc').textContent         = pkg.location;
+    document.getElementById('meta-dur').textContent         = pkg.duration;
+    document.getElementById('pkg-desc').textContent         = desc;
+    document.getElementById('sb-loc').textContent           = pkg.location;
+    document.getElementById('sb-dur').textContent           = pkg.duration;
+    document.getElementById('price-num').textContent        = 'R$ ' + price;
+    document.getElementById('price-parc').textContent       = 'ou ' + parcelas;
+
     // ── WhatsApp ──
     const waMsg = encodeURIComponent(
-        `Olá, Asas Brasil Viagens! Tenho interesse no pacote *${pkg.title}*\n\n` +
+        `Olá, Asas Brasil Viagens! Tenho interesse no pacote *${title}*\n\n` +
         `📍 Destino: ${pkg.location}\n` +
         `🌙 Período: ${pkg.duration}\n` +
         `👥 Qtd de Pessoas: \n` +
@@ -772,7 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         cardsEl.appendChild(card);
     });
-});
+} // fim renderPacote
 
 // ── Mobile menu ──
 const burger = document.getElementById('burger');

@@ -19,15 +19,21 @@
     /* ─── APLICAR CONTEÚDO ──────────────────────────────────── */
     function applyContent(cms) {
         if (!cms || !Object.keys(cms).length) return;
+
+        // CRÍTICO: aplica __db_overrides ao DB antes de qualquer render
+        if (cms.__db_overrides && typeof DB !== 'undefined') {
+            Object.entries(cms.__db_overrides).forEach(([pkgId, ov]) => {
+                if (DB[pkgId]) Object.assign(DB[pkgId], ov);
+            });
+        }
+
         if (cms.colors) {
-            // Aliases: index.html/pacote.html usam --navy/--navy-dark/--text
             const aliases = { '--primary': '--navy', '--primary-dark': '--navy-dark', '--text-dark': '--text' };
             Object.entries(cms.colors).forEach(([k, v]) => {
                 document.documentElement.style.setProperty(k, v);
                 if (aliases[k]) document.documentElement.style.setProperty(aliases[k], v);
             });
         }
-        // Atualiza todos os links de WhatsApp se número foi editado
         if (cms.whatsapp) {
             document.querySelectorAll('a[href*="wa.me/"]').forEach(a => {
                 a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + cms.whatsapp);
@@ -53,6 +59,7 @@
 
     async function loadAndApply(srv) {
         let merged = srv || {};
+        window.__ASAS_SRV_CMS = srv || {};
         if (editMode) {
             const draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}');
             merged = { ...merged, ...draft };
@@ -620,8 +627,66 @@
         },
 
         store(key, val) {
+            // Sincronização: detecta campos do DB e salva em __db_overrides
+            const DB_FIELDS = {
+                'pkg-price': 'price', 'pkg-parcelas': 'parcelas',
+                'pkg-title': 'title', 'pkg-subtitle': 'subtitle',
+                'pkg-desc':  'desc',  'pkg-badge': 'badge',
+            };
+            const HOME_FIELDS = {
+                'price': 'price', 'parcel': 'parcelas',
+                'titulo': 'title', 'dest': 'location',
+            };
+            function extractValue(html, dbField) {
+                if (!html) return '';
+                const plain = html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+                if (dbField === 'price') {
+                    const m = plain.match(/R\$\s*([\d.,]+)/);
+                    return m ? m[1] : plain;
+                }
+                return plain;
+            }
+            // Padrão pacote.html: "lencois-pkg-price"
+            const pkgMatch = key.match(/^([a-z0-9_]+)-pkg-(.+)$/);
+            if (pkgMatch) {
+                const [, pkgId, field] = pkgMatch;
+                const dbField = DB_FIELDS['pkg-' + field];
+                if (dbField && typeof DB !== 'undefined' && DB[pkgId]) {
+                    const overrides = this.cms.__db_overrides || {};
+                    if (!overrides[pkgId]) overrides[pkgId] = {};
+                    const rawVal = val.html != null ? extractValue(val.html, dbField) : (val.text || '');
+                    if (rawVal) overrides[pkgId][dbField] = rawVal;
+                    this.cms.__db_overrides = overrides;
+                    Object.assign(DB[pkgId], overrides[pkgId]);
+                }
+            }
+            // Padrão home: "card1-price", "card1-title"
+            const homeMatch = key.match(/^card\d+-(price|title|loc|flag)$/);
+            if (homeMatch) {
+                // Tenta identificar o pkgId pelo href do card pai
+                const el = document.querySelector(`[data-eid="${key}"]`);
+                const card = el && el.closest('a[href*="pacote.html"]');
+                if (card) {
+                    const m = card.href.match(/id=([a-z0-9_]+)/);
+                    if (m) {
+                        const pkgId = m[1];
+                        const fieldMap = { 'price': 'price', 'title': 'title', 'loc': 'location', 'flag': 'flag' };
+                        const dbField = fieldMap[homeMatch[1]];
+                        if (dbField && typeof DB !== 'undefined' && DB[pkgId]) {
+                            const overrides = this.cms.__db_overrides || {};
+                            if (!overrides[pkgId]) overrides[pkgId] = {};
+                            const rawVal = val.html != null ? extractValue(val.html, dbField) : (val.text || '');
+                            if (rawVal) overrides[pkgId][dbField] = rawVal;
+                            this.cms.__db_overrides = overrides;
+                            Object.assign(DB[pkgId], overrides[pkgId]);
+                        }
+                    }
+                }
+            }
             this.cms[key] = val;
             localStorage.setItem(CMS_KEY, JSON.stringify(this.cms));
+            this.markDirty();
+        },
             this.markDirty();
         },
 
