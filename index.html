@@ -505,7 +505,7 @@
     <div class="container">
         <div class="hdr-inner">
             <a href="#home" class="logo">
-                <div style="width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" style="width:48px;height:48px;object-fit:contain;"></div>
+                <div style="width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" data-eid="logo-img" data-elabel="Logo da Agência" style="width:48px;height:48px;object-fit:contain;"></div>
             </a>
             <nav class="hdr-nav">
                 <a href="#home">Início</a>
@@ -516,7 +516,7 @@
                 <a href="sobre.html">Sobre</a>
             </nav>
             <div class="hdr-cta">
-                <a href="https://wa.me/5512997350810" class="btn btn-accent btn-sm">
+                <a href="https://wa.me/5512997350810" class="btn btn-accent btn-sm" data-eid="hdr-wa" data-elabel="Botão WhatsApp Header">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </a>
             </div>
@@ -542,15 +542,21 @@
 
 <!-- ════════════ HERO ════════════ -->
 <section id="home">
-    <div class="hero-bg"></div>
+    <div class="hero-bg" style="position:absolute;inset:0;overflow:hidden;">
+        <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=1920&q=80"
+             alt="Hero background"
+             data-eid="hero-bg-img" data-elabel="Foto de Fundo do Hero"
+             style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,36,71,.88) 0%,rgba(15,36,71,.46) 70%);"></div>
+    </div>
     <div class="container">
         <div class="hero-body">
             <div class="hero-badge" data-eid="hero-badge" data-elabel="Badge Hero"><i class="fa-solid fa-star"></i> Consultoria Premium de Viagens</div>
             <h1 class="hero-h1" data-eid="hero-title" data-elabel="Título Principal">Viagens que <em>transformam</em> para sempre</h1>
             <p class="hero-p" data-eid="hero-sub" data-elabel="Subtítulo Hero">Roteiros exclusivos e sob medida para viajantes que não aceitam o comum. Da primeira reunião ao retorno em casa — cuidamos de cada detalhe.</p>
             <div class="hero-btns">
-                <a href="#contato" class="btn btn-accent">Solicitar Meu Roteiro <i class="fa-solid fa-arrow-right"></i></a>
-                <a href="#destinos" class="btn btn-ghost">Ver Destinos</a>
+                <a href="#contato" class="btn btn-accent" data-eid="hero-btn1" data-elabel="Botão Hero Principal">Solicitar Meu Roteiro <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="#destinos" class="btn btn-ghost" data-eid="hero-btn2" data-elabel="Botão Hero Secundário">Ver Destinos</a>
             </div>
         </div>
     </div>

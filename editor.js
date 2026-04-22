@@ -48,6 +48,46 @@
             if (d.target!= null) el.setAttribute('target', d.target);
             if (d.style)         Object.assign(el.style, d.style);
         });
+
+        // Remove cards marcados para remoção
+        if (Array.isArray(cms.__removed_cards)) {
+            cms.__removed_cards.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.remove();
+            });
+        }
+
+        // Injeta novos pacotes na home
+        if (cms.__new_packages && typeof cms.__new_packages === 'object') {
+            const grid = document.querySelector('.cards-grid');
+            if (grid) {
+                const removed = Array.isArray(cms.__removed_cards) ? cms.__removed_cards : [];
+                Object.entries(cms.__new_packages).forEach(([pkgId, pkg]) => {
+                    const cardId = 'card-new-' + pkgId;
+                    if (removed.includes(cardId)) return;
+                    if (document.getElementById(cardId)) return;
+                    const a = document.createElement('a');
+                    a.className = 'card-link rv'; a.id = cardId;
+                    a.href = 'pacote.html?id=' + pkgId;
+                    const img = pkg.images && pkg.images[0] ? pkg.images[0] : 'https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=800&q=80';
+                    a.innerHTML = `
+                        <div class="card-img">
+                            <img src="${img}" alt="${pkg.title}" loading="lazy">
+                            <div class="card-flag">${pkg.flag || '🌍'}</div>
+                            <div class="card-overlay"><span>Ver pacote <i class="fa-solid fa-arrow-right"></i></span></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-loc"><i class="fa-solid fa-location-dot"></i> ${pkg.location || ''}</div>
+                            <h3>${pkg.title}</h3>
+                            <div class="card-foot">
+                                <div class="card-price">R$ ${pkg.price || '—'} <small>/ pessoa</small></div>
+                                <span class="card-arrow">Saiba mais <i class="fa-solid fa-arrow-right"></i></span>
+                            </div>
+                        </div>`;
+                    grid.appendChild(a);
+                });
+            }
+        }
     }
 
     async function fetchContent() {
@@ -166,54 +206,56 @@
 
         async start(srv) {
             injectCSS();
-            // Reutiliza conteúdo já carregado pelo loadAndApply (sem fetch extra)
             const draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}');
             this.cms = { ...(srv || {}), ...draft };
-
             document.body.classList.add('ld-on');
             sessionStorage.setItem('editor_active', '1');
             this.buildBar();
             this.bindAll();
-            // Se há rascunho não publicado, mostrar indicador
-            if (Object.keys(JSON.parse(localStorage.getItem(CMS_KEY) || '{}')).length > 0) {
-                this.markDirty();
-            }
+            this.injectRemoveButtons();
+            if (Object.keys(draft).length > 0) this.markDirty();
         },
 
         buildBar() {
+            if (document.getElementById('ld-bar')) return;
             const bar = document.createElement('div');
             bar.id = 'ld-bar';
             const lastPub = localStorage.getItem('asasbrasil_last_pub') || '';
             bar.innerHTML = `
-            <div class="ld-brand"><span class="ld-dot"></span>Editor</div>
-            <span class="ld-hint-text">👆 Clique em qualquer elemento laranja para editar</span>
+            <div class="ld-brand"><span class="ld-dot"></span>Asas Brasil Editor</div>
+            <span class="ld-hint-text">👆 Clique em qualquer elemento para editar</span>
             <div class="ld-spacer"></div>
-            ${lastPub ? `<span class="ld-last-pub">Publicado: ${lastPub}</span><div class="ld-sep"></div>` : ''}
+            ${lastPub ? `<span class="ld-last-pub">Pub: ${lastPub}</span><div class="ld-sep"></div>` : ''}
+            <button class="ld-btn" id="ld-add-pkg">➕ <span class="ld-btn-label">Pacote</span></button>
+            <div class="ld-sep"></div>
             <button class="ld-btn orange" id="ld-colors">🎨 <span class="ld-btn-label">Cores</span></button>
             <div class="ld-sep"></div>
             <button class="ld-btn green" id="ld-pub">🚀 <span class="ld-btn-label">Publicar</span></button>
             <div class="ld-sep"></div>
-            <button class="ld-btn" id="ld-revert" title="Descartar rascunho não publicado">↩ <span class="ld-btn-label">Reverter</span></button>
+            <button class="ld-btn" id="ld-revert" title="Descartar rascunho">↩ <span class="ld-btn-label">Reverter</span></button>
             <button class="ld-btn red" id="ld-exit">✕ <span class="ld-btn-label">Sair</span></button>`;
             document.body.prepend(bar);
-            document.getElementById('ld-colors').onclick = () => this.pColors();
-            document.getElementById('ld-pub').onclick    = () => this.publish();
-            document.getElementById('ld-revert').onclick = () => this.revert();
-            document.getElementById('ld-exit').onclick   = () => this.exit();
+            document.getElementById('ld-add-pkg').onclick = () => this.pAddPacote();
+            document.getElementById('ld-colors').onclick  = () => this.pColors();
+            document.getElementById('ld-pub').onclick     = () => this.publish();
+            document.getElementById('ld-revert').onclick  = () => this.revert();
+            document.getElementById('ld-exit').onclick    = () => this.exit();
         },
 
         bindAll() {
-            document.querySelectorAll('[data-eid]').forEach(el => {
-                if (el._ldBound) return;
-                el._ldBound = true;
-                el.addEventListener('click', e => {
+            if (this._ldDelegated) return;
+            this._ldDelegated = true;
+            document.addEventListener('click', e => {
+                const el = e.target.closest('[data-eid]');
+                if (el && document.body.classList.contains('ld-on')) {
+                    if (e.target.closest('.ld-panel') || e.target.closest('#ld-bar')) return;
                     e.preventDefault();
                     e.stopPropagation();
                     document.querySelectorAll('.ld-sel').forEach(x => x.classList.remove('ld-sel'));
                     el.classList.add('ld-sel');
                     this.dispatch(el);
-                });
-            });
+                }
+            }, true);
         },
 
         dispatch(el) {
@@ -442,6 +484,173 @@
             };
         },
 
+        /* ── BOTÕES DE REMOÇÃO NOS CARDS ── */
+        injectRemoveButtons() {
+            document.querySelectorAll('a.card-link[href*="pacote.html"]').forEach(card => {
+                if (!card.id) {
+                    // Gera ID a partir do href se não tiver
+                    const m = card.href.match(/id=([a-z0-9_]+)/);
+                    if (m) card.id = 'card-' + m[1];
+                }
+                if (!card.id) return;
+                if (card.querySelector('.ld-remove-btn')) return;
+                const btn = document.createElement('button');
+                btn.className = 'ld-remove-btn';
+                btn.title = 'Remover este pacote';
+                btn.innerHTML = '✕';
+                btn.style.cssText = 'position:absolute;top:10px;right:10px;z-index:99990;width:28px;height:28px;border-radius:50%;background:#DC2626;color:#fff;border:none;cursor:pointer;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);transition:all .15s;';
+                btn.onmouseenter = () => btn.style.transform = 'scale(1.15)';
+                btn.onmouseleave = () => btn.style.transform = '';
+                btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); this.confirmRemoveCard(card); };
+                card.style.position = 'relative';
+                card.appendChild(btn);
+            });
+        },
+
+        confirmRemoveCard(card) {
+            const title = card.querySelector('h3')?.textContent || card.id || 'este pacote';
+            const p = this.panel_('🗑️ Remover Pacote');
+            p.innerHTML += `<div class="ld-pb">
+                <div class="ld-pub-err" style="margin-bottom:14px;">
+                    ⚠️ Remover <strong>"${title}"</strong> da home?<br><br>
+                    <span style="font-size:11px;opacity:.8;">Pode ser desfeito clicando em "Reverter" antes de publicar.</span>
+                </div>
+                <div class="ld-acts">
+                    <button class="ld-ok" id="lda" style="background:#DC2626;">🗑️ Sim, remover</button>
+                    <button class="ld-ko" id="ldc">Cancelar</button>
+                </div>
+            </div>`;
+            p.querySelector('#ldc').onclick = () => this.closePanel();
+            p.querySelector('#lda').onclick = () => {
+                card.style.transition = 'all .3s';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(.95)';
+                setTimeout(() => card.remove(), 320);
+                const removed = this.cms.__removed_cards || [];
+                if (!removed.includes(card.id)) removed.push(card.id);
+                this.store('__removed_cards', removed);
+                if (card.id.startsWith('card-new-')) {
+                    const pkgId = card.id.replace('card-new-', '');
+                    const newPkgs = this.cms.__new_packages || {};
+                    if (newPkgs[pkgId]) { delete newPkgs[pkgId]; this.store('__new_packages', newPkgs); }
+                }
+                this.closePanel();
+                this.toast('✓ Card removido. Publique para salvar.', 'ok');
+            };
+        },
+
+        /* ── ADICIONAR NOVO PACOTE ── */
+        pAddPacote() {
+            const p = this.panel_('➕ Adicionar Novo Pacote');
+            p.innerHTML += `<div class="ld-pb">
+                <div class="ld-info">Preencha os dados. O pacote ficará disponível em <code>pacote.html?id=SEU_ID</code>.</div>
+                <div class="ld-f"><label>ID (sem espaços, minúsculas)</label>
+                    <input type="text" id="lp-id" placeholder="ex: cancun, dubai, paris">
+                    <p class="ld-hint">Letras minúsculas, números e _ (underline)</p>
+                </div>
+                <div class="ld-f"><label>Título</label><input type="text" id="lp-title" placeholder="Ex: Cancún All Inclusive"></div>
+                <div class="ld-f"><label>Subtítulo</label><input type="text" id="lp-sub" placeholder="Ex: Paraíso caribenho com tudo pago"></div>
+                <div class="ld-f"><label>Localização</label><input type="text" id="lp-loc" placeholder="Ex: Cancún, México"></div>
+                <div class="ld-f"><label>Duração</label><input type="text" id="lp-dur" placeholder="Ex: 7 dias / 6 noites"></div>
+                <div class="ld-f"><label>Preço (R$)</label><input type="text" id="lp-price" placeholder="Ex: 5.990,00"></div>
+                <div class="ld-f"><label>Parcelas</label><input type="text" id="lp-parc" placeholder="Ex: 10x de R$ 599"></div>
+                <div class="ld-f"><label>Flag / País</label><input type="text" id="lp-flag" placeholder="Ex: México 🇲🇽"></div>
+                <div class="ld-f"><label>Foto Principal (URL)</label>
+                    <input type="url" id="lp-img" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div class="ld-f"><label>Foto 2 (URL) — opcional</label>
+                    <input type="url" id="lp-img2" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div class="ld-f"><label>Foto 3 (URL) — opcional</label>
+                    <input type="url" id="lp-img3" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div class="ld-f"><label>Descrição</label>
+                    <textarea id="lp-desc" rows="3" placeholder="Descreva o destino…"></textarea>
+                </div>
+                <div class="ld-f"><label>O que está incluso (um por linha)</label>
+                    <textarea id="lp-incluso" rows="4" placeholder="Passagem aérea ida e volta&#10;Hotel com café da manhã&#10;Transfer In/Out"></textarea>
+                </div>
+                <div class="ld-f"><label>Não incluso (um por linha)</label>
+                    <textarea id="lp-nao" rows="2" placeholder="Seguro viagem&#10;Gorjetas"></textarea>
+                </div>
+                <div class="ld-f"><label>Roteiro (Título | Descrição — um dia por linha)</label>
+                    <textarea id="lp-rot" rows="4" placeholder="Chegada | Transfer ao hotel. Check-in e tarde livre.&#10;Passeio | Visita aos pontos turísticos."></textarea>
+                    <p class="ld-hint">Separe título e descrição com <strong>|</strong></p>
+                </div>
+                <div class="ld-acts" style="margin-top:16px;">
+                    <button class="ld-ok" id="lda">✓ Criar Pacote</button>
+                    <button class="ld-ko" id="ldc">Cancelar</button>
+                </div>
+            </div>`;
+            p.querySelector('#ldc').onclick = () => this.closePanel();
+            p.querySelector('#lda').onclick = () => {
+                const id    = p.querySelector('#lp-id').value.trim().replace(/[^a-z0-9_]/gi,'_').toLowerCase();
+                const title = p.querySelector('#lp-title').value.trim();
+                if (!id)    { p.querySelector('#lp-id').focus();    p.querySelector('#lp-id').style.borderColor='#DC2626';    return; }
+                if (!title) { p.querySelector('#lp-title').focus(); p.querySelector('#lp-title').style.borderColor='#DC2626'; return; }
+                const img1 = p.querySelector('#lp-img').value.trim();
+                const img2 = p.querySelector('#lp-img2').value.trim();
+                const img3 = p.querySelector('#lp-img3').value.trim();
+                const images = [img1, img2, img3].filter(Boolean);
+                if (!images.length) images.push('https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=1200&q=80');
+                const incluso  = p.querySelector('#lp-incluso').value.split('\n').map(s=>s.trim()).filter(Boolean);
+                const nao      = p.querySelector('#lp-nao').value.split('\n').map(s=>s.trim()).filter(Boolean);
+                const rotLines = p.querySelector('#lp-rot').value.split('\n').map(s=>s.trim()).filter(Boolean);
+                const roteiro  = rotLines.map((line, i) => {
+                    const [t, d] = line.split('|').map(s=>s.trim());
+                    return { dia: (i+1) + 'º Dia', title: t || ('Dia ' + (i+1)), desc: d || '' };
+                });
+                const novoPacote = {
+                    title, subtitle: p.querySelector('#lp-sub').value.trim(),
+                    location: p.querySelector('#lp-loc').value.trim(),
+                    duration: p.querySelector('#lp-dur').value.trim(),
+                    price:    p.querySelector('#lp-price').value.trim(),
+                    parcelas: p.querySelector('#lp-parc').value.trim(),
+                    flag:     p.querySelector('#lp-flag').value.trim(),
+                    images, desc: p.querySelector('#lp-desc').value.trim(),
+                    incluso, nao_incluso: nao, roteiro
+                };
+                const existing = this.cms.__new_packages || {};
+                existing[id] = novoPacote;
+                this.store('__new_packages', existing);
+                // Injeta card imediatamente na home
+                const grid = document.querySelector('.cards-grid');
+                if (grid) {
+                    const cardId = 'card-new-' + id;
+                    if (!document.getElementById(cardId)) {
+                        const a = document.createElement('a');
+                        a.className = 'card-link rv'; a.id = cardId;
+                        a.href = 'pacote.html?id=' + id;
+                        a.innerHTML = `
+                            <div class="card-img">
+                                <img src="${images[0]}" alt="${title}" loading="lazy">
+                                <div class="card-flag">${novoPacote.flag || '🌍'}</div>
+                                <div class="card-overlay"><span>Ver pacote <i class="fa-solid fa-arrow-right"></i></span></div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-loc"><i class="fa-solid fa-location-dot"></i> ${novoPacote.location}</div>
+                                <h3>${title}</h3>
+                                <div class="card-foot">
+                                    <div class="card-price">R$ ${novoPacote.price} <small>/ pessoa</small></div>
+                                    <span class="card-arrow">Saiba mais <i class="fa-solid fa-arrow-right"></i></span>
+                                </div>
+                            </div>`;
+                        grid.appendChild(a);
+                        setTimeout(() => this.injectRemoveButtons(), 100);
+                    }
+                }
+                this.closePanel();
+                this.toast('✓ Pacote "' + title + '" criado! Publique para salvar.', 'ok');
+                setTimeout(() => {
+                    const info = document.createElement('div');
+                    info.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#006B87;color:#fff;padding:14px 22px;border-radius:12px;font-size:13px;z-index:999999;box-shadow:0 8px 24px rgba(0,0,0,.4);text-align:center;';
+                    info.innerHTML = `📦 Pacote criado!<br><a href="pacote.html?id=${id}" style="color:#7DC420;font-weight:700;" target="_blank">→ Abrir pacote.html?id=${id}</a><br><span style="font-size:11px;opacity:.6;margin-top:4px;display:block;">Publique para tornar permanente.</span>`;
+                    document.body.appendChild(info);
+                    setTimeout(() => info.remove(), 7000);
+                }, 400);
+            };
+        },
+
         /* ── CORES GLOBAIS ── */
         pColors() {
             const root = document.documentElement;
@@ -590,9 +799,13 @@
 
         /* ── SAIR ── */
         exit() {
-            const hasDraft = Object.keys(JSON.parse(localStorage.getItem(CMS_KEY) || '{}')).length > 0;
+            let hasDraft = false;
+            try { hasDraft = Object.keys(JSON.parse(localStorage.getItem(CMS_KEY) || '{}')).length > 0; } catch(_) {}
             if (hasDraft && !confirm('Sair do editor? Você tem alterações não publicadas (rascunho salvo).')) return;
             sessionStorage.removeItem('editor_active');
+            sessionStorage.removeItem(AUTH_KEY);
+            localStorage.removeItem(AUTH_KEY);
+            localStorage.removeItem('asasbrasil_secret');
             const u = new URL(location.href);
             u.searchParams.delete('editor');
             location.replace(u.toString());

@@ -137,12 +137,14 @@
             const data = await res.json();
 
             if (data.ok) {
-                localStorage.setItem('asasbrasil_auth', JSON.stringify({
-                    email,
-                    ts: Date.now(),
+                const authData = JSON.stringify({
+                    email, ts: Date.now(),
                     expires: Date.now() + (8 * 60 * 60 * 1000)
-                }));
+                });
+                localStorage.setItem('asasbrasil_auth', authData);
                 localStorage.setItem('asasbrasil_secret', senha);
+                sessionStorage.setItem('asasbrasil_auth', authData);
+                sessionStorage.setItem('asasbrasil_secret', senha);
                 window.location.href = '../index.html?editor=1';
             } else {
                 errEl.style.display = 'block';
