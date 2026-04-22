@@ -98,12 +98,16 @@
     }
 
     async function loadAndApply(srv) {
-        let merged = srv || {};
-        window.__ASAS_SRV_CMS = srv || {};
+        let merged = (srv && typeof srv === 'object') ? { ...srv } : {};
+        window.__ASAS_SRV_CMS = merged;
+        // Sempre mescla rascunho local se for admin em modo editor
         if (editMode) {
-            const draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}');
-            merged = { ...merged, ...draft };
+            try {
+                const draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}');
+                merged = { ...merged, ...draft };
+            } catch (_) {}
         }
+        // SEMPRE aplica o conteúdo do servidor para todos os visitantes
         applyContent(merged);
         return merged;
     }
