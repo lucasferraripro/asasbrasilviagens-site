@@ -1,5 +1,8 @@
 {
+  "hero-bg-img": {
+    "src": "https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=1920&q=80"
+  },
   "dif-foto": {
-    "src": "imagens/destinos/maceio_maragogi.png"
+    "src": "imagens/destinos/portogalinhas-1.jpg"
   }
 }
