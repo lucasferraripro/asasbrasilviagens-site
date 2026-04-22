@@ -902,8 +902,6 @@
             localStorage.setItem(CMS_KEY, JSON.stringify(this.cms));
             this.markDirty();
         },
-            this.markDirty();
-        },
 
         markDirty() {
             const btn = document.getElementById('ld-pub');
