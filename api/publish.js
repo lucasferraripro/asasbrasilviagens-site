@@ -4,7 +4,6 @@
  * e o Vercel faz deploy automático em ~30 segundos.
  */
 export default async function handler(req, res) {
-    // CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -14,7 +13,6 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    // Parse body (Vercel pode não parsear automaticamente)
     let body;
     try {
         body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -29,10 +27,15 @@ export default async function handler(req, res) {
 
     const { content, secret } = body;
 
-    // Verifica senha admin
     const adminSecret = process.env.ADMIN_SECRET || 'AsasBrasil@2025';
     if (secret !== adminSecret) {
         return res.status(401).json({ error: 'Não autorizado' });
+    }
+
+    // Rejeita conteúdo corrompido antes de salvar
+    const contentStr = JSON.stringify(content);
+    if (contentStr.length > 500000) {
+        return res.status(400).json({ error: 'Conteúdo muito grande. Possível dado corrompido.' });
     }
 
     const token = process.env.GITHUB_TOKEN;
@@ -47,28 +50,33 @@ export default async function handler(req, res) {
     };
 
     try {
-        // 1. Pega o SHA e conteúdo atual do arquivo
         const getRes  = await fetch(apiBase, { headers });
         const getJson = await getRes.json();
         const sha     = getJson.sha || null;
 
-        // 2. Faz MERGE: conteúdo atual + novas alterações
-        // Isso garante que publicar nunca apaga dados anteriores
         let existing = {};
         if (getJson.content) {
             try {
-                existing = JSON.parse(Buffer.from(getJson.content, 'base64').toString('utf-8'));
+                const decoded = Buffer.from(getJson.content, 'base64').toString('utf-8');
+                const parsed = JSON.parse(decoded);
+                // Só faz merge se o existente for válido e não corrompido
+                if (JSON.stringify(parsed).length < 500000) {
+                    existing = parsed;
+                }
             } catch (_) {}
         }
-        // Merge profundo: novo conteúdo tem prioridade, mas mantém o que já existia
+
         const merged = Object.assign({}, existing, content);
 
-        // 3. Codifica o conteúdo mesclado em base64
-        const contentStr = JSON.stringify(merged, null, 2);
-        const contentB64 = Buffer.from(contentStr).toString('base64');
+        // Validação final antes de salvar
+        const mergedStr = JSON.stringify(merged, null, 2);
+        if (mergedStr.length > 500000) {
+            return res.status(400).json({ error: 'Conteúdo merged muito grande. Verifique se há dados corrompidos.' });
+        }
 
-        // 3. Commita no GitHub
-        const body = {
+        const contentB64 = Buffer.from(mergedStr).toString('base64');
+
+        const putBody = {
             message: `Editor: atualiza conteúdo do site (${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })})`,
             content: contentB64,
             ...(sha ? { sha } : {})
@@ -77,7 +85,7 @@ export default async function handler(req, res) {
         const putRes = await fetch(apiBase, {
             method: 'PUT',
             headers: { ...headers, 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
+            body: JSON.stringify(putBody)
         });
 
         if (putRes.ok) {

@@ -161,6 +161,7 @@
         .go-last-pub{color:rgba(255,255,255,.3);font-size:11px;white-space:nowrap;}
 
         body.go-on{padding-top:54px!important;}
+        body.go-on #header{top:54px!important;}
         body.go-on [data-eid]{cursor:pointer!important;position:relative;transition:outline .1s;}
         body.go-on [data-eid]:hover{outline:2px dashed #E05220!important;outline-offset:3px;}
         body.go-on [data-eid]:hover::after{content:attr(data-elabel);position:absolute;top:-26px;left:0;background:#E05220;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;z-index:99997;pointer-events:none;font-family:-apple-system,sans-serif;}
