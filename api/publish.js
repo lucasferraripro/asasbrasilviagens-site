@@ -2,6 +2,10 @@
  * Asas Brasil Viagens — API de Publicação
  * Recebe o content.json do editor, commita no GitHub,
  * e o Vercel faz deploy automático em ~30 segundos.
+ *
+ * IMPORTANTE: NÃO faz merge com conteúdo existente.
+ * O editor.js já mantém o estado completo no localStorage (this.cms).
+ * Sobrescrever direto é o comportamento correto — igual à Lovisa.
  */
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -32,12 +36,6 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Não autorizado' });
     }
 
-    // Rejeita conteúdo corrompido antes de salvar
-    const contentStr = JSON.stringify(content);
-    if (contentStr.length > 500000) {
-        return res.status(400).json({ error: 'Conteúdo muito grande. Possível dado corrompido.' });
-    }
-
     const token = process.env.GITHUB_TOKEN;
     const owner = process.env.GITHUB_OWNER || 'lucasferraripro';
     const repo  = process.env.GITHUB_REPO  || 'asasbrasilviagens-site';
@@ -50,32 +48,16 @@ export default async function handler(req, res) {
     };
 
     try {
+        // 1. Pega o SHA atual do arquivo
         const getRes  = await fetch(apiBase, { headers });
         const getJson = await getRes.json();
         const sha     = getJson.sha || null;
 
-        let existing = {};
-        if (getJson.content) {
-            try {
-                const decoded = Buffer.from(getJson.content, 'base64').toString('utf-8');
-                const parsed = JSON.parse(decoded);
-                // Só faz merge se o existente for válido e não corrompido
-                if (JSON.stringify(parsed).length < 500000) {
-                    existing = parsed;
-                }
-            } catch (_) {}
-        }
+        // 2. Codifica o conteúdo em base64 — SEM merge, sobrescreve direto
+        const contentStr = JSON.stringify(content, null, 2);
+        const contentB64 = Buffer.from(contentStr).toString('base64');
 
-        const merged = Object.assign({}, existing, content);
-
-        // Validação final antes de salvar
-        const mergedStr = JSON.stringify(merged, null, 2);
-        if (mergedStr.length > 500000) {
-            return res.status(400).json({ error: 'Conteúdo merged muito grande. Verifique se há dados corrompidos.' });
-        }
-
-        const contentB64 = Buffer.from(mergedStr).toString('base64');
-
+        // 3. Commita no GitHub
         const putBody = {
             message: `Editor: atualiza conteúdo do site (${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })})`,
             content: contentB64,
