@@ -122,14 +122,12 @@
     }
 
     async function loadAndApply(srv) {
-        // Para visitantes normais (sem editMode): aplica só o servidor
-        // Para admin em editMode: servidor + rascunho local (rascunho tem prioridade)
+        // Visitantes normais: aplica só o servidor (sem rascunho local)
+        // Admin em editMode: servidor + rascunho local (rascunho tem prioridade)
         let merged = (srv && typeof srv === 'object') ? { ...srv } : {};
-        if (srv) window.__321GO_SRV_CMS = srv;
         if (editMode) {
             try {
                 const draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}');
-                // Rascunho local tem prioridade sobre servidor (edições não publicadas)
                 merged = { ...merged, ...draft };
             } catch (_) {}
         }
@@ -1052,17 +1050,19 @@
                         localStorage.setItem('asasbrasil_last_pub', now);
                         document.querySelectorAll('.go-dirty-dot').forEach(d => d.remove());
                         const lp = document.querySelector('.go-last-pub');
-                        if (lp) lp.textContent = 'Pub: ' + now;
-                        // Aplica o CMS publicado imediatamente na página
+                        if (lp) { lp.textContent = 'Pub: ' + now; }
+                        else {
+                            const sep = document.createElement('div'); sep.className = 'go-sep';
+                            const span = document.createElement('span'); span.className = 'go-last-pub'; span.textContent = 'Pub: ' + now;
+                            const btn2 = document.getElementById('go-colors');
+                            if (btn2) { btn2.before(span); btn2.before(sep); }
+                        }
                         applyContent(this.cms);
                         p.querySelector('.go-pb').innerHTML = `
                             <div class="go-pub-box">✅ <strong>Publicado com sucesso!</strong><br>
-                            O site será atualizado em alguns segundos.<br>
-                            <span style="font-size:11px;opacity:.7;">A página vai recarregar automaticamente para confirmar.</span></div>
-                            <button class="go-ok" style="width:100%;margin-top:12px" onclick="location.reload()">🔄 Recarregar agora</button>`;
-                        this.toast('✅ Publicado! Recarregando em 4s…', 'ok');
-                        // Recarrega automaticamente após 4 segundos para confirmar as mudanças
-                        setTimeout(() => location.reload(), 4000);
+                            Visitantes verão as mudanças em alguns segundos.</div>
+                            <button class="go-ok" style="width:100%;margin-top:12px" onclick="this.closest('.go-panel').remove()">✓ OK</button>`;
+                        this.toast('✅ Publicado!', 'ok');
                     } else {
                         throw new Error(data.error || 'Erro desconhecido');
                     }
