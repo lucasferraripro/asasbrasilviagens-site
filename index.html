@@ -168,7 +168,7 @@
         .hero-body { position: relative; z-index: 1; color: #fff; max-width: 680px; }
         .hero-badge {
             display: inline-flex; align-items: center; gap: 7px;
-            background: rgba(255,255,255,.12); backdrop-filter: blur(10px);
+            background: rgba(255,255,255,.12); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,.22); border-radius: 50px;
             padding: 7px 18px; font-size: 12px; font-weight: 600;
             letter-spacing: .1em; text-transform: uppercase;
@@ -262,7 +262,7 @@
 
         .card-flag {
             position: absolute; top: 14px; left: 14px;
-            background: rgba(255,255,255,.93); backdrop-filter: blur(6px);
+            background: rgba(255,255,255,.93); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
             padding: 4px 13px; border-radius: 50px;
             font-size: 11px; font-weight: 700; color: var(--navy);
             text-transform: uppercase; letter-spacing: .05em;
@@ -551,8 +551,8 @@
             <h1 class="hero-h1" data-eid="hero-title" data-elabel="Título Principal">Viagens que <em>transformam</em> para sempre</h1>
             <p class="hero-p" data-eid="hero-sub" data-elabel="Subtítulo Hero">Roteiros exclusivos e sob medida para viajantes que não aceitam o comum. Da primeira reunião ao retorno em casa — cuidamos de cada detalhe.</p>
             <div class="hero-btns">
-                <a href="#contato" class="btn btn-accent" data-eid="hero-btn1" data-elabel="Botão Hero Principal">Solicitar Meu Roteiro <i class="fa-solid fa-arrow-right"></i></a>
-                <a href="#destinos" class="btn btn-ghost" data-eid="hero-btn2" data-elabel="Botão Hero Secundário">Ver Destinos</a>
+                <a href="#contato" class="btn btn-accent">Solicitar Meu Roteiro <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="#destinos" class="btn btn-ghost">Ver Destinos</a>
             </div>
         </div>
     </div>
@@ -577,7 +577,7 @@
         <div class="steps-hdr rv">
             <span class="label">Processo</span>
             <h2 class="h2" data-eid="steps-title" data-elabel="Título Processo">Sua viagem dos sonhos em 3 passos</h2>
-            <p class="lead">Desde a primeira conversa até o embarque, uma equipe dedicada cuida de cada detalhe por você.</p>
+            <p class="lead" data-eid="steps-sub" data-elabel="Subtítulo Processo">Desde a primeira conversa até o embarque, uma equipe dedicada cuida de cada detalhe por você.</p>
         </div>
         <div class="steps-row">
             <div class="step rv">
@@ -607,7 +607,7 @@
                 <span class="label">Destinos</span>
                 <h2 class="h2" data-eid="dest-title" data-elabel="Título Destinos">Experiências que ficam<br>na memória para sempre</h2>
             </div>
-            <a href="#contato" class="btn btn-navy" style="flex-shrink:0">Ver Todos <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#contato" class="btn btn-navy" style="flex-shrink:0" data-eid="dest-ver-todos" data-elabel="Botão Ver Todos">Ver Todos <i class="fa-solid fa-arrow-right"></i></a>
         </div>
         <div class="cards-grid">
 
@@ -744,7 +744,7 @@
                         <div><h4 data-eid="dif-item4-title" data-elabel="Diferencial 4 Título">Melhor Custo-Benefício</h4><p data-eid="dif-item4-desc" data-elabel="Diferencial 4 Texto">Nossa rede de parceiros oferece condições especiais que você não encontra em outros lugares.</p></div>
                     </div>
                 </div>
-                <a href="#contato" class="btn btn-accent" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;">
+                <a href="#contato" class="btn btn-accent" data-eid="dif-cta-btn" data-elabel="Botão Falar com Especialista" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;">
                     Falar com um especialista <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -756,24 +756,112 @@
 <section class="section" id="clientes" style="background:#fff;">
     <div class="container">
         <div class="steps-hdr rv">
-            <span class="label">Comunidade</span>
+            <span class="label" data-eid="insta-label" data-elabel="Label Seção Instagram">Comunidade</span>
             <h2 class="h2" data-eid="clientes-title" data-elabel="Título Clientes">Nossos Viajantes pelo Mundo</h2>
-            <p class="lead">Veja os momentos inesquecíveis compartilhados por quem viaja com a Asas Brasil Viagens.</p>
+            <p class="lead" data-eid="clientes-sub" data-elabel="Subtítulo Clientes">Veja os momentos inesquecíveis compartilhados por quem viaja com a Asas Brasil Viagens.</p>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto;">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DUYrsK9EXOP/" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,.5),0 1px 10px 0 rgba(0,0,0,.15);margin:0;max-width:100%;min-width:0!important;padding:0;width:100%!important;">
-                <a href="https://www.instagram.com/p/DUYrsK9EXOP/">Ver publicação no Instagram</a>
-            </blockquote>
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DQ9idPnDXv2/" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,.5),0 1px 10px 0 rgba(0,0,0,.15);margin:0;max-width:100%;min-width:0!important;padding:0;width:100%!important;">
-                <a href="https://www.instagram.com/p/DQ9idPnDXv2/">Ver publicação no Instagram</a>
-            </blockquote>
+
+        <!-- GRID DE POSTS DO INSTAGRAM -->
+        <div id="insta-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:960px;margin:0 auto;">
+
+            <!-- POST 1 -->
+            <a id="insta-post-1" href="https://www.instagram.com/p/DUYrsK9EXOP/" target="_blank" rel="noopener"
+               data-eid="insta-link-1" data-elabel="Link Instagram Post 1"
+               style="display:block;border-radius:16px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.08);transition:transform .3s,box-shadow .3s;text-decoration:none;color:inherit;background:#f3f4f6;">
+                <div style="position:relative;aspect-ratio:1;overflow:hidden;background:#e5e7eb;">
+                    <img id="insta-img-1"
+                         src="https://instagram.ffor50-1.fna.fbcdn.net/v/t51.82787-15/610996218_18084481058164562_3741199386886853571_n.jpg?stp=dst-jpegr_e35_tt6&_nc_cat=104&ig_cache_key=MzgwNTcyODQ3NDI1NTA0ODc2Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5oZHIuQzMifQ%3D%3D&_nc_ohc=0-Az-qbqxwYQ7kNvwH97oSB&_nc_oc=AdqDxyVaexliHvlrFXjRgLZ-qn_b74D5mYRnXdzJEULvYIP_3LhcExABTrO1ZGzRlqUvywT-LVIbIKaFxvdnibsg&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.ffor50-1.fna&_nc_gid=KKA2tImf0VCmCBHkKtjlZQ&_nc_ss=7a32e&oh=00_Af2KWaCQjvChm6YWVOI1s7zA-H_VVqF_xEmjyPHvyO26kw&oe=69DF08B1"
+                         alt="Post Instagram 1"
+                         data-eid="insta-img-1" data-elabel="Foto Instagram Post 1"
+                         style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;">
+                    <div style="position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .3s;">
+                        <i class="fab fa-instagram" style="color:#fff;font-size:2rem;opacity:0;transition:opacity .3s;"></i>
+                    </div>
+                </div>
+                <div style="padding:14px 16px;">
+                    <p id="insta-caption-1" data-eid="insta-caption-1" data-elabel="Legenda Instagram Post 1"
+                       style="font-size:13px;color:#4B5563;line-height:1.5;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                        "Primeiro Voo de Janeiro crendo que será muitos 2026 🙏 Gratidão @asasbrasilviagens obrigado por todo carinho e cuidado"
+                    </p>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+                        <i class="fab fa-instagram" style="color:#E1306C;font-size:14px;"></i>
+                        <span style="font-size:12px;color:#9CA3AF;">Ver no Instagram</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- POST 2 -->
+            <a id="insta-post-2" href="https://www.instagram.com/p/DWpO8fEj0bE/" target="_blank" rel="noopener"
+               data-eid="insta-link-2" data-elabel="Link Instagram Post 2"
+               style="display:block;border-radius:16px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.08);transition:transform .3s,box-shadow .3s;text-decoration:none;color:inherit;background:#f3f4f6;">
+                <div style="position:relative;aspect-ratio:1;overflow:hidden;background:#e5e7eb;">
+                    <img id="insta-img-2"
+                         src="https://instagram.ffor50-1.fna.fbcdn.net/v/t51.82787-15/658214146_18089048351337413_8564561480288424097_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=Mzg2NjY4NzQ0NDE4NDE5MDAxMA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTY0NC5zZHIuQzMifQ%3D%3D&_nc_ohc=w0QDY3ut1K0Q7kNvwGJClz6&_nc_oc=Adqtd2lEEJTwEw2PjuanPntKNLV1MhOpslQXTZVEFf1V3Q0h5Ol3lVlunwvRAFBNDxuXOgZQ0Wu_jwASm2Nj5Sqt&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.ffor50-1.fna&_nc_gid=tINFk5hiqRuYJodzw5HDRw&_nc_ss=7a32e&oh=00_Af3N8y4McnVaRGrBpXTnPb95Ag_EbryobsT7MBL4Ca1L1Q&oe=69DEFEF3"
+                         alt="Post Instagram 2"
+                         data-eid="insta-img-2" data-elabel="Foto Instagram Post 2"
+                         style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;">
+                    <div style="position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .3s;">
+                        <i class="fab fa-instagram" style="color:#fff;font-size:2rem;opacity:0;transition:opacity .3s;"></i>
+                    </div>
+                </div>
+                <div style="padding:14px 16px;">
+                    <p id="insta-caption-2" data-eid="insta-caption-2" data-elabel="Legenda Instagram Post 2"
+                       style="font-size:13px;color:#4B5563;line-height:1.5;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                        "O Caribe Brasileiro espera por você 🐠 Maragogi - Alagoas. Uma experiência única com as piscinas naturais. Obrigado Asas Brasil!"
+                    </p>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+                        <i class="fab fa-instagram" style="color:#E1306C;font-size:14px;"></i>
+                        <span style="font-size:12px;color:#9CA3AF;">Ver no Instagram</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- POST 3 -->
+            <a id="insta-post-3" href="https://www.instagram.com/p/DRzUT9AkcGYimx-ApE4cuf7fHsnx6SAFapWaSI0/" target="_blank" rel="noopener"
+               data-eid="insta-link-3" data-elabel="Link Instagram Post 3"
+               style="display:block;border-radius:16px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.08);transition:transform .3s,box-shadow .3s;text-decoration:none;color:inherit;background:#f3f4f6;">
+                <div style="position:relative;aspect-ratio:1;overflow:hidden;background:#e5e7eb;">
+                    <img id="insta-img-3"
+                         src="https://images.unsplash.com/photo-1539635278303-d4002c07dee3?auto=format&fit=crop&w=700&q=80"
+                         alt="Post Instagram 3"
+                         data-eid="insta-img-3" data-elabel="Foto Instagram Post 3"
+                         style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;">
+                    <div style="position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .3s;">
+                        <i class="fab fa-instagram" style="color:#fff;font-size:2rem;opacity:0;transition:opacity .3s;"></i>
+                    </div>
+                </div>
+                <div style="padding:14px 16px;">
+                    <p id="insta-caption-3" data-eid="insta-caption-3" data-elabel="Legenda Instagram Post 3"
+                       style="font-size:13px;color:#4B5563;line-height:1.5;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                        "A felicidade de realizar um sonho com segurança e suporte 24h. Mais um destino concluído com sucesso! ✈️"
+                    </p>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+                        <i class="fab fa-instagram" style="color:#E1306C;font-size:14px;"></i>
+                        <span style="font-size:12px;color:#9CA3AF;">Ver no Instagram</span>
+                    </div>
+                </div>
+            </a>
+
         </div>
-        <p style="text-align:center;font-size:13px;color:#9CA3AF;margin-top:16px;">Em mobile, os posts aparecem em coluna única automaticamente.</p>
-        <div style="text-align:center;margin-top:24px;">
-            <a href="https://www.instagram.com/asasbrasilviagens" target="_blank" class="btn btn-navy"><i class="fab fa-instagram"></i>&nbsp; Ver mais no Instagram</a>
+
+        <div style="text-align:center;margin-top:32px;">
+            <a href="https://www.instagram.com/asasbrasilviagens" target="_blank" rel="noopener"
+               data-eid="insta-perfil-btn" data-elabel="Botão Ver Perfil Instagram"
+               class="btn btn-navy">
+                <i class="fab fa-instagram"></i>&nbsp; Ver perfil no Instagram
+            </a>
         </div>
     </div>
 </section>
+
+<style>
+#insta-grid a:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,.14); }
+#insta-grid a:hover img { transform: scale(1.05); }
+#insta-grid a:hover div > div { background: rgba(0,0,0,.35) !important; }
+#insta-grid a:hover div > div i { opacity: 1 !important; }
+@media(max-width:768px) { #insta-grid { grid-template-columns: 1fr 1fr !important; } }
+@media(max-width:480px) { #insta-grid { grid-template-columns: 1fr !important; } }
+</style>
 
 
 
@@ -1027,6 +1115,5 @@
 </script>
 <!-- ═══ EDITOR VISUAL ASAS BRASIL ═══ -->
 <script src="editor.js"></script>
-<script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>
