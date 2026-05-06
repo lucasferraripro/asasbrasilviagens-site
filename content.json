@@ -1,1 +1,13 @@
-{}
+{
+  "card1-img": {
+    "src": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Anderps_067.JPG"
+  },
+  "insta-link-1": {
+    "html": "\n                <div style=\"position:relative;aspect-ratio:1;overflow:hidden;background:#e5e7eb;\">\n                    <img id=\"insta-img-1\" src=\"https://instagram.ffor50-1.fna.fbcdn.net/v/t51.82787-15/610996218_18084481058164562_3741199386886853571_n.jpg?stp=dst-jpegr_e35_tt6&amp;_nc_cat=104&amp;ig_cache_key=MzgwNTcyODQ3NDI1NTA0ODc2Mw%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5oZHIuQzMifQ%3D%3D&amp;_nc_ohc=0-Az-qbqxwYQ7kNvwH97oSB&amp;_nc_oc=AdqDxyVaexliHvlrFXjRgLZ-qn_b74D5mYRnXdzJEULvYIP_3LhcExABTrO1ZGzRlqUvywT-LVIbIKaFxvdnibsg&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.ffor50-1.fna&amp;_nc_gid=KKA2tImf0VCmCBHkKtjlZQ&amp;_nc_ss=7a32e&amp;oh=00_Af2KWaCQjvChm6YWVOI1s7zA-H_VVqF_xEmjyPHvyO26kw&amp;oe=69DF08B1\" alt=\"Post Instagram 1\" data-eid=\"insta-img-1\" data-elabel=\"Foto Instagram Post 1\" style=\"width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;\">\n                    <div style=\"position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .3s;\">\n                        <i class=\"fab fa-instagram\" style=\"color:#fff;font-size:2rem;opacity:0;transition:opacity .3s;\"></i>\n                    </div>\n                </div>\n                <div style=\"padding:14px 16px;\">\n                    <p id=\"insta-caption-1\" data-eid=\"insta-caption-1\" data-elabel=\"Legenda Instagram Post 1\" style=\"font-size:13px;color:#4B5563;line-height:1.5;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;\">\n                        \"Primeiro Voo de Janeiro crendo que será muitos 2026 🙏 Gratidão @asasbrasilviagens obrigado por todo carinho e cuidado\"\n                    </p>\n                    <div style=\"display:flex;align-items:center;gap:6px;margin-top:10px;\">\n                        <i class=\"fab fa-instagram\" style=\"color:#E1306C;font-size:14px;\"></i>\n                        <span style=\"font-size:12px;color:#9CA3AF;\">Ver no Instagram</span>\n                    </div>\n                </div>\n            ",
+    "href": "https://www.instagram.com/p/DVo44-NEcrm/",
+    "target": "_blank"
+  },
+  "dif-foto": {
+    "src": "https://www.instagram.com/p/DVo44-NEcrm/"
+  }
+}
