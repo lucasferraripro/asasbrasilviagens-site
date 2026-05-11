@@ -23,8 +23,49 @@
     const params   = new URLSearchParams(location.search);
     const editMode = isAdmin && (params.get('editor') === '1' || sessionStorage.getItem('editor_active') === '1');
 
+    function isValidImageSrc(src) {
+        if (typeof src !== 'string') return false;
+        const v = src.trim();
+        if (!v || v.length > 500000) return false;
+        const lower = v.toLowerCase();
+        if (lower.startsWith('data:')) return false;
+        if (lower.includes('instagram.com/p/') || lower.includes('instagram.com/reel/')) return false;
+        if (lower.includes('instagram.') && lower.includes('.fbcdn.net')) return false;
+        if (lower.startsWith('http://') || lower.startsWith('https://')) return true;
+        if (/^imagens\/[a-z0-9_./-]+\.(jpe?g|png|webp|gif|svg)(\?.*)?$/i.test(v)) return true;
+        if (/^logo\.png(\?.*)?$/i.test(v)) return true;
+        return false;
+    }
+
+    function cleanContent(cms) {
+        if (!cms || typeof cms !== 'object') return {};
+        const out = {};
+        Object.entries(cms).forEach(([key, value]) => {
+            if (key === '__new_packages' && value && typeof value === 'object' && !Array.isArray(value)) {
+                out[key] = {};
+                Object.entries(value).forEach(([pkgId, pkg]) => {
+                    if (!pkg || typeof pkg !== 'object' || Array.isArray(pkg)) return;
+                    out[key][pkgId] = {
+                        ...pkg,
+                        images: Array.isArray(pkg.images) ? pkg.images.filter(isValidImageSrc) : []
+                    };
+                });
+                return;
+            }
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                const item = { ...value };
+                if (item.src != null && !isValidImageSrc(item.src)) delete item.src;
+                if (Object.keys(item).length) out[key] = item;
+                return;
+            }
+            out[key] = value;
+        });
+        return out;
+    }
+
     /* ─── APLICAR CONTEÚDO ──────────────────────────────────── */
     function applyContent(cms) {
+        cms = cleanContent(cms);
         if (!cms || typeof cms !== 'object' || !Object.keys(cms).length) return;
 
         if (cms.colors && typeof cms.colors === 'object') {
@@ -53,7 +94,7 @@
             if (!d) return;
             if (d.html  != null) el.innerHTML = d.html;
             if (d.text  != null) el.textContent = d.text;
-            if (d.src   != null && el.tagName === 'IMG') el.src = d.src;
+            if (d.src   != null && el.tagName === 'IMG' && isValidImageSrc(d.src)) el.src = d.src;
             if (d.href  != null) el.setAttribute('href', d.href);
             if (d.target!= null) el.setAttribute('target', d.target);
             if (d.style && typeof d.style === 'object') Object.assign(el.style, d.style);
@@ -86,7 +127,7 @@
                     article.id = cardId;
                     article.setAttribute('onclick', "location.href='pacote.html?id=" + pkgId + "'");
                     article.style.cursor = 'pointer';
-                    const img = pkg.images && pkg.images[0] ? pkg.images[0] : 'imagens/balneario_camboriu.png';
+                    const img = pkg.images && pkg.images[0] ? pkg.images[0] : 'imagens/destinos/balneario_camboriu.png';
                     const badgeClass = (pkg.badge||'').includes('Popular') ? 'card-badge--popular' : (pkg.badge||'').includes('Premium') ? 'card-badge--premium' : 'card-badge--hot';
                     article.innerHTML = `
                         <div class="card-img-wrap">
@@ -117,18 +158,18 @@
             const r = await fetch(CONTENT_URL + '?_=' + Date.now());
             if (!r.ok) return {};
             const data = await r.json();
-            return (data && typeof data === 'object') ? data : {};
+            return (data && typeof data === 'object') ? cleanContent(data) : {};
         } catch (_) { return {}; }
     }
 
     async function loadAndApply(srv) {
         // Visitantes normais: aplica só o servidor (sem rascunho local)
         // Admin em editMode: servidor + rascunho local (rascunho tem prioridade)
-        let merged = (srv && typeof srv === 'object') ? { ...srv } : {};
+        let merged = (srv && typeof srv === 'object') ? cleanContent({ ...srv }) : {};
         if (editMode) {
             try {
                 const draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}');
-                merged = { ...merged, ...draft };
+                merged = cleanContent({ ...merged, ...draft });
             } catch (_) {}
         }
         applyContent(merged);
@@ -240,7 +281,7 @@
             injectCSS();
             let draft = {};
             try { draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}'); } catch (_) {}
-            this.cms = { ...(srv || {}), ...draft };
+            this.cms = cleanContent({ ...(srv || {}), ...draft });
 
             document.body.classList.add('go-on');
             sessionStorage.setItem('editor_active', '1');
@@ -469,7 +510,7 @@
                                 body: JSON.stringify({ filename: f.name, base64: b64, secret })
                             });
                             const data = await res.json();
-                            if (res.ok && data.url) {
+                            if (res.ok && data.url && isValidImageSrc(data.url)) {
                                 document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
                                     if (e.tagName === 'IMG') e.src = data.url;
                                 });
@@ -498,7 +539,7 @@
                 clearTimeout(debounce);
                 debounce = setTimeout(() => {
                     const v = ui.value.trim();
-                    if (v) { el.src = v; pv.src = v; }
+                    if (v && isValidImageSrc(v)) { el.src = v; pv.src = v; }
                 }, 500);
             };
             p.querySelector('#goa').onclick = () => {
@@ -508,6 +549,12 @@
                 // Nunca salva a URL original (evita sobrescrever com valor padrão)
                 if (!src) {
                     this.closePanel();
+                    return;
+                }
+                if (!isValidImageSrc(src)) {
+                    ui.focus();
+                    ui.style.borderColor = '#DC2626';
+                    this.toast('Use uma URL direta de imagem ou uma imagem enviada pelo editor', 'err');
                     return;
                 }
                 pv.src = src;
@@ -785,8 +832,13 @@
                     return { dia: (i+1) + 'º Dia', title: t || ('Dia ' + (i+1)), desc: d || '' };
                 });
 
-                const images = [imgUrl, imgUrl2, imgUrl3].filter(Boolean);
-                if (!images.length) images.push('imagens/balneario_camboriu.png');
+                const rawImages = [imgUrl, imgUrl2, imgUrl3].filter(Boolean);
+                const images = rawImages.filter(isValidImageSrc);
+                if (rawImages.length !== images.length) {
+                    this.toast('Alguma imagem foi ignorada por URL invalida', 'err');
+                    return;
+                }
+                if (!images.length) images.push('imagens/destinos/balneario_camboriu.png');
 
                 const novoPacote = {
                     category:    p.querySelector('#gp-cat').value || 'nacional',
@@ -1006,6 +1058,9 @@
                 return;
             }
 
+            this.cms = cleanContent(this.cms);
+            localStorage.setItem(CMS_KEY, JSON.stringify(this.cms));
+
             const elems   = Object.keys(this.cms).filter(k => k !== 'colors' && k !== 'whatsapp');
             const hasCols = this.cms.colors && Object.keys(this.cms.colors).length > 0;
             const hasWA   = !!this.cms.whatsapp;
@@ -1047,7 +1102,7 @@
                     const res = await fetch('/api/publish', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ content: this.cms, secret })
+                        body: JSON.stringify({ content: cleanContent(this.cms), secret })
                     });
                     const data = await res.json();
                     if (res.ok && data.success) {
@@ -1125,6 +1180,10 @@
         },
 
         store(key, val) {
+            if (val && typeof val === 'object' && val.src != null && !isValidImageSrc(val.src)) {
+                this.toast('Imagem ignorada: use URL direta, upload ou arquivo em imagens/', 'err');
+                return;
+            }
             // ── SINCRONIZAÇÃO AUTOMÁTICA ──────────────────────────────────
             // Qualquer edição de preço/título/parcela em qualquer página
             // é salva em __db_overrides[pkgId][campo] — fonte única de verdade.

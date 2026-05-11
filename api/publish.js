@@ -1,3 +1,43 @@
+function isValidImageSrc(src) {
+    if (typeof src !== 'string') return false;
+    const v = src.trim();
+    if (!v || v.length > 500000) return false;
+    const lower = v.toLowerCase();
+    if (lower.startsWith('data:')) return false;
+    if (lower.includes('instagram.com/p/') || lower.includes('instagram.com/reel/')) return false;
+    if (lower.includes('instagram.') && lower.includes('.fbcdn.net')) return false;
+    if (lower.startsWith('http://') || lower.startsWith('https://')) return true;
+    if (/^imagens\/[a-z0-9_./-]+\.(jpe?g|png|webp|gif|svg)(\?.*)?$/i.test(v)) return true;
+    if (/^logo\.png(\?.*)?$/i.test(v)) return true;
+    return false;
+}
+
+function cleanContent(content) {
+    if (!content || typeof content !== 'object') return {};
+    const out = {};
+    Object.entries(content).forEach(([key, value]) => {
+        if (key === '__new_packages' && value && typeof value === 'object' && !Array.isArray(value)) {
+            out[key] = {};
+            Object.entries(value).forEach(([pkgId, pkg]) => {
+                if (!pkg || typeof pkg !== 'object' || Array.isArray(pkg)) return;
+                out[key][pkgId] = {
+                    ...pkg,
+                    images: Array.isArray(pkg.images) ? pkg.images.filter(isValidImageSrc) : []
+                };
+            });
+            return;
+        }
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+            const item = { ...value };
+            if (item.src != null && !isValidImageSrc(item.src)) delete item.src;
+            if (Object.keys(item).length) out[key] = item;
+            return;
+        }
+        out[key] = value;
+    });
+    return out;
+}
+
 /**
  * Asas Brasil Viagens — API de Publicação
  * Recebe o content.json do editor, commita no GitHub,
@@ -36,6 +76,9 @@ export default async function handler(req, res) {
     }
 
     const token = process.env.GITHUB_TOKEN;
+    if (!token) {
+        return res.status(500).json({ error: 'GITHUB_TOKEN nÃ£o configurado no Vercel.' });
+    }
     const owner = process.env.GITHUB_OWNER || 'lucasferraripro';
     const repo  = process.env.GITHUB_REPO  || 'asasbrasilviagens-site';
     const path  = 'content.json';
@@ -53,7 +96,10 @@ export default async function handler(req, res) {
         const sha = getJson.sha || null;
 
         // 2. Codifica o conteúdo em base64 — SEM merge, sobrescreve direto
-        const contentStr = JSON.stringify(content, null, 2);
+        const contentStr = JSON.stringify(cleanContent(content), null, 2);
+        if (contentStr.length > 500000) {
+            return res.status(400).json({ error: 'Conteudo muito grande. Envie imagens pelo upload, nao como base64.' });
+        }
         const contentB64 = Buffer.from(contentStr).toString('base64');
 
         // 3. Commita no GitHub
