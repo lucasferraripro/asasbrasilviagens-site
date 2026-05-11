@@ -2,12 +2,9 @@
  * Asas Brasil Viagens — API de Publicação
  * Recebe o content.json do editor, commita no GitHub,
  * e o Vercel faz deploy automático em ~30 segundos.
- *
- * IMPORTANTE: NÃO faz merge com conteúdo existente.
- * O editor.js já mantém o estado completo no localStorage (this.cms).
- * Sobrescrever direto é o comportamento correto — igual à Lovisa.
  */
 export default async function handler(req, res) {
+    // CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -17,6 +14,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    // Parse body (Vercel pode não parsear automaticamente)
     let body;
     try {
         body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -31,6 +29,7 @@ export default async function handler(req, res) {
 
     const { content, secret } = body;
 
+    // Verifica senha admin
     const adminSecret = process.env.ADMIN_SECRET || 'AsasBrasil@2025';
     if (secret !== adminSecret) {
         return res.status(401).json({ error: 'Não autorizado' });
@@ -49,16 +48,16 @@ export default async function handler(req, res) {
 
     try {
         // 1. Pega o SHA atual do arquivo
-        const getRes  = await fetch(apiBase, { headers });
+        const getRes = await fetch(apiBase, { headers });
         const getJson = await getRes.json();
-        const sha     = getJson.sha || null;
+        const sha = getJson.sha || null;
 
         // 2. Codifica o conteúdo em base64 — SEM merge, sobrescreve direto
         const contentStr = JSON.stringify(content, null, 2);
         const contentB64 = Buffer.from(contentStr).toString('base64');
 
         // 3. Commita no GitHub
-        const putBody = {
+        const body = {
             message: `Editor: atualiza conteúdo do site (${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })})`,
             content: contentB64,
             ...(sha ? { sha } : {})
@@ -67,7 +66,7 @@ export default async function handler(req, res) {
         const putRes = await fetch(apiBase, {
             method: 'PUT',
             headers: { ...headers, 'Content-Type': 'application/json' },
-            body: JSON.stringify(putBody)
+            body: JSON.stringify(body)
         });
 
         if (putRes.ok) {
