@@ -479,6 +479,17 @@
             const status = p.querySelector('#goupstatus');
             let debounce;
 
+            const saveImageDraft = (src) => {
+                if (!isValidImageSrc(src)) return false;
+                pv.src = src;
+                ui.value = src;
+                document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
+                    if (e.tagName === 'IMG') e.src = src;
+                });
+                this.store(el.dataset.eid, { src });
+                return true;
+            };
+
             if (!isLocal) {
                 btn.onclick = () => file.click();
                 btn.onmouseenter = () => btn.style.borderColor = '#E05220';
@@ -511,13 +522,9 @@
                             });
                             const data = await res.json();
                             if (res.ok && data.url && isValidImageSrc(data.url)) {
-                                document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
-                                    if (e.tagName === 'IMG') e.src = data.url;
-                                });
-                                pv.src = data.url;
-                                ui.value = data.url;
+                                saveImageDraft(data.url);
                                 btn.textContent = '✅ Imagem enviada!';
-                                status.textContent = 'Clique em ✓ Aplicar para salvar.';
+                                status.textContent = 'Imagem salva no rascunho. Agora clique em Publicar.';
                                 status.style.color = '#16A34A';
                             } else {
                                 throw new Error(data.error || 'Erro no upload');
@@ -539,7 +546,11 @@
                 clearTimeout(debounce);
                 debounce = setTimeout(() => {
                     const v = ui.value.trim();
-                    if (v && isValidImageSrc(v)) { el.src = v; pv.src = v; }
+                    if (v && isValidImageSrc(v)) {
+                        saveImageDraft(v);
+                        status.textContent = 'Imagem salva no rascunho. Agora clique em Publicar.';
+                        status.style.color = '#16A34A';
+                    }
                 }, 500);
             };
             p.querySelector('#goa').onclick = () => {
@@ -557,11 +568,7 @@
                     this.toast('Use uma URL direta de imagem ou uma imagem enviada pelo editor', 'err');
                     return;
                 }
-                pv.src = src;
-                document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
-                    if (e.tagName === 'IMG') e.src = src;
-                });
-                this.store(el.dataset.eid, { src });
+                saveImageDraft(src);
                 this.closePanel();
                 this.toast('✓ Imagem salva no rascunho', 'ok');
             };
