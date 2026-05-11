@@ -503,7 +503,13 @@
             };
             p.querySelector('#goa').onclick = () => {
                 clearTimeout(debounce);
-                const src = ui.value.trim() || origSrc;
+                const src = ui.value.trim();
+                // Só salva se o usuário realmente digitou uma URL nova
+                // Nunca salva a URL original (evita sobrescrever com valor padrão)
+                if (!src) {
+                    this.closePanel();
+                    return;
+                }
                 pv.src = src;
                 document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
                     if (e.tagName === 'IMG') e.src = src;
