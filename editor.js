@@ -1066,9 +1066,10 @@
                         applyContent(this.cms);
                         p.querySelector('.go-pb').innerHTML = `
                             <div class="go-pub-box">✅ <strong>Publicado com sucesso!</strong><br>
-                            Visitantes verão as mudanças em alguns segundos.</div>
-                            <button class="go-ok" style="width:100%;margin-top:12px" onclick="this.closest('.go-panel').remove()">✓ OK</button>`;
-                        this.toast('✅ Publicado!', 'ok');
+                            A página vai recarregar em 3 segundos para confirmar.</div>
+                            <button class="go-ok" style="width:100%;margin-top:12px" onclick="location.reload()">🔄 Recarregar agora</button>`;
+                        this.toast('✅ Publicado! Recarregando em 3s…', 'ok');
+                        setTimeout(() => location.reload(), 3000);
                     } else {
                         throw new Error(data.error || 'Erro desconhecido');
                     }
