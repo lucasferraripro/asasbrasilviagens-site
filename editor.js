@@ -307,8 +307,6 @@
             <div class="go-sep"></div>
             <button class="go-btn" id="go-add-pkg">➕ <span class="go-btn-lbl">Pacote</span></button>
             <div class="go-sep"></div>
-            <button class="go-btn" id="go-insta">📸 <span class="go-btn-lbl">Instagram</span></button>
-            <div class="go-sep"></div>
             <button class="go-btn orange" id="go-colors">🎨 <span class="go-btn-lbl">Cores</span></button>
             <div class="go-sep"></div>
             <button class="go-btn green" id="go-pub">🚀 <span class="go-btn-lbl">Publicar</span></button>
@@ -319,7 +317,6 @@
             document.getElementById('go-pages').onclick   = () => this.pPages();
             document.getElementById('go-footer').onclick  = () => this.pFooter();
             document.getElementById('go-add-pkg').onclick = () => this.pAddPacote();
-            document.getElementById('go-insta').onclick   = () => this.pInstagram();
             document.getElementById('go-colors').onclick  = () => this.pColors();
             document.getElementById('go-pub').onclick     = () => this.publish();
             document.getElementById('go-revert').onclick  = () => this.revert();
@@ -924,106 +921,6 @@
         },
 
         /* ── INSTAGRAM POSTS ── */
-        pInstagram() {
-            const p = this.panel_('📸 Editar Posts do Instagram');
-
-            // Lê os 3 posts atuais do DOM
-            const posts = [1,2,3].map(i => ({
-                img:     document.getElementById('insta-img-' + i)?.src || '',
-                caption: document.getElementById('insta-caption-' + i)?.textContent?.trim() || '',
-                link:    document.getElementById('insta-post-' + i)?.href || ''
-            }));
-
-            const rows = posts.map((post, idx) => {
-                const i = idx + 1;
-                return `
-                <div style="border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:16px;background:rgba(255,255,255,.04);">
-                    <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Post ${i}</div>
-                    <img id="go-insta-prev-${i}" src="${post.img}" alt="Preview"
-                         style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;background:#243048;display:block;">
-                    <div class="go-f">
-                        <label>URL da Foto</label>
-                        <input type="url" id="go-insta-img-${i}" value="${post.img}" placeholder="https://...foto.jpg">
-                        <p class="go-hint-txt">Cole a URL direta da imagem do post do Instagram (clique direito → copiar endereço da imagem)</p>
-                    </div>
-                    <div class="go-f">
-                        <label>Link do Post</label>
-                        <input type="url" id="go-insta-link-${i}" value="${post.link}" placeholder="https://www.instagram.com/p/...">
-                    </div>
-                    <div class="go-f">
-                        <label>Legenda</label>
-                        <textarea id="go-insta-cap-${i}" rows="2" style="resize:vertical;">${post.caption}</textarea>
-                    </div>
-                </div>`;
-            }).join('');
-
-            p.innerHTML += `<div class="go-pb">
-                <div class="go-info">
-                    📌 <strong>Como pegar a URL da foto:</strong><br>
-                    1. Abra o post no Instagram no computador<br>
-                    2. Clique com botão direito na foto<br>
-                    3. Selecione "Copiar endereço da imagem"<br>
-                    4. Cole no campo "URL da Foto" abaixo
-                </div>
-                ${rows}
-                <div class="go-f" style="margin-top:4px;">
-                    <label>Link do Perfil (botão "Ver perfil")</label>
-                    <input type="url" id="go-insta-perfil" value="${document.getElementById('insta-perfil-btn')?.href || 'https://www.instagram.com/asasbrasilviagens'}" placeholder="https://www.instagram.com/seuperfil">
-                </div>
-                <div class="go-acts" style="margin-top:16px;">
-                    <button class="go-ok" id="goa">✓ Aplicar</button>
-                    <button class="go-ko" id="goc">Cancelar</button>
-                </div>
-            </div>`;
-
-            // Preview ao vivo ao digitar URL
-            [1,2,3].forEach(i => {
-                const imgInput = p.querySelector(`#go-insta-img-${i}`);
-                const prev     = p.querySelector(`#go-insta-prev-${i}`);
-                let debounce;
-                imgInput.oninput = () => {
-                    clearTimeout(debounce);
-                    debounce = setTimeout(() => {
-                        const v = imgInput.value.trim();
-                        if (v) prev.src = v;
-                    }, 600);
-                };
-            });
-
-            p.querySelector('#goc').onclick = () => this.closePanel();
-            p.querySelector('#goa').onclick = () => {
-                [1,2,3].forEach(i => {
-                    const imgUrl  = p.querySelector(`#go-insta-img-${i}`).value.trim();
-                    const link    = p.querySelector(`#go-insta-link-${i}`).value.trim();
-                    const caption = p.querySelector(`#go-insta-cap-${i}`).value.trim();
-
-                    // Atualiza DOM
-                    const imgEl     = document.getElementById('insta-img-' + i);
-                    const linkEl    = document.getElementById('insta-post-' + i);
-                    const captionEl = document.getElementById('insta-caption-' + i);
-                    if (imgEl && imgUrl)     imgEl.src = imgUrl;
-                    if (linkEl && link)      linkEl.href = link;
-                    if (captionEl && caption) captionEl.textContent = caption;
-
-                    // Salva no CMS
-                    if (imgUrl)  this.store('insta-img-' + i,     { src: imgUrl });
-                    if (link)    this.store('insta-link-' + i,    { href: link });
-                    if (caption) this.store('insta-caption-' + i, { text: caption });
-                });
-
-                // Salva link do perfil
-                const perfilUrl = p.querySelector('#go-insta-perfil').value.trim();
-                const perfilBtn = document.getElementById('insta-perfil-btn');
-                if (perfilBtn && perfilUrl) {
-                    perfilBtn.href = perfilUrl;
-                    this.store('insta-perfil-btn', { href: perfilUrl });
-                }
-
-                this.closePanel();
-                this.toast('✓ Posts do Instagram salvos no rascunho', 'ok');
-            };
-        },
-
         /* ── CORES GLOBAIS ── */
         pColors() {
             const root = document.documentElement;
