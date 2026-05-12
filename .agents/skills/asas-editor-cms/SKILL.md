@@ -46,3 +46,7 @@ rg -n "data:image|instagram.com/p|cdninstagram|fbcdn|LenÃ|MaranhÃ|ï¿½" cont
 node -e "const fs=require('fs'); new Function(fs.readFileSync('editor.js','utf8')); console.log('editor ok')"
 ```
 
+## Memoria relacionada
+
+- Ler `../../project-memory/CORRECOES-E-APRENDIZADO.md` quando houver bug de imagem, editor, rodape, data-eid ou publicacao.
+- Ler `../../project-memory/ESTADO-ATUAL.md` para nao reabrir problemas ja resolvidos.

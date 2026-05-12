@@ -51,4 +51,4 @@ $env:NODE_OPTIONS='--use-system-ca'
 - Se push for rejeitado, usar `git pull --rebase origin master`, validar de novo e só então `git push`.
 - Nunca usar `git reset --hard`.
 - Ignorar não rastreados existentes se não fizerem parte da tarefa.
-
+- Conferir `../../project-memory/ESTADO-ATUAL.md` se houver duvida sobre repo, branch ou dominio corretos.

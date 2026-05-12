@@ -39,3 +39,10 @@ git diff --check
 - Lovisa referência: `C:\Users\win 10\Desktop\sites de clientes\lovisa-destinos-site`
 - 321Go referência: `C:\Users\win 10\Desktop\sites de clientes\321go`
 
+## Memoria do projeto
+
+Quando precisar entender o historico das correcoes, ler somente o arquivo relevante:
+
+- `../../project-memory/ESTADO-ATUAL.md`: estado atual e pendencias conhecidas.
+- `../../project-memory/CORRECOES-E-APRENDIZADO.md`: erros encontrados e solucoes aplicadas.
+- `../../project-memory/PLAYBOOK-REPLICAR-CLIENTES.md`: fluxo para replicar em outras empresas.
