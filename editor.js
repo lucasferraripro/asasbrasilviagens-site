@@ -303,6 +303,8 @@
             ${lastPub ? `<span class="go-last-pub">Pub: ${lastPub}</span><div class="go-sep"></div>` : ''}
             <button class="go-btn" id="go-pages">📄 <span class="go-btn-lbl">Páginas</span></button>
             <div class="go-sep"></div>
+            <button class="go-btn" id="go-footer">🧩 <span class="go-btn-lbl">Rodapé</span></button>
+            <div class="go-sep"></div>
             <button class="go-btn" id="go-add-pkg">➕ <span class="go-btn-lbl">Pacote</span></button>
             <div class="go-sep"></div>
             <button class="go-btn" id="go-insta">📸 <span class="go-btn-lbl">Instagram</span></button>
@@ -315,6 +317,7 @@
             <button class="go-btn red" id="go-exit">✕ <span class="go-btn-lbl">Sair</span></button>`;
             document.body.prepend(bar);
             document.getElementById('go-pages').onclick   = () => this.pPages();
+            document.getElementById('go-footer').onclick  = () => this.pFooter();
             document.getElementById('go-add-pkg').onclick = () => this.pAddPacote();
             document.getElementById('go-insta').onclick   = () => this.pInstagram();
             document.getElementById('go-colors').onclick  = () => this.pColors();
@@ -390,6 +393,42 @@
                 <div style="font-size:11px;color:#6B7280;margin-bottom:12px;">O modo editor continua ativo ao navegar entre páginas.</div>
                 ${links}
             </div>`;
+        },
+
+        pFooter() {
+            const footerItems = Array.from(document.querySelectorAll('footer [data-eid]'))
+                .filter(el => {
+                    const txt = (el.textContent || el.alt || el.getAttribute('aria-label') || '').trim();
+                    return txt || el.tagName === 'IMG' || el.tagName === 'A';
+                });
+            const p = this.panel_('🧩 Editar Rodapé');
+            if (!footerItems.length) {
+                p.innerHTML += `<div class="go-pb"><div class="go-info">Nenhum campo editável encontrado no rodapé desta página.</div></div>`;
+                return;
+            }
+            const rows = footerItems.map((el, i) => {
+                const label = el.dataset.elabel || el.dataset.eid || `Campo ${i + 1}`;
+                const value = (el.tagName === 'IMG')
+                    ? (el.getAttribute('src') || '')
+                    : (el.textContent || el.getAttribute('aria-label') || '').trim();
+                return `<button type="button" class="go-footer-item" data-eid="${el.dataset.eid}" style="width:100%;text-align:left;display:block;padding:10px 12px;background:#0f1623;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e8edf5;margin-bottom:8px;cursor:pointer;font-family:inherit;">
+                    <strong style="display:block;font-size:12px;color:#fff;margin-bottom:3px;">${label}</strong>
+                    <span style="display:block;font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${value || 'Imagem/link'}</span>
+                </button>`;
+            }).join('');
+            p.innerHTML += `<div class="go-pb">
+                <div class="go-info">Clique no item abaixo para editar texto, link ou imagem do rodapé.</div>
+                ${rows}
+            </div>`;
+            p.querySelectorAll('.go-footer-item').forEach(btn => {
+                btn.onclick = () => {
+                    const el = document.querySelector(`footer [data-eid="${btn.dataset.eid}"]`);
+                    if (!el) return;
+                    document.querySelectorAll('.go-sel').forEach(x => x.classList.remove('go-sel'));
+                    el.classList.add('go-sel');
+                    this.dispatch(el);
+                };
+            });
         },
 
         /* ── TEXTO ── */
