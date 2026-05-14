@@ -1,4 +1,13 @@
 {
+  "hero-badge": {
+    "html": "<i class=\"fa-solid fa-star\"></i> Consultoria de Viagens"
+  },
+  "hero-title": {
+    "html": "Tudo que Você Precisa para Sua Viagem em um Só Lugar. Viagens que <em data-eid=\"auto-home-019\" data-elabel=\"Texto home 19\">transformam</em> para sempre!"
+  },
+  "hero-sub": {
+    "html": "A <strong>Asas Brasil Viagens com 19 ANOS</strong> no mercado, oferece roteiros exclusivos e sob medida para viajantes que não aceitam o comum. Do primeiro contato ao retorno pra casa — cuidamos de cada detalhe."
+  },
   "dif-foto": {
     "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1778549189312_whatsapp_image_2026-05-06_at_18.30.57.jpeg"
   }
