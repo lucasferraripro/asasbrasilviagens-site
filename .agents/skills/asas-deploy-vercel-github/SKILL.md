@@ -1,6 +1,6 @@
 ---
 name: asas-deploy-vercel-github
-description: Use esta skill sempre que publicar o site Asas Brasil Viagens no GitHub e Vercel. Inclui o repositório correto, branch, comandos e verificações de deploy.
+description: Use esta skill sempre que publicar o site Asas Brasil Viagens no GitHub e Vercel. Inclui o repositorio correto, branch, comandos, protecao do content.json e verificacoes de deploy.
 metadata:
   short-description: Deploy GitHub/Vercel Asas
 ---
@@ -14,22 +14,36 @@ metadata:
 - Vercel: `https://asasbrasilviagens.vercel.app`
 - Projeto Vercel: `lucasferraris-projects-65d9de34/asasbrasilviagens`
 
-## Publicação padrão
+## Regra critica do CMS
 
-Sempre fazer commit e push quando concluir correção.
+O painel admin publica as alteracoes do usuario em `content.json`.
+
+Antes de qualquer `git add`, `git commit`, `git push` ou deploy manual, sincronizar o conteudo publicado:
 
 ```powershell
+powershell -ExecutionPolicy Bypass -File scripts\sync-live-content.ps1
+git diff -- content.json
+```
+
+Nunca commitar um `content.json` antigo por cima do GitHub. Se o usuario nao pediu para alterar conteudo do painel, preservar o `content.json` sincronizado do site publicado.
+
+## Publicacao padrao
+
+Sempre fazer commit e push quando concluir correcao.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\sync-live-content.ps1
 git status --short
-git add index.html pacote.html editor.js sobre.html clientes.html api/content.js api/publish.js api/upload.js content.json
+git add index.html pacote.html editor.js sobre.html clientes.html api/content.js api/publish.js api/upload.js content.json scripts/sync-live-content.ps1
 git commit -m "mensagem curta"
 git pull --rebase origin master
 git push origin master
 cmd /c "set NODE_OPTIONS=--use-system-ca && npx --yes vercel --prod --yes"
 ```
 
-Se `git add` incluir arquivo inexistente, usar só os arquivos modificados.
+Se `git add` incluir arquivo inexistente, usar so os arquivos modificados.
 
-## Verificação ao vivo
+## Verificacao ao vivo
 
 ```powershell
 $env:NODE_OPTIONS='--use-system-ca'
@@ -48,7 +62,7 @@ $env:NODE_OPTIONS='--use-system-ca'
 
 ## Cuidados
 
-- Se push for rejeitado, usar `git pull --rebase origin master`, validar de novo e só então `git push`.
+- Se push for rejeitado, usar `git pull --rebase origin master`, validar de novo e so entao `git push`.
 - Nunca usar `git reset --hard`.
-- Ignorar não rastreados existentes se não fizerem parte da tarefa.
+- Ignorar nao rastreados existentes se nao fizerem parte da tarefa.
 - Conferir `../../project-memory/ESTADO-ATUAL.md` se houver duvida sobre repo, branch ou dominio corretos.

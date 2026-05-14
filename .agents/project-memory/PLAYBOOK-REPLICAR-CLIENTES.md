@@ -8,6 +8,7 @@ Objetivo: usar o aprendizado do Asas Brasil Viagens para criar ou corrigir sites
 2. Conferir `git status --short`.
 3. Identificar arquivos principais: home, pagina de pacote, editor, APIs e `content.json`.
 4. Se houver site referencia funcionando, comparar comportamento, nao copiar tudo sem criterio.
+5. Em sites com painel admin, sincronizar o conteudo publicado antes de qualquer commit: `powershell -ExecutionPolicy Bypass -File scripts\sync-live-content.ps1`.
 
 ## 2. Estrutura recomendada
 
@@ -53,6 +54,7 @@ Preferir:
 Sempre que terminar:
 
 ```powershell
+powershell -ExecutionPolicy Bypass -File scripts\sync-live-content.ps1
 git add <arquivos alterados>
 git commit -m "mensagem curta"
 git pull --rebase origin master
@@ -80,4 +82,3 @@ $env:NODE_OPTIONS='--use-system-ca'
 - Usar imagem de post Instagram como imagem permanente.
 - Salvar HTML/JS com encoding quebrado.
 - Deixar arquivo de problemas antigo virar "fonte da verdade".
-

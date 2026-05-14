@@ -21,6 +21,21 @@ Esses projetos servem como referencia de estrutura, publicacao e comportamento d
 
 ## Problemas encontrados e solucoes
 
+### 0. Conteudo do painel sumia depois de alteracao local
+
+Causa:
+- O painel admin grava textos/fotos editados em `content.json` no GitHub.
+- Quando o agente local commita um `content.json` antigo, ele sobrescreve o arquivo publicado pelo painel.
+
+Correcao:
+- Criado `scripts/sync-live-content.ps1` para buscar `/api/content` publicado e atualizar o `content.json` local antes de commit/deploy.
+- A skill de deploy agora exige sincronizar o conteudo publicado antes de qualquer `git add`, `git commit`, `git push` ou deploy manual.
+
+Regra permanente:
+- Nunca commitar `content.json` antigo.
+- Se o usuario nao pediu para alterar conteudo do painel, preservar o `content.json` sincronizado.
+- Se o conteudo publicado vier vazio, abortar para nao apagar edicoes.
+
 ### 1. Imagem trocada no editor voltava depois de publicar
 
 Causa:
@@ -137,4 +152,3 @@ git diff --check
 - `0ef8010`: painel de edicao do rodape.
 - `fe9f7a5`: servicos, fotos Disney, remover Instagram, cards navegaveis.
 - `7337048`: skills locais e mensagem WhatsApp limpa.
-
