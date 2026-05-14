@@ -29,7 +29,7 @@ function cleanContent(content) {
         }
         if (value && typeof value === 'object' && !Array.isArray(value)) {
             const item = { ...value };
-            if (item.src != null && !isValidImageSrc(item.src)) delete item.src;
+            if (item.src != null && item.src !== '' && !isValidImageSrc(item.src)) delete item.src;
             if (Object.keys(item).length) out[key] = item;
             return;
         }

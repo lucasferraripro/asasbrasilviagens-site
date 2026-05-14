@@ -54,7 +54,7 @@
             }
             if (value && typeof value === 'object' && !Array.isArray(value)) {
                 const item = { ...value };
-                if (item.src != null && !isValidImageSrc(item.src)) delete item.src;
+                if (item.src != null && item.src !== '' && !isValidImageSrc(item.src)) delete item.src;
                 if (Object.keys(item).length) out[key] = item;
                 return;
             }
@@ -94,7 +94,15 @@
             if (!d) return;
             if (d.html  != null) el.innerHTML = d.html;
             if (d.text  != null) el.textContent = d.text;
-            if (d.src   != null && el.tagName === 'IMG' && isValidImageSrc(d.src)) el.src = d.src;
+            if (d.src != null && el.tagName === 'IMG') {
+                if (d.src === '') {
+                    el.removeAttribute('src');
+                    el.style.display = 'none';
+                } else if (isValidImageSrc(d.src)) {
+                    el.src = d.src;
+                    if (el.style.display === 'none') el.style.display = 'block';
+                }
+            }
             if (d.href  != null) el.setAttribute('href', d.href);
             if (d.target!= null) el.setAttribute('target', d.target);
             if (d.style && typeof d.style === 'object') Object.assign(el.style, d.style);
@@ -505,6 +513,7 @@
                 </div>
                 <div class="go-acts">
                     <button class="go-ok" id="goa">✓ Aplicar</button>
+                    <button class="go-ko" id="gorm">Remover imagem</button>
                     <button class="go-ko" id="goc">Cancelar</button>
                 </div>
             </div>`;
@@ -518,12 +527,28 @@
             const saveImageDraft = (src) => {
                 if (!isValidImageSrc(src)) return false;
                 pv.src = src;
+                pv.style.display = '';
                 ui.value = src;
                 document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
-                    if (e.tagName === 'IMG') e.src = src;
+                    if (e.tagName === 'IMG') {
+                        e.src = src;
+                        e.style.display = 'block';
+                    }
                 });
                 this.store(el.dataset.eid, { src });
                 return true;
+            };
+            const removeImageDraft = () => {
+                document.querySelectorAll(`[data-eid="${el.dataset.eid}"]`).forEach(e => {
+                    if (e.tagName === 'IMG') {
+                        e.removeAttribute('src');
+                        e.style.display = 'none';
+                    }
+                });
+                ui.value = '';
+                pv.removeAttribute('src');
+                pv.style.display = 'none';
+                this.store(el.dataset.eid, { src: '' });
             };
 
             if (!isLocal) {
@@ -608,8 +633,15 @@
                 this.closePanel();
                 this.toast('✓ Imagem salva no rascunho', 'ok');
             };
+            p.querySelector('#gorm').onclick = () => {
+                if (!confirm('Remover esta imagem da página publicada?')) return;
+                removeImageDraft();
+                this.closePanel();
+                this.toast('Imagem removida do rascunho. Clique em Publicar.', 'ok');
+            };
             p.querySelector('#goc').onclick = () => {
                 el.src = origSrc;
+                el.style.display = '';
                 this.closePanel();
             };
         },
