@@ -147,8 +147,7 @@
                             <h3 class="card-title">${pkg.title}</h3>
                             <div class="card-dates">${pkg.duration || ''}</div>
                             <div class="card-price-block">
-                                <div class="card-pix">Pix: <strong>R$ ${pkg.price || '—'}</strong></div>
-                                <div class="card-parcel">${pkg.parcelas || ''}</div>
+                                <div class="card-pix"><strong>Consultar valores</strong></div>
                             </div>
                             <a href="pacote.html?id=${pkgId}" class="btn btn-card">Ver detalhes completos →</a>
                         </div>`;

@@ -355,7 +355,7 @@
         .card-loc i { color: var(--accent); font-size: 10px; }
         .card-body h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
         .card-foot { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 12px; }
-        .card-price { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--accent); }
+        .card-price { font-size: .86rem; font-weight: 800; color: var(--accent); letter-spacing: .01em; }
         .card-price small { font-family: inherit; font-family: -apple-system, sans-serif; font-size: 10px; color: var(--muted); font-weight: 400; }
         .card-arr { font-size: 11px; color: var(--navy); font-weight: 600; display: flex; align-items: center; gap: 4px; transition: gap .2s, color .2s; }
         .card-link:hover .card-arr { gap: 8px; color: var(--accent); }
@@ -867,7 +867,7 @@ function renderPacote(id, cms) {
                 <div class="card-loc"><i class="fa-solid fa-location-dot"></i> ${p.location}</div>
                 <h3>${p.title}</h3>
                 <div class="card-foot">
-                    <div class="card-price">R$ ${p.price.split(',')[0]} <small>/ pessoa</small></div>
+                    <div class="card-price">Consultar valores</div>
                     <span class="card-arr">Ver <i class="fa-solid fa-arrow-right"></i></span>
                 </div>
             </div>`;
