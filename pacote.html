@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -499,13 +499,13 @@
 
             <!-- SOBRE O DESTINO -->
             <div class="cblock" style="margin-top:32px;">
-                <div class="cblock-title"><i class="fa-solid fa-earth-americas" style="color:var(--accent);margin-right:8px"></i>Sobre o Destino</div>
+                <div class="cblock-title" data-eid="pkg-block-sobre-title" data-elabel="Titulo Bloco Sobre"><i class="fa-solid fa-earth-americas" style="color:var(--accent);margin-right:8px"></i>Sobre o Destino</div>
                 <p class="pkg-desc" id="pkg-desc" data-eid="pkg-desc" data-elabel="Descrição do Destino">Carregando…</p>
             </div>
 
             <!-- INCLUSO / NÃO INCLUSO -->
             <div class="cblock">
-                <div class="cblock-title"><i class="fa-solid fa-list-check" style="color:var(--accent);margin-right:8px"></i>O que está incluso</div>
+                <div class="cblock-title" data-eid="pkg-block-incluso-title" data-elabel="Titulo Bloco Incluso"><i class="fa-solid fa-list-check" style="color:var(--accent);margin-right:8px"></i>O que está incluso</div>
                 <ul class="incluso-list" id="incluso-list"></ul>
                 <span class="nao-incluso-label" data-eid="auto-pacote-024" data-elabel="Texto pacote 24">Não incluso:</span>
                 <ul class="nao-incluso-list" id="nao-incluso-list"></ul>
@@ -513,7 +513,7 @@
 
             <!-- ROTEIRO -->
             <div class="cblock">
-                <div class="cblock-title"><i class="fa-solid fa-map-location-dot" style="color:var(--accent);margin-right:8px"></i>Roteiro Sugerido</div>
+                <div class="cblock-title" data-eid="pkg-block-roteiro-title" data-elabel="Titulo Bloco Roteiro"><i class="fa-solid fa-map-location-dot" style="color:var(--accent);margin-right:8px"></i>Roteiro Sugerido</div>
                 <div id="roteiro-list"></div>
             </div>
 
@@ -522,8 +522,8 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="price-card">
-                <p class="price-from" data-eid="auto-pacote-025" data-elabel="Texto pacote 25">A partir de:</p>
-                <div class="price-num" id="price-num" data-eid="pkg-price" data-elabel="Preço">R$ —</div>
+                <p class="price-from" data-eid="auto-pacote-025" data-elabel="Texto pacote 25">Valores sob consulta</p>
+                <div class="price-num" id="price-num" data-eid="pkg-price" data-elabel="Preço">Consultar valores</div>
                 <p class="price-acc" id="price-parc" data-eid="pkg-parcelas" data-elabel="Parcelamento"></p>
                 <div class="price-meta">
                     <div class="pm-row"><i class="fa-solid fa-location-dot"></i><span id="sb-loc" data-eid="pkg-sb-loc" data-elabel="Sidebar Localização">—</span></div>
@@ -537,7 +537,7 @@
                 <a href="index.html#contato" class="btn btn-outline" data-eid="auto-pacote-029" data-elabel="Texto pacote 29">
                     <i class="fa-solid fa-envelope"></i> Falar com Consultor
                 </a>
-                <p class="price-note" data-eid="auto-pacote-030" data-elabel="Texto pacote 30">*Valores por pessoa, sujeitos à disponibilidade.</p>
+                <p class="price-note" data-eid="auto-pacote-030" data-elabel="Texto pacote 30">Consulte nossa equipe para receber uma proposta atualizada.</p>
             </div>
         </aside>
 
@@ -701,14 +701,15 @@ function renderPacote(id, cms) {
 
     // Prefixar data-eid com ID do pacote
     ['pkg-title','pkg-subtitle','pkg-loc','pkg-dur','pkg-desc',
+     'pkg-block-sobre-title','pkg-block-incluso-title','pkg-block-roteiro-title',
      'pkg-price','pkg-parcelas','pkg-sb-loc','pkg-sb-dur'].forEach(eid => {
         const el = document.querySelector(`[data-eid="${eid}"]`);
         if (el) el.dataset.eid = id + '-' + eid;
     });
 
-    // Valores com prioridade: CMS > DB
-    const price    = cmsText(id+'-pkg-price')    || pkg.price;
-    const parcelas = cmsText(id+'-pkg-parcelas') || pkg.parcelas;
+    // Valores ficam sempre sob consulta nas paginas publicas.
+    const price    = cmsText(id+'-pkg-price')    || 'Consultar valores';
+    const parcelas = cmsText(id+'-pkg-parcelas') || '';
     const title    = cmsText(id+'-pkg-title')    || pkg.title;
     const subtitle = cmsText(id+'-pkg-subtitle') || pkg.subtitle;
     const desc     = cmsText(id+'-pkg-desc')     || pkg.desc;
@@ -723,8 +724,8 @@ function renderPacote(id, cms) {
     document.getElementById('pkg-desc').textContent         = desc;
     document.getElementById('sb-loc').textContent           = pkg.location;
     document.getElementById('sb-dur').textContent           = pkg.duration;
-    document.getElementById('price-num').textContent        = 'R$ ' + price;
-    document.getElementById('price-parc').textContent       = 'ou ' + parcelas;
+    document.getElementById('price-num').textContent        = price;
+    document.getElementById('price-parc').textContent       = parcelas;
 
     // ── WhatsApp ──
     const waMsg = encodeURIComponent(
@@ -795,7 +796,7 @@ function renderPacote(id, cms) {
         const li = document.createElement('li');
         li.dataset.eid = `${id}-pkg-incluso-${i}`;
         li.dataset.elabel = `Incluso ${i+1} — ${pkg.title}`;
-        li.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${item}`;
+        li.innerHTML = `<i class="fa-solid fa-circle-check" data-eid="${id}-pkg-incluso-${i}-icone" data-elabel="Icone Incluso ${i+1}"></i> <span data-eid="${id}-pkg-incluso-${i}-texto" data-elabel="Texto Incluso ${i+1}">${item}</span>`;
         inclEl.appendChild(li);
     });
 
@@ -805,7 +806,7 @@ function renderPacote(id, cms) {
             const li = document.createElement('li');
             li.dataset.eid = `${id}-pkg-nao-incluso-${i}`;
             li.dataset.elabel = `Não Incluso ${i+1} — ${pkg.title}`;
-            li.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> ${item}`;
+            li.innerHTML = `<i class="fa-solid fa-circle-xmark" data-eid="${id}-pkg-nao-incluso-${i}-icone" data-elabel="Icone Nao Incluso ${i+1}"></i> <span data-eid="${id}-pkg-nao-incluso-${i}-texto" data-elabel="Texto Nao Incluso ${i+1}">${item}</span>`;
             nEl.appendChild(li);
         });
     }
@@ -825,7 +826,7 @@ function renderPacote(id, cms) {
         p.textContent = r.desc;
         const dayDiv = document.createElement('div');
         dayDiv.className = 'roteiro-day';
-        dayDiv.innerHTML = `<div class="roteiro-day-num">${r.dia.replace('º Dia','').replace('-','–')}</div><div class="roteiro-day-lbl">Dia</div>`;
+        dayDiv.innerHTML = `<div class="roteiro-day-num" data-eid="${id}-pkg-rot-${i}-dia" data-elabel="Roteiro Dia ${i+1}">${r.dia.replace('º Dia','').replace('-','–')}</div><div class="roteiro-day-lbl" data-eid="${id}-pkg-rot-${i}-dia-label" data-elabel="Roteiro Label Dia ${i+1}">Dia</div>`;
         const bodyDiv = document.createElement('div');
         bodyDiv.className = 'roteiro-body';
         bodyDiv.appendChild(h4);
