@@ -38,6 +38,23 @@ function cleanContent(content) {
     return out;
 }
 
+function mergeContent(existing, incoming) {
+    const base = cleanContent(existing || {});
+    const next = cleanContent(incoming || {});
+    const merged = { ...base };
+    Object.entries(next).forEach(([key, value]) => {
+        if (
+            value && typeof value === 'object' && !Array.isArray(value) &&
+            merged[key] && typeof merged[key] === 'object' && !Array.isArray(merged[key])
+        ) {
+            merged[key] = { ...merged[key], ...value };
+        } else {
+            merged[key] = value;
+        }
+    });
+    return cleanContent(merged);
+}
+
 /**
  * Asas Brasil Viagens — API de Publicação
  * Recebe o content.json do editor, commita no GitHub,
@@ -94,9 +111,17 @@ export default async function handler(req, res) {
         const getRes = await fetch(apiBase, { headers });
         const getJson = await getRes.json();
         const sha = getJson.sha || null;
+        let existingContent = {};
+        if (getJson.content) {
+            try {
+                existingContent = JSON.parse(Buffer.from(getJson.content, 'base64').toString('utf-8'));
+            } catch (_) {
+                existingContent = {};
+            }
+        }
 
-        // 2. Codifica o conteúdo em base64 — SEM merge, sobrescreve direto
-        const contentStr = JSON.stringify(cleanContent(content), null, 2);
+        // 2. Mescla com o conteudo ja publicado para preservar edicoes do painel.
+        const contentStr = JSON.stringify(mergeContent(existingContent, content), null, 2);
         if (contentStr.length > 500000) {
             return res.status(400).json({ error: 'Conteudo muito grande. Envie imagens pelo upload, nao como base64.' });
         }
