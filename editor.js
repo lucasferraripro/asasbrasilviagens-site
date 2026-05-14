@@ -310,6 +310,10 @@
             ${lastPub ? `<span class="go-last-pub">Pub: ${lastPub}</span><div class="go-sep"></div>` : ''}
             <button class="go-btn" id="go-pages">📄 <span class="go-btn-lbl">Páginas</span></button>
             <div class="go-sep"></div>
+            <button class="go-btn" id="go-topo">Topo</button>
+            <div class="go-sep"></div>
+            <button class="go-btn" id="go-destinos">Destinos</button>
+            <div class="go-sep"></div>
             <button class="go-btn" id="go-footer">🧩 <span class="go-btn-lbl">Rodapé</span></button>
             <div class="go-sep"></div>
             <button class="go-btn" id="go-add-pkg">➕ <span class="go-btn-lbl">Pacote</span></button>
@@ -322,12 +326,80 @@
             <button class="go-btn red" id="go-exit">✕ <span class="go-btn-lbl">Sair</span></button>`;
             document.body.prepend(bar);
             document.getElementById('go-pages').onclick   = () => this.pPages();
+            document.getElementById('go-topo').onclick    = () => this.pTopo();
+            document.getElementById('go-destinos').onclick = () => this.pDestinos();
             document.getElementById('go-footer').onclick  = () => this.pFooter();
             document.getElementById('go-add-pkg').onclick = () => this.pAddPacote();
             document.getElementById('go-colors').onclick  = () => this.pColors();
             document.getElementById('go-pub').onclick     = () => this.publish();
             document.getElementById('go-revert').onclick  = () => this.revert();
             document.getElementById('go-exit').onclick    = () => this.exit();
+        },
+
+        pTopo() {
+            const items = [
+                { label: 'Logo do Header', eid: 'logo-img' },
+                { label: 'Nome da Agencia', eid: 'hdr-logo-name' },
+                { label: 'Subtitulo da Logo', eid: 'hdr-logo-sub' },
+                { label: 'Foto de Capa', eid: 'hero-bg-img' },
+                { label: 'Badge da Capa', eid: 'hero-badge' },
+                { label: 'Titulo Principal', eid: 'hero-title' },
+                { label: 'Subtitulo da Capa', eid: 'hero-sub' },
+                { label: 'Botao Principal', eid: 'auto-home-020' },
+                { label: 'Botao Secundario', eid: 'auto-home-021' }
+            ];
+            const p = this.panel_('Editar Topo - Logo e Capa');
+            p.innerHTML += `<div class="go-pb">
+                <p class="go-hint-txt" style="margin-bottom:12px;">Escolha exatamente o item do topo que quer editar.</p>
+                ${items.map(item => `<button type="button" class="go-topo-item" data-eid="${item.eid}" style="width:100%;text-align:left;display:block;padding:10px 12px;background:#0f1623;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e8edf5;margin-bottom:8px;cursor:pointer;font-family:inherit;">${item.label}</button>`).join('')}
+            </div>`;
+            p.querySelectorAll('.go-topo-item').forEach(btn => {
+                btn.onclick = () => {
+                    const el = document.querySelector(`[data-eid="${btn.dataset.eid}"]`);
+                    if (!el) {
+                        this.toast('Item nao encontrado nesta pagina.', 'err');
+                        return;
+                    }
+                    document.querySelectorAll('.go-sel').forEach(x => x.classList.remove('go-sel'));
+                    el.classList.add('go-sel');
+                    this.dispatch(el);
+                };
+            });
+        },
+
+        pDestinos() {
+            const cards = Array.from(document.querySelectorAll('.cards-grid .card-link[id]'));
+            const p = this.panel_('Editar Destinos');
+            p.innerHTML += `<div class="go-pb">
+                <p class="go-hint-txt" style="margin-bottom:12px;">Abra um destino e edite foto, local, titulo, texto do botao e link.</p>
+                ${cards.map(card => {
+                    const title = card.querySelector('h3')?.textContent.trim() || card.id;
+                    const fields = Array.from(card.querySelectorAll('[data-eid]')).filter(el => {
+                        return el.tagName === 'IMG' || el.matches('.card-flag,.card-loc,h3,.card-price,.card-arrow');
+                    });
+                    const buttons = fields.map(el => {
+                        const kind = el.tagName === 'IMG' ? 'Foto' : (el.dataset.elabel || el.textContent.trim() || 'Campo');
+                        return `<button type="button" class="go-dest-item" data-eid="${el.dataset.eid}" style="width:100%;text-align:left;display:block;padding:8px 10px;background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#e8edf5;margin:6px 0;cursor:pointer;font-family:inherit;font-size:12px;">${kind}</button>`;
+                    }).join('');
+                    return `<details style="margin-bottom:10px;border:1px solid #d8dee9;border-radius:10px;padding:10px;background:#f8fafc;">
+                        <summary style="cursor:pointer;font-weight:800;color:#0b7890;">${title}</summary>
+                        ${buttons}
+                        <a href="${card.getAttribute('href') || '#'}" style="display:block;margin-top:8px;font-size:12px;font-weight:800;color:#E05220;">Abrir pagina do pacote</a>
+                    </details>`;
+                }).join('')}
+            </div>`;
+            p.querySelectorAll('.go-dest-item').forEach(btn => {
+                btn.onclick = () => {
+                    const el = document.querySelector(`[data-eid="${btn.dataset.eid}"]`);
+                    if (!el) {
+                        this.toast('Item nao encontrado nesta pagina.', 'err');
+                        return;
+                    }
+                    document.querySelectorAll('.go-sel').forEach(x => x.classList.remove('go-sel'));
+                    el.classList.add('go-sel');
+                    this.dispatch(el);
+                };
+            });
         },
 
         bindAll() {
