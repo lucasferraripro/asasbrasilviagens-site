@@ -317,30 +317,46 @@
             align-items: stretch;
         }
         .service-card {
-            appearance: none;
-            -webkit-appearance: none;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            min-height: 244px;
+            min-height: 0;
             width: 100%;
-            padding: 28px;
+            padding: 0;
             border: 1px solid var(--border);
             border-radius: var(--r);
             background: var(--white);
             color: var(--text);
             text-align: left;
             font: inherit;
-            cursor: pointer;
+            overflow: hidden;
             box-shadow: 0 4px 16px rgba(0,0,0,.05);
             transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
         }
-        .service-card:hover,
-        .service-card.open {
-            transform: translateY(-6px);
-            border-color: rgba(125,196,32,.55);
-            box-shadow: 0 18px 44px rgba(0,136,169,.11);
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0,136,169,.24);
+            box-shadow: 0 16px 38px rgba(0,136,169,.10);
+        }
+        .service-media {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #edf4f6;
+        }
+        .service-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(1.05) contrast(1.02);
+        }
+        .service-body {
+            position: relative;
+            width: 100%;
+            padding: 26px 28px 30px;
         }
         .service-icon {
             width: 44px;
@@ -592,7 +608,7 @@
             .cards-grid { grid-template-columns: 1fr; }
             .dest-hdr   { flex-direction: column; align-items: flex-start; }
             .services-grid { grid-template-columns: 1fr; }
-            .service-card { min-height: 0; padding: 24px; }
+            .service-body { padding: 22px; }
 
             /* dif */
             .dif-grid { grid-template-columns: 1fr; }
@@ -854,42 +870,54 @@
             <p class="lead" data-eid="srv-sub" data-elabel="Subtítulo Serviços">Abra uma categoria, veja como funciona e solicite uma proposta pelo formulário.</p>
         </div>
         <div class="services-grid">
-            <button class="service-card rv" type="button" onclick="toggleServico(this)">
-                <div class="service-icon"><i class="fa-solid fa-route"></i></div>
-                <h3 data-eid="srv-sol-title" data-elabel="Serviço Solteiros Título">Roteiros para Solteiros</h3>
-                <p data-eid="srv-sol-desc" data-elabel="Serviço Solteiros Texto">Aventura, liberdade e novas conexões para quem viaja solo ou em grupo de amigos.</p>
-                <div class="service-more"><ul><li data-eid="srv-sol-more-1" data-elabel="Serviço Solteiros Detalhe 1">Roteiros seguros com passeios guiados e boa localização.</li><li data-eid="srv-sol-more-2" data-elabel="Serviço Solteiros Detalhe 2">Opções para descanso, vida noturna, aventura ou experiências culturais.</li><li data-eid="srv-sol-more-3" data-elabel="Serviço Solteiros Detalhe 3">Indicação de hotéis e deslocamentos para viajar com tranquilidade.</li></ul><span class="btn btn-accent" onclick="solicitarServico(event, 'Roteiros para Solteiros')" data-eid="srv-sol-cta" data-elabel="Serviço Solteiros Botão">Solicitar <i class="fa-solid fa-arrow-right"></i></span></div>
-            </button>
-            <button class="service-card rv" type="button" onclick="toggleServico(this)">
-                <div class="service-icon"><i class="fa-solid fa-person-cane"></i></div>
-                <h3 data-eid="srv-60-title" data-elabel="Serviço 60+ Título">Viagem 60+</h3>
-                <p data-eid="srv-60-desc" data-elabel="Serviço 60+ Texto">Conforto, segurança e experiências no ritmo certo para viajantes acima de 60 anos.</p>
-                <div class="service-more"><ul><li data-eid="srv-60-more-1" data-elabel="Serviço 60+ Detalhe 1">Hospedagens confortáveis e deslocamentos mais tranquilos.</li><li data-eid="srv-60-more-2" data-elabel="Serviço 60+ Detalhe 2">Roteiros com pausas, suporte e passeios adequados ao perfil do viajante.</li><li data-eid="srv-60-more-3" data-elabel="Serviço 60+ Detalhe 3">Atendimento próximo antes e durante a viagem.</li></ul><span class="btn btn-accent" onclick="solicitarServico(event, 'Viagem 60+')" data-eid="srv-60-cta" data-elabel="Serviço 60+ Botão">Solicitar <i class="fa-solid fa-arrow-right"></i></span></div>
-            </button>
-            <button class="service-card rv" type="button" onclick="toggleServico(this)">
-                <div class="service-icon"><i class="fa-solid fa-heart"></i></div>
-                <h3 data-eid="srv-lua-title" data-elabel="Serviço Lua de Mel Título">Lua de Mel / Cotas</h3>
-                <p data-eid="srv-lua-desc" data-elabel="Serviço Lua de Mel Texto">Pacotes românticos, cotas de presente e experiências especiais para casais.</p>
-                <div class="service-more"><ul><li data-eid="srv-lua-more-1" data-elabel="Serviço Lua de Mel Detalhe 1">Curadoria de destinos românticos, resorts e experiências exclusivas.</li><li data-eid="srv-lua-more-2" data-elabel="Serviço Lua de Mel Detalhe 2">Possibilidade de montar lista de cotas para convidados.</li><li data-eid="srv-lua-more-3" data-elabel="Serviço Lua de Mel Detalhe 3">Detalhes especiais para surpreender durante a viagem.</li></ul><span class="btn btn-accent" onclick="solicitarServico(event, 'Lua de Mel / Cotas')" data-eid="srv-lua-cta" data-elabel="Serviço Lua de Mel Botão">Solicitar <i class="fa-solid fa-arrow-right"></i></span></div>
-            </button>
-            <button class="service-card rv" type="button" onclick="toggleServico(this)">
-                <div class="service-icon"><i class="fa-solid fa-passport"></i></div>
-                <h3 data-eid="srv-visto-title" data-elabel="Serviço Visto Título">Assessoria Passaporte e Visto Americano</h3>
-                <p data-eid="srv-visto-desc" data-elabel="Serviço Visto Texto">Orientação para tirar passaporte e visto americano com mais clareza e segurança.</p>
-                <div class="service-more"><ul><li data-eid="srv-visto-more-1" data-elabel="Serviço Visto Detalhe 1">Checklist de documentos e orientação de preenchimento.</li><li data-eid="srv-visto-more-2" data-elabel="Serviço Visto Detalhe 2">Apoio na preparação para etapas do processo consular.</li><li data-eid="srv-visto-more-3" data-elabel="Serviço Visto Detalhe 3">Organização para reduzir dúvidas e retrabalho.</li></ul><span class="btn btn-accent" onclick="solicitarServico(event, 'Assessoria Passaporte e Visto Americano')" data-eid="srv-visto-cta" data-elabel="Serviço Visto Botão">Solicitar <i class="fa-solid fa-arrow-right"></i></span></div>
-            </button>
-            <button class="service-card rv" type="button" onclick="toggleServico(this)">
-                <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
-                <h3 data-eid="srv-corp-title" data-elabel="Serviço Corporativo Título">Viagens Corporativas</h3>
-                <p data-eid="srv-corp-desc" data-elabel="Serviço Corporativo Texto">Gestão de viagens para empresas com eficiência, economia e suporte.</p>
-                <div class="service-more"><ul><li data-eid="srv-corp-more-1" data-elabel="Serviço Corporativo Detalhe 1">Passagens, hospedagens e logística para equipes.</li><li data-eid="srv-corp-more-2" data-elabel="Serviço Corporativo Detalhe 2">Planejamento de custos, datas, traslados e necessidades especiais.</li><li data-eid="srv-corp-more-3" data-elabel="Serviço Corporativo Detalhe 3">Atendimento para eventos, reuniões, feiras e viagens recorrentes.</li></ul><span class="btn btn-accent" onclick="solicitarServico(event, 'Viagens Corporativas')" data-eid="srv-corp-cta" data-elabel="Serviço Corporativo Botão">Solicitar <i class="fa-solid fa-arrow-right"></i></span></div>
-            </button>
-            <button class="service-card rv" type="button" onclick="toggleServico(this)">
-                <div class="service-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <h3 data-eid="srv-pers-title" data-elabel="Serviço Personalizado Título">Pacote Personalizado</h3>
-                <p data-eid="srv-pers-desc" data-elabel="Serviço Personalizado Texto">Monte uma viagem do zero com consultoria sob medida para o seu perfil.</p>
-                <div class="service-more"><ul><li data-eid="srv-pers-more-1" data-elabel="Serviço Personalizado Detalhe 1">Escolha de destino, orçamento, hotéis, passeios e ritmo da viagem.</li><li data-eid="srv-pers-more-2" data-elabel="Serviço Personalizado Detalhe 2">Roteiro desenhado para família, casal, grupo ou viagem individual.</li><li data-eid="srv-pers-more-3" data-elabel="Serviço Personalizado Detalhe 3">Proposta personalizada enviada pelo WhatsApp.</li></ul><span class="btn btn-accent" onclick="solicitarServico(event, 'Pacote Personalizado')" data-eid="srv-pers-cta" data-elabel="Serviço Personalizado Botão">Solicitar <i class="fa-solid fa-arrow-right"></i></span></div>
-            </button>
+            <article class="service-card rv">
+                <div class="service-media"><img src="imagens/destinos/fortaleza-1.webp" alt="Roteiros para Solteiros" loading="lazy" decoding="async" data-eid="srv-sol-img" data-elabel="Serviço Solteiros Foto"></div>
+                <div class="service-body">
+                    <div class="service-icon"><i class="fa-solid fa-route"></i></div>
+                    <h3 data-eid="srv-sol-title" data-elabel="Serviço Solteiros Título">Roteiros para Solteiros</h3>
+                    <p data-eid="srv-sol-desc" data-elabel="Serviço Solteiros Texto">Aventura, liberdade e novas conexões para quem viaja solo ou em grupo de amigos.</p>
+                </div>
+            </article>
+            <article class="service-card rv">
+                <div class="service-media"><img src="imagens/destinos/gramado-1.jpg" alt="Viagem 60+" loading="lazy" decoding="async" data-eid="srv-60-img" data-elabel="Serviço 60+ Foto"></div>
+                <div class="service-body">
+                    <div class="service-icon"><i class="fa-solid fa-person-cane"></i></div>
+                    <h3 data-eid="srv-60-title" data-elabel="Serviço 60+ Título">Viagem 60+</h3>
+                    <p data-eid="srv-60-desc" data-elabel="Serviço 60+ Texto">Conforto, segurança e experiências no ritmo certo para viajantes acima de 60 anos.</p>
+                </div>
+            </article>
+            <article class="service-card rv">
+                <div class="service-media"><img src="imagens/destinos/maceio_maragogi.png" alt="Lua de Mel e Cotas" loading="lazy" decoding="async" data-eid="srv-lua-img" data-elabel="Serviço Lua de Mel Foto"></div>
+                <div class="service-body">
+                    <div class="service-icon"><i class="fa-solid fa-heart"></i></div>
+                    <h3 data-eid="srv-lua-title" data-elabel="Serviço Lua de Mel Título">Lua de Mel / Cotas</h3>
+                    <p data-eid="srv-lua-desc" data-elabel="Serviço Lua de Mel Texto">Pacotes românticos, cotas de presente e experiências especiais para casais.</p>
+                </div>
+            </article>
+            <article class="service-card rv">
+                <div class="service-media"><img src="imagens/destinos/miami.png" alt="Assessoria Passaporte e Visto Americano" loading="lazy" decoding="async" data-eid="srv-visto-img" data-elabel="Serviço Visto Foto"></div>
+                <div class="service-body">
+                    <div class="service-icon"><i class="fa-solid fa-passport"></i></div>
+                    <h3 data-eid="srv-visto-title" data-elabel="Serviço Visto Título">Assessoria Passaporte e Visto Americano</h3>
+                    <p data-eid="srv-visto-desc" data-elabel="Serviço Visto Texto">Orientação para tirar passaporte e visto americano com mais clareza e segurança.</p>
+                </div>
+            </article>
+            <article class="service-card rv">
+                <div class="service-media"><img src="imagens/destinos/nova_york.png" alt="Viagens Corporativas" loading="lazy" decoding="async" data-eid="srv-corp-img" data-elabel="Serviço Corporativo Foto"></div>
+                <div class="service-body">
+                    <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3 data-eid="srv-corp-title" data-elabel="Serviço Corporativo Título">Viagens Corporativas</h3>
+                    <p data-eid="srv-corp-desc" data-elabel="Serviço Corporativo Texto">Gestão de viagens para empresas com eficiência, economia e suporte.</p>
+                </div>
+            </article>
+            <article class="service-card rv">
+                <div class="service-media"><img src="imagens/destinos/cancun.png" alt="Pacote Personalizado" loading="lazy" decoding="async" data-eid="srv-pers-img" data-elabel="Serviço Personalizado Foto"></div>
+                <div class="service-body">
+                    <div class="service-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <h3 data-eid="srv-pers-title" data-elabel="Serviço Personalizado Título">Pacote Personalizado</h3>
+                    <p data-eid="srv-pers-desc" data-elabel="Serviço Personalizado Texto">Monte uma viagem do zero com consultoria sob medida para o seu perfil.</p>
+                </div>
+            </article>
         </div>
     </div>
 </section>
@@ -1218,6 +1246,6 @@
     }
 </script>
 <!-- ═══ EDITOR VISUAL ASAS BRASIL ═══ -->
-<script src="editor.js?v=20260514-topoedit"></script>
+<script src="editor.js?v=20260522-servicos-fotos"></script>
 </body>
 </html>

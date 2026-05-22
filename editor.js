@@ -314,6 +314,8 @@
             <div class="go-sep"></div>
             <button class="go-btn" id="go-destinos">Destinos</button>
             <div class="go-sep"></div>
+            <button class="go-btn" id="go-servicos">Servicos</button>
+            <div class="go-sep"></div>
             <button class="go-btn" id="go-footer">🧩 <span class="go-btn-lbl">Rodapé</span></button>
             <div class="go-sep"></div>
             <button class="go-btn" id="go-add-pkg">➕ <span class="go-btn-lbl">Pacote</span></button>
@@ -328,6 +330,7 @@
             document.getElementById('go-pages').onclick   = () => this.pPages();
             document.getElementById('go-topo').onclick    = () => this.pTopo();
             document.getElementById('go-destinos').onclick = () => this.pDestinos();
+            document.getElementById('go-servicos').onclick = () => this.pServicos();
             document.getElementById('go-footer').onclick  = () => this.pFooter();
             document.getElementById('go-add-pkg').onclick = () => this.pAddPacote();
             document.getElementById('go-colors').onclick  = () => this.pColors();
@@ -389,6 +392,40 @@
                 }).join('')}
             </div>`;
             p.querySelectorAll('.go-dest-item').forEach(btn => {
+                btn.onclick = () => {
+                    const el = document.querySelector(`[data-eid="${btn.dataset.eid}"]`);
+                    if (!el) {
+                        this.toast('Item nao encontrado nesta pagina.', 'err');
+                        return;
+                    }
+                    document.querySelectorAll('.go-sel').forEach(x => x.classList.remove('go-sel'));
+                    el.classList.add('go-sel');
+                    this.dispatch(el);
+                };
+            });
+        },
+
+        pServicos() {
+            const cards = Array.from(document.querySelectorAll('.services-grid .service-card'));
+            const p = this.panel_('Editar Servicos');
+            p.innerHTML += `<div class="go-pb">
+                <p class="go-hint-txt" style="margin-bottom:12px;">Edite a foto, titulo e texto de cada bloco. No site publico esses cards nao abrem nada.</p>
+                ${cards.map((card, idx) => {
+                    const title = card.querySelector('h3')?.textContent.trim() || `Servico ${idx + 1}`;
+                    const fields = Array.from(card.querySelectorAll('[data-eid]')).filter(el => {
+                        return el.tagName === 'IMG' || el.matches('h3,p');
+                    });
+                    const buttons = fields.map(el => {
+                        const kind = el.tagName === 'IMG' ? 'Foto' : (el.dataset.elabel || el.textContent.trim() || 'Campo');
+                        return `<button type="button" class="go-serv-item" data-eid="${el.dataset.eid}" style="width:100%;text-align:left;display:block;padding:8px 10px;background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#e8edf5;margin:6px 0;cursor:pointer;font-family:inherit;font-size:12px;">${kind}</button>`;
+                    }).join('');
+                    return `<details style="margin-bottom:10px;border:1px solid #d8dee9;border-radius:10px;padding:10px;background:#f8fafc;">
+                        <summary style="cursor:pointer;font-weight:800;color:#0b7890;">${title}</summary>
+                        ${buttons}
+                    </details>`;
+                }).join('')}
+            </div>`;
+            p.querySelectorAll('.go-serv-item').forEach(btn => {
                 btn.onclick = () => {
                     const el = document.querySelector(`[data-eid="${btn.dataset.eid}"]`);
                     if (!el) {
