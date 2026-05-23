@@ -13,5 +13,8 @@
   },
   "srv-sol-img": {
     "src": "imagens/destinos/fortaleza-2.webp"
+  },
+  "srv-visto-img": {
+    "src": "https://www.latamairlines.com/content/dam/latamxp/sites/vamos-latam/news-miami-02-2023/destino/resize/Img1_Miami.png"
   }
 }
