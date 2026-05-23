@@ -105,7 +105,14 @@
             }
             if (d.href  != null) el.setAttribute('href', d.href);
             if (d.target!= null) el.setAttribute('target', d.target);
-            if (d.style && typeof d.style === 'object') Object.assign(el.style, d.style);
+            if (d.style && typeof d.style === 'object') {
+                Object.entries(d.style).forEach(([prop, value]) => {
+                    if (value == null || value === '') return;
+                    const cssProp = prop.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
+                    const priority = ['color', 'font-size', 'background-color'].includes(cssProp) ? 'important' : '';
+                    el.style.setProperty(cssProp, value, priority);
+                });
+            }
         });
 
         // Mesclar pacotes novos publicados no DB (para visitantes sem rascunho)
@@ -580,8 +587,8 @@
             const tc   = p.querySelector('#gotc');
             const fs   = p.querySelector('#gofs');
             rich.oninput = () => el.innerHTML = rich.innerHTML;
-            tc.oninput   = () => { colorChanged = true; el.style.color = tc.value; };
-            fs.oninput   = () => { sizeChanged  = true; el.style.fontSize = fs.value + 'px'; };
+            tc.oninput   = () => { colorChanged = true; el.style.setProperty('color', tc.value, 'important'); };
+            fs.oninput   = () => { sizeChanged  = true; el.style.setProperty('font-size', fs.value + 'px', 'important'); };
             p.querySelector('#goa').onclick = () => {
                 const styleOverride = {};
                 if (colorChanged) styleOverride.color = tc.value;
