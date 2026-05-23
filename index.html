@@ -557,19 +557,24 @@
 
         /* ── WA FLOAT ── */
         .wa {
-            position: fixed; bottom: 24px; right: 24px;
+            position: fixed; bottom: max(24px, env(safe-area-inset-bottom)); right: max(24px, env(safe-area-inset-right));
+            left: auto !important;
             width: 56px; height: 56px; background: var(--wa); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 1.5rem; z-index: 888;
+            color: #fff; font-size: 1.5rem; z-index: 99990;
             box-shadow: 0 6px 18px rgba(37,211,102,.42);
             transition: transform .25s, box-shadow .25s;
         }
+        .wa i { position: relative; z-index: 1; line-height: 1; }
         .wa:hover { transform: scale(1.12); box-shadow: 0 10px 26px rgba(37,211,102,.55); }
         .wa::before {
             content: ''; position: absolute; inset: -6px; border-radius: 50%;
             background: rgba(37,211,102,.24); animation: wapulse 2s infinite;
         }
         @keyframes wapulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.35);opacity:0} }
+        @media (max-width: 640px) {
+            .wa { right: 18px !important; bottom: 18px !important; width: 54px; height: 54px; }
+        }
 
         /* ── REVEAL ── */
         .rv { opacity: 0; transform: translateY(26px); transition: opacity .55s ease, transform .55s ease; }
@@ -967,7 +972,7 @@
             <article class="service-card rv">
                 <div class="service-media"><img src="imagens/destinos/fortaleza-1.webp" alt="Roteiros para Solteiros" loading="lazy" decoding="async" data-eid="srv-sol-img" data-elabel="Serviço Solteiros Foto"></div>
                 <div class="service-body">
-                    <div class="service-icon"><i class="fa-solid fa-route"></i></div>
+                    <div class="service-icon"><i class="fa-solid fa-route" data-eid="srv-sol-icon" data-elabel="Serviço Solteiros Ícone"></i></div>
                     <h3 data-eid="srv-sol-title" data-elabel="Serviço Solteiros Título">Roteiros para Solteiros</h3>
                     <p data-eid="srv-sol-desc" data-elabel="Serviço Solteiros Texto">Aventura, liberdade e novas conexões para quem viaja solo ou em grupo de amigos.</p>
                 </div>
@@ -975,7 +980,7 @@
             <article class="service-card rv">
                 <div class="service-media"><img src="imagens/destinos/gramado-1.jpg" alt="Viagem 60+" loading="lazy" decoding="async" data-eid="srv-60-img" data-elabel="Serviço 60+ Foto"></div>
                 <div class="service-body">
-                    <div class="service-icon"><i class="fa-solid fa-person-cane"></i></div>
+                    <div class="service-icon"><i class="fa-solid fa-person-cane" data-eid="srv-60-icon" data-elabel="Serviço 60+ Ícone"></i></div>
                     <h3 data-eid="srv-60-title" data-elabel="Serviço 60+ Título">Viagem 60+</h3>
                     <p data-eid="srv-60-desc" data-elabel="Serviço 60+ Texto">Conforto, segurança e experiências no ritmo certo para viajantes acima de 60 anos.</p>
                 </div>
@@ -983,7 +988,7 @@
             <article class="service-card rv">
                 <div class="service-media"><img src="imagens/destinos/maceio_maragogi.png" alt="Lua de Mel e Cotas" loading="lazy" decoding="async" data-eid="srv-lua-img" data-elabel="Serviço Lua de Mel Foto"></div>
                 <div class="service-body">
-                    <div class="service-icon"><i class="fa-solid fa-heart"></i></div>
+                    <div class="service-icon"><i class="fa-solid fa-heart" data-eid="srv-lua-icon" data-elabel="Serviço Lua de Mel Ícone"></i></div>
                     <h3 data-eid="srv-lua-title" data-elabel="Serviço Lua de Mel Título">Lua de Mel / Cotas</h3>
                     <p data-eid="srv-lua-desc" data-elabel="Serviço Lua de Mel Texto">Pacotes românticos, cotas de presente e experiências especiais para casais.</p>
                 </div>
@@ -991,7 +996,7 @@
             <article class="service-card rv">
                 <div class="service-media"><img src="imagens/destinos/miami.png" alt="Assessoria Passaporte e Visto Americano" loading="lazy" decoding="async" data-eid="srv-visto-img" data-elabel="Serviço Visto Foto"></div>
                 <div class="service-body">
-                    <div class="service-icon"><i class="fa-solid fa-passport"></i></div>
+                    <div class="service-icon"><i class="fa-solid fa-passport" data-eid="srv-visto-icon" data-elabel="Serviço Visto Ícone"></i></div>
                     <h3 data-eid="srv-visto-title" data-elabel="Serviço Visto Título">Assessoria Passaporte e Visto Americano</h3>
                     <p data-eid="srv-visto-desc" data-elabel="Serviço Visto Texto">Orientação para tirar passaporte e visto americano com mais clareza e segurança.</p>
                 </div>
@@ -999,7 +1004,7 @@
             <article class="service-card rv">
                 <div class="service-media"><img src="imagens/destinos/nova_york.png" alt="Viagens Corporativas" loading="lazy" decoding="async" data-eid="srv-corp-img" data-elabel="Serviço Corporativo Foto"></div>
                 <div class="service-body">
-                    <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <div class="service-icon"><i class="fa-solid fa-briefcase" data-eid="srv-corp-icon" data-elabel="Serviço Corporativo Ícone"></i></div>
                     <h3 data-eid="srv-corp-title" data-elabel="Serviço Corporativo Título">Viagens Corporativas</h3>
                     <p data-eid="srv-corp-desc" data-elabel="Serviço Corporativo Texto">Gestão de viagens para empresas com eficiência, economia e suporte.</p>
                 </div>
@@ -1007,7 +1012,7 @@
             <article class="service-card rv">
                 <div class="service-media"><img src="imagens/destinos/cancun.png" alt="Pacote Personalizado" loading="lazy" decoding="async" data-eid="srv-pers-img" data-elabel="Serviço Personalizado Foto"></div>
                 <div class="service-body">
-                    <div class="service-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <div class="service-icon"><i class="fa-solid fa-wand-magic-sparkles" data-eid="srv-pers-icon" data-elabel="Serviço Personalizado Ícone"></i></div>
                     <h3 data-eid="srv-pers-title" data-elabel="Serviço Personalizado Título">Pacote Personalizado</h3>
                     <p data-eid="srv-pers-desc" data-elabel="Serviço Personalizado Texto">Monte uma viagem do zero com consultoria sob medida para o seu perfil.</p>
                 </div>
@@ -1032,19 +1037,19 @@
                 <p class="lead" data-eid="dif-sub" data-elabel="Subtítulo Diferenciais">Cada viagem começa com uma conversa real. Nossa equipe de especialistas conhece os destinos de perto — cada detalhe pensado para o seu perfil, seus sonhos e o seu momento.</p>
                 <div class="dif-list">
                     <div class="dif-item">
-                        <div class="dif-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="dif-icon"><i class="fa-solid fa-shield-halved" data-eid="dif-item1-icon" data-elabel="Diferencial 1 Ícone"></i></div>
                         <div><h4 data-eid="dif-item1-title" data-elabel="Diferencial 1 Título">Segurança e Confiabilidade</h4><p data-eid="dif-item1-desc" data-elabel="Diferencial 1 Texto">12 anos de atuação com milhares de famílias e parceiros verificados mundialmente.</p></div>
                     </div>
                     <div class="dif-item">
-                        <div class="dif-icon"><i class="fa-solid fa-headset"></i></div>
+                        <div class="dif-icon"><i class="fa-solid fa-headset" data-eid="dif-item2-icon" data-elabel="Diferencial 2 Ícone"></i></div>
                         <div><h4 data-eid="dif-item2-title" data-elabel="Diferencial 2 Título">Suporte 24h Durante a Viagem</h4><p data-eid="dif-item2-desc" data-elabel="Diferencial 2 Texto">Nossa equipe está disponível a qualquer hora. Qualquer imprevisto, resolvemos.</p></div>
                     </div>
                     <div class="dif-item">
-                        <div class="dif-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <div class="dif-icon"><i class="fa-solid fa-wand-magic-sparkles" data-eid="dif-item3-icon" data-elabel="Diferencial 3 Ícone"></i></div>
                         <div><h4 data-eid="dif-item3-title" data-elabel="Diferencial 3 Título">Experiências Exclusivas</h4><p data-eid="dif-item3-desc" data-elabel="Diferencial 3 Texto">Acesso a hotéis e experiências que não estão disponíveis para o público geral.</p></div>
                     </div>
                     <div class="dif-item">
-                        <div class="dif-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                        <div class="dif-icon"><i class="fa-solid fa-hand-holding-dollar" data-eid="dif-item4-icon" data-elabel="Diferencial 4 Ícone"></i></div>
                         <div><h4 data-eid="dif-item4-title" data-elabel="Diferencial 4 Título">Melhor Custo-Benefício</h4><p data-eid="dif-item4-desc" data-elabel="Diferencial 4 Texto">Nossa rede de parceiros oferece condições especiais que você não encontra em outros lugares.</p></div>
                     </div>
                 </div>
@@ -1070,19 +1075,19 @@
                 <p data-eid="contato-sub" data-elabel="Subtítulo Seção Contato">Preencha o formulário e nossa equipe entrará em contato em até 2 horas com uma proposta personalizada.</p>
                 <div class="finfo">
                     <div class="finfo-row">
-                        <div class="finfo-ico"><i class="fab fa-whatsapp"></i></div>
+                        <div class="finfo-ico"><i class="fab fa-whatsapp" data-eid="contact-whats-icon" data-elabel="Contato WhatsApp Ícone"></i></div>
                         <div><strong data-eid="auto-home-056" data-elabel="Texto home 56">WhatsApp</strong><span data-eid="info-whats" data-elabel="WhatsApp de Contato">(12) 99735-0810</span></div>
                     </div>
                     <div class="finfo-row">
-                        <div class="finfo-ico"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="finfo-ico"><i class="fa-solid fa-envelope" data-eid="contact-email-icon" data-elabel="Contato E-mail Ícone"></i></div>
                         <div><strong data-eid="auto-home-057" data-elabel="Texto home 57">E-mail</strong><span data-eid="info-email" data-elabel="E-mail de Contato">asasbrasilviagens@gmail.com</span></div>
                     </div>
                     <div class="finfo-row">
-                        <div class="finfo-ico"><i class="fa-solid fa-clock"></i></div>
+                        <div class="finfo-ico"><i class="fa-solid fa-clock" data-eid="contact-clock-icon" data-elabel="Contato Horário Ícone"></i></div>
                         <div><strong data-eid="auto-home-058" data-elabel="Texto home 58">Atendimento</strong><span data-eid="info-horario" data-elabel="Horário de Atendimento">Seg–Sex 8h–20h · Sáb 9h–15h</span></div>
                     </div>
                     <div class="finfo-row">
-                        <div class="finfo-ico"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="finfo-ico"><i class="fa-solid fa-location-dot" data-eid="contact-location-icon" data-elabel="Contato Localização Ícone"></i></div>
                         <div><strong data-eid="auto-home-059" data-elabel="Texto home 59">Localização</strong><span data-eid="auto-home-060" data-elabel="Texto home 60">São José dos Campos, SP</span></div>
                     </div>
                 </div>
@@ -1158,12 +1163,12 @@
         <div class="ft-top">
             <div class="ft-brand">
                 <a href="#home" class="logo" data-eid="ft-home-01" data-elabel="Rodape home 1">
-                    <div style="width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" style="width:48px;height:48px;object-fit:contain;"></div>
+                    <div style="width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" data-eid="ft-logo-img" data-elabel="Rodapé Logo" style="width:48px;height:48px;object-fit:contain;filter:none;opacity:1;"></div>
                 </a>
                 <p data-eid="ft-home-02" data-elabel="Rodape home 2">Consultoria especializada em viagens premium e roteiros personalizados para quem não aceita o comum.</p>
                 <div class="ft-social">
-                    <a href="https://www.instagram.com/asasbrasilviagens" target="_blank" aria-label="Instagram" data-eid="ft-home-03" data-elabel="Rodape home 3"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/5512997350810" aria-label="WhatsApp" data-eid="ft-home-04" data-elabel="Rodape home 4"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/asasbrasilviagens" target="_blank" aria-label="Instagram" data-eid="ft-home-03" data-elabel="Rodape home 3"><i class="fab fa-instagram" data-eid="ft-instagram-icon" data-elabel="Rodapé Instagram Ícone"></i></a>
+                    <a href="https://wa.me/5512997350810" aria-label="WhatsApp" data-eid="ft-home-04" data-elabel="Rodape home 4"><i class="fab fa-whatsapp" data-eid="ft-whatsapp-icon" data-elabel="Rodapé WhatsApp Ícone"></i></a>
                 </div>
             </div>
             <div>
@@ -1188,12 +1193,12 @@
             <div>
                 <h5 data-eid="ft-home-15" data-elabel="Rodape home 15">Contato</h5>
                 <div class="ft-links">
-                    <a href="https://wa.me/5512997350810" data-eid="ft-home-16" data-elabel="Rodape home 16"><i class="fab fa-whatsapp" style="color:var(--wa);margin-right:7px"></i>(12) 99735-0810</a>
-                    <a href="mailto:asasbrasilviagens@gmail.com" data-eid="ft-home-17" data-elabel="Rodape home 17"><i class="fa-solid fa-envelope" style="color:var(--accent);margin-right:7px"></i>asasbrasilviagens@gmail.com</a>
-                    <span data-eid="ft-home-18" data-elabel="Rodape home 18"><i class="fa-solid fa-location-dot" style="color:var(--accent);margin-right:7px"></i>São José dos Campos, SP</span>
-                    <span data-eid="ft-home-19" data-elabel="Rodape home 19"><i class="fa-solid fa-clock" style="color:var(--accent);margin-right:7px"></i>Seg–Sáb 8h–20h</span>
+                    <a href="https://wa.me/5512997350810" data-eid="ft-home-16" data-elabel="Rodape home 16"><i class="fab fa-whatsapp" data-eid="ft-contact-whats-icon" data-elabel="Rodapé Contato WhatsApp Ícone" style="color:var(--wa);margin-right:7px"></i>(12) 99735-0810</a>
+                    <a href="mailto:asasbrasilviagens@gmail.com" data-eid="ft-home-17" data-elabel="Rodape home 17"><i class="fa-solid fa-envelope" data-eid="ft-contact-email-icon" data-elabel="Rodapé Contato E-mail Ícone" style="color:var(--accent);margin-right:7px"></i>asasbrasilviagens@gmail.com</a>
+                    <span data-eid="ft-home-18" data-elabel="Rodape home 18"><i class="fa-solid fa-location-dot" data-eid="ft-contact-location-icon" data-elabel="Rodapé Contato Localização Ícone" style="color:var(--accent);margin-right:7px"></i>São José dos Campos, SP</span>
+                    <span data-eid="ft-home-19" data-elabel="Rodape home 19"><i class="fa-solid fa-clock" data-eid="ft-contact-clock-icon" data-elabel="Rodapé Contato Horário Ícone" style="color:var(--accent);margin-right:7px"></i>Seg–Sáb 8h–20h</span>
                     <a href="https://wa.me/5512997350810" target="_blank" style="display:flex;align-items:center;gap:8px;margin-top:10px;background:#25D366;color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;font-size:.9rem;" data-eid="ft-home-20" data-elabel="Rodape home 20">
-                        <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i> Entrar no Grupo VIP de Promoções
+                        <i class="fab fa-whatsapp" data-eid="ft-vip-whats-icon" data-elabel="Rodapé VIP WhatsApp Ícone" style="font-size:1.1rem;"></i> Entrar no Grupo VIP de Promoções
                     </a>
                 </div>
             </div>
@@ -1205,7 +1210,7 @@
     </div>
 </footer>
 
-<a href="https://wa.me/5512997350810" class="wa" aria-label="WhatsApp" data-eid="auto-home-075" data-elabel="Texto home 75"><i class="fab fa-whatsapp"></i></a>
+<a href="https://wa.me/5512997350810" class="wa" aria-label="WhatsApp" data-eid="auto-home-075" data-elabel="Texto home 75"><i class="fab fa-whatsapp" data-eid="wa-float-icon" data-elabel="WhatsApp Flutuante Ícone"></i></a>
 
 <script>
     // ── Header scroll ──
@@ -1352,6 +1357,6 @@
     }
 </script>
 <!-- ═══ EDITOR VISUAL ASAS BRASIL ═══ -->
-<script src="editor.js?v=20260522-style-important"></script>
+<script src="editor.js?v=20260523-icons-edit"></script>
 </body>
 </html>

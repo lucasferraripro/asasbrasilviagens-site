@@ -92,6 +92,18 @@
         document.querySelectorAll('[data-eid]').forEach(el => {
             const d = cms[el.dataset.eid];
             if (!d) return;
+            if (d.removed === true) {
+                el.remove();
+                return;
+            }
+            if (d.hidden === true) {
+                el.style.display = 'none';
+            } else if (d.hidden === false && el.style.display === 'none') {
+                el.style.display = '';
+            }
+            if (d.icon != null && el.tagName === 'I') {
+                el.className = d.icon;
+            }
             if (d.html  != null) el.innerHTML = d.html;
             if (d.text  != null) el.textContent = d.text;
             if (d.src != null && el.tagName === 'IMG') {
@@ -416,14 +428,14 @@
             const cards = Array.from(document.querySelectorAll('.services-grid .service-card'));
             const p = this.panel_('Editar Servicos');
             p.innerHTML += `<div class="go-pb">
-                <p class="go-hint-txt" style="margin-bottom:12px;">Edite a foto, titulo e texto de cada bloco. No site publico esses cards nao abrem nada.</p>
+                <p class="go-hint-txt" style="margin-bottom:12px;">Edite a foto, icone, titulo e texto de cada bloco. No site publico esses cards nao abrem nada.</p>
                 ${cards.map((card, idx) => {
                     const title = card.querySelector('h3')?.textContent.trim() || `Servico ${idx + 1}`;
                     const fields = Array.from(card.querySelectorAll('[data-eid]')).filter(el => {
-                        return el.tagName === 'IMG' || el.matches('h3,p');
+                        return el.tagName === 'IMG' || el.tagName === 'I' || el.matches('h3,p');
                     });
                     const buttons = fields.map(el => {
-                        const kind = el.tagName === 'IMG' ? 'Foto' : (el.dataset.elabel || el.textContent.trim() || 'Campo');
+                        const kind = el.tagName === 'IMG' ? 'Foto' : el.tagName === 'I' ? (el.dataset.elabel || 'Icone') : (el.dataset.elabel || el.textContent.trim() || 'Campo');
                         return `<button type="button" class="go-serv-item" data-eid="${el.dataset.eid}" style="width:100%;text-align:left;display:block;padding:8px 10px;background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#e8edf5;margin:6px 0;cursor:pointer;font-family:inherit;font-size:12px;">${kind}</button>`;
                     }).join('');
                     return `<details style="margin-bottom:10px;border:1px solid #d8dee9;border-radius:10px;padding:10px;background:#f8fafc;">
@@ -468,6 +480,7 @@
 
         dispatch(el) {
             if (el.tagName === 'IMG')                      this.pImage(el);
+            else if (el.tagName === 'I')                    this.pIcon(el);
             else if (el.tagName === 'A')                   this.pLink(el);
             else if (el.classList.contains('go-incluso'))  this.pInclusoItem(el);
             else                                           this.pText(el);
@@ -521,7 +534,7 @@
             const footerItems = Array.from(document.querySelectorAll('footer [data-eid]'))
                 .filter(el => {
                     const txt = (el.textContent || el.alt || el.getAttribute('aria-label') || '').trim();
-                    return txt || el.tagName === 'IMG' || el.tagName === 'A';
+                    return txt || el.tagName === 'IMG' || el.tagName === 'A' || el.tagName === 'I';
                 });
             const p = this.panel_('🧩 Editar Rodapé');
             if (!footerItems.length) {
@@ -532,6 +545,8 @@
                 const label = el.dataset.elabel || el.dataset.eid || `Campo ${i + 1}`;
                 const value = (el.tagName === 'IMG')
                     ? (el.getAttribute('src') || '')
+                    : (el.tagName === 'I')
+                        ? (el.className || '')
                     : (el.textContent || el.getAttribute('aria-label') || '').trim();
                 return `<button type="button" class="go-footer-item" data-eid="${el.dataset.eid}" style="width:100%;text-align:left;display:block;padding:10px 12px;background:#0f1623;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e8edf5;margin-bottom:8px;cursor:pointer;font-family:inherit;">
                     <strong style="display:block;font-size:12px;color:#fff;margin-bottom:3px;">${label}</strong>
@@ -601,6 +616,99 @@
             };
             p.querySelector('#goc').onclick = () => {
                 el.innerHTML = origHTML;
+                el.setAttribute('style', origStyle);
+                this.closePanel();
+            };
+        },
+
+        /* ── ICONE ── */
+        pIcon(el) {
+            const eid = el.dataset.eid;
+            const origClass = el.className;
+            const origStyle = el.getAttribute('style') || '';
+            const current = (this.cms[eid] && this.cms[eid].icon) || origClass;
+            const p = this.panel_('Editar Icone - ' + (el.dataset.elabel || ''));
+            const options = [
+                ['fa-solid fa-route', 'Rota'],
+                ['fa-solid fa-person-cane', 'Pessoa 60+'],
+                ['fa-solid fa-heart', 'Coracao'],
+                ['fa-solid fa-passport', 'Passaporte'],
+                ['fa-solid fa-briefcase', 'Maleta'],
+                ['fa-solid fa-wand-magic-sparkles', 'Magia'],
+                ['fa-solid fa-shield-halved', 'Escudo'],
+                ['fa-solid fa-headset', 'Suporte'],
+                ['fa-solid fa-hand-holding-dollar', 'Custo-beneficio'],
+                ['fa-solid fa-location-dot', 'Localizacao'],
+                ['fa-solid fa-envelope', 'Email'],
+                ['fa-solid fa-clock', 'Relogio'],
+                ['fab fa-whatsapp', 'WhatsApp'],
+                ['fab fa-instagram', 'Instagram'],
+                ['fa-solid fa-star', 'Estrela'],
+                ['fa-solid fa-arrow-right', 'Seta direita'],
+                ['fa-solid fa-check', 'Check'],
+                ['fa-solid fa-plane', 'Aviao']
+            ];
+            p.innerHTML += `<div class="go-pb">
+                <div class="go-f">
+                    <label>Classe do icone Font Awesome</label>
+                    <input type="text" id="goic" value="${current.replace(/"/g, '&quot;')}" placeholder="fa-solid fa-route">
+                    <p class="go-hint-txt">Pode colar qualquer classe Font Awesome usada no site.</p>
+                </div>
+                <div class="go-f">
+                    <label>Atalhos</label>
+                    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;">
+                        ${options.map(([cls,label]) => `<button type="button" class="go-icon-pick" data-icon="${cls}" style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#0f1623;color:#e8edf5;cursor:pointer;font-family:inherit;font-size:12px;"><i class="${cls}"></i><span>${label}</span></button>`).join('')}
+                    </div>
+                </div>
+                <div class="go-acts">
+                    <button class="go-ok" id="goa">Aplicar</button>
+                    <button class="go-ko" id="gohide">Ocultar</button>
+                    <button class="go-ko" id="gorm">Remover</button>
+                    <button class="go-ko" id="goc">Cancelar</button>
+                </div>
+            </div>`;
+            const input = p.querySelector('#goic');
+            const preview = () => {
+                const cls = input.value.trim();
+                if (cls) el.className = cls;
+                el.style.display = '';
+            };
+            input.oninput = preview;
+            p.querySelectorAll('.go-icon-pick').forEach(btn => {
+                btn.onclick = () => {
+                    input.value = btn.dataset.icon;
+                    preview();
+                };
+            });
+            p.querySelector('#goa').onclick = () => {
+                const cls = input.value.trim();
+                if (!cls) {
+                    input.focus();
+                    return;
+                }
+                el.className = cls;
+                el.style.display = '';
+                this.store(eid, { icon: cls, hidden: false });
+                this.closePanel();
+                this.toast('Icone salvo no rascunho', 'ok');
+            };
+            p.querySelector('#gohide').onclick = () => {
+                const cls = input.value.trim() || origClass;
+                el.className = cls;
+                el.style.display = 'none';
+                this.store(eid, { icon: cls, hidden: true });
+                this.closePanel();
+                this.toast('Icone ocultado. Clique em Publicar.', 'ok');
+            };
+            p.querySelector('#gorm').onclick = () => {
+                if (!confirm('Remover este icone da pagina publicada?')) return;
+                this.store(eid, { removed: true });
+                el.remove();
+                this.closePanel();
+                this.toast('Icone removido. Clique em Publicar.', 'ok');
+            };
+            p.querySelector('#goc').onclick = () => {
+                el.className = origClass;
                 el.setAttribute('style', origStyle);
                 this.closePanel();
             };
