@@ -698,6 +698,20 @@
                 radial-gradient(circle at 45% 12%, rgba(0,229,255,.13), transparent 34%),
                 linear-gradient(180deg, rgba(2,8,19,.08), rgba(2,8,19,.18)) !important;
         }
+        #home {
+            min-height: clamp(430px, 43vw, 680px);
+            padding: 0;
+            align-items: stretch;
+        }
+        #home > .container,
+        #home .hero-body,
+        #home .hero-scroll {
+            display: none !important;
+        }
+        #home .hero-bg img {
+            object-fit: contain !important;
+            object-position: center center;
+        }
         .hero-badge { background: rgba(0,229,255,.10); border-color: rgba(0,229,255,.34); color: var(--text); }
         .hero-h1 em, .label, .card-price, .stat-n, .dif-badge strong { color: var(--accent); }
         .btn-accent, .btn-navy { background: var(--accent); color: #020813; box-shadow: 0 0 0 1px rgba(0,229,255,.16), 0 12px 30px rgba(0,229,255,.18); }
