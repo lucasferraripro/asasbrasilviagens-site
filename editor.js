@@ -447,6 +447,8 @@
                 if (el && document.body.classList.contains('go-on')) {
                     // Ignora se estiver clicando dentro do painel do editor
                     if (e.target.closest('.go-panel') || e.target.closest('#go-bar')) return;
+                    const navLink = el.closest('.hdr-nav a[href^="#"], #mobile-panel a[href^="#"], .hero-btns a[href^="#"]');
+                    if (navLink) return;
 
                     e.preventDefault();
                     e.stopPropagation();

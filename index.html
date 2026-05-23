@@ -693,7 +693,7 @@
              alt="Hero background"
              data-eid="hero-bg-img" data-elabel="Foto de Fundo do Hero"
              style="width:100%;height:100%;object-fit:cover;display:block;">
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,36,71,.88) 0%,rgba(15,36,71,.46) 70%);pointer-events:none;"></div>
+        <div class="hero-shade" style="position:absolute;inset:0;background:rgba(15,36,71,.06);pointer-events:none;"></div>
     </div>
     <div class="container">
         <div class="hero-body">
@@ -1129,6 +1129,18 @@
         burger.classList.remove('open');
         panel.classList.remove('open');
     }
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+            const id = link.getAttribute('href');
+            if (!id || id === '#') return;
+            const target = document.querySelector(id);
+            if (!target) return;
+            e.preventDefault();
+            closePanel();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
 
     // ── Reveal on scroll ──
     const obs = new IntersectionObserver((entries) => {
