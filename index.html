@@ -557,8 +557,12 @@
 
         /* ── WA FLOAT ── */
         .wa {
-            position: fixed; bottom: max(24px, env(safe-area-inset-bottom)); right: max(24px, env(safe-area-inset-right));
+            position: fixed !important;
+            right: max(24px, env(safe-area-inset-right)) !important;
+            bottom: max(24px, env(safe-area-inset-bottom)) !important;
             left: auto !important;
+            top: auto !important;
+            transform: none;
             width: 56px; height: 56px; background: var(--wa); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: #fff; font-size: 1.5rem; z-index: 99990;
@@ -566,14 +570,15 @@
             transition: transform .25s, box-shadow .25s;
         }
         .wa i { position: relative; z-index: 1; line-height: 1; }
-        .wa:hover { transform: scale(1.12); box-shadow: 0 10px 26px rgba(37,211,102,.55); }
+        body > a.wa { right: 24px !important; left: auto !important; }
+        .wa:hover { transform: scale(1.08); box-shadow: 0 10px 26px rgba(37,211,102,.55); }
         .wa::before {
             content: ''; position: absolute; inset: -6px; border-radius: 50%;
             background: rgba(37,211,102,.24); animation: wapulse 2s infinite;
         }
         @keyframes wapulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.35);opacity:0} }
         @media (max-width: 640px) {
-            .wa { right: 18px !important; bottom: 18px !important; width: 54px; height: 54px; }
+            body > a.wa { right: 18px !important; left: auto !important; bottom: 18px !important; width: 54px; height: 54px; }
         }
 
         /* ── REVEAL ── */
@@ -1162,8 +1167,8 @@
     <div class="container">
         <div class="ft-top">
             <div class="ft-brand">
-                <a href="#home" class="logo" data-eid="ft-home-01" data-elabel="Rodape home 1">
-                    <div style="width:52px;height:52px;border-radius:50%;overflow:hidden;background:#fff;border:2px solid rgba(255,255,255,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><img src="logo.png" alt="Asas Brasil Viagens" data-eid="ft-logo-img" data-elabel="Rodapé Logo" style="width:48px;height:48px;object-fit:contain;filter:none;opacity:1;"></div>
+                <a href="https://www.instagram.com/asasbrasilviagens" target="_blank" class="logo" data-eid="ft-home-01" data-elabel="Rodapé Logo Link">
+                    <div style="width:82px;height:82px;border-radius:50%;overflow:hidden;background:#fff;border:3px solid rgba(0,229,255,0.35);flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(0,229,255,.18);"><img src="logo.png" alt="Asas Brasil Viagens" data-eid="ft-logo-img" data-elabel="Rodapé Logo Imagem" style="width:76px;height:76px;object-fit:contain;filter:none;opacity:1;"></div>
                 </a>
                 <p data-eid="ft-home-02" data-elabel="Rodape home 2">Consultoria especializada em viagens premium e roteiros personalizados para quem não aceita o comum.</p>
                 <div class="ft-social">
