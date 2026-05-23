@@ -1,6 +1,9 @@
 {
   "hero-badge": {
-    "html": "<i class=\"fa-solid fa-star\"></i> Consultoria de Viagens"
+    "html": "<i class=\"fa-solid fa-star\"></i> Consultoria de Viagens",
+    "style": {
+      "color": "#F7FBFF"
+    }
   },
   "hero-title": {
     "html": "Tudo que Você Precisa para Sua Viagem em um Só Lugar. Viagens que <em data-eid=\"auto-home-019\" data-elabel=\"Texto home 19\">transformam</em> para sempre!"
