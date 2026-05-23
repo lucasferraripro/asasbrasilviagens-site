@@ -688,31 +688,29 @@
             box-shadow: inset 0 -1px 0 rgba(0,229,255,.24);
         }
         .hero-bg img {
-            object-fit: contain !important;
+            object-fit: cover !important;
             object-position: center center;
             background: #020813;
-            opacity: .2 !important;
-            filter: saturate(1.18) contrast(1.05) drop-shadow(0 0 28px rgba(0,229,255,.20));
+            opacity: .72 !important;
+            filter: saturate(1.08) contrast(1.02);
         }
         .hero-shade {
             background:
-                radial-gradient(circle at 45% 12%, rgba(0,229,255,.16), transparent 34%),
-                linear-gradient(180deg, rgba(2,8,19,.58), rgba(2,8,19,.72)) !important;
+                linear-gradient(90deg, rgba(2,8,19,.72) 0%, rgba(2,8,19,.42) 48%, rgba(2,8,19,.66) 100%),
+                radial-gradient(circle at 46% 20%, rgba(0,229,255,.14), transparent 36%) !important;
         }
         #home {
-            min-height: clamp(430px, 43vw, 680px);
-            padding: 0;
-            align-items: stretch;
+            min-height: 640px;
+            padding: 120px 0 82px;
+            align-items: center;
         }
-        #home > .container,
-        #home .hero-body,
-        #home .hero-scroll {
-            display: none !important;
-        }
+        #home > .container { display: block !important; }
+        #home .hero-body { display: block !important; max-width: 720px; }
+        #home .hero-scroll { display: flex !important; }
         #home .hero-bg img {
-            object-fit: contain !important;
+            object-fit: cover !important;
             object-position: center center;
-            opacity: .2 !important;
+            opacity: .72 !important;
         }
         .hero-badge { background: rgba(0,229,255,.10); border-color: rgba(0,229,255,.34); color: var(--text); }
         .hero-h1 em, .label, .card-price, .stat-n, .dif-badge strong { color: var(--accent); }
