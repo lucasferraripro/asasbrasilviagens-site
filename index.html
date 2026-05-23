@@ -691,12 +691,13 @@
             object-fit: contain !important;
             object-position: center center;
             background: #020813;
-            filter: drop-shadow(0 0 28px rgba(0,229,255,.20));
+            opacity: .2 !important;
+            filter: saturate(1.18) contrast(1.05) drop-shadow(0 0 28px rgba(0,229,255,.20));
         }
         .hero-shade {
             background:
-                radial-gradient(circle at 45% 12%, rgba(0,229,255,.13), transparent 34%),
-                linear-gradient(180deg, rgba(2,8,19,.08), rgba(2,8,19,.18)) !important;
+                radial-gradient(circle at 45% 12%, rgba(0,229,255,.16), transparent 34%),
+                linear-gradient(180deg, rgba(2,8,19,.58), rgba(2,8,19,.72)) !important;
         }
         #home {
             min-height: clamp(430px, 43vw, 680px);
@@ -711,6 +712,7 @@
         #home .hero-bg img {
             object-fit: contain !important;
             object-position: center center;
+            opacity: .2 !important;
         }
         .hero-badge { background: rgba(0,229,255,.10); border-color: rgba(0,229,255,.34); color: var(--text); }
         .hero-h1 em, .label, .card-price, .stat-n, .dif-badge strong { color: var(--accent); }
