@@ -103,6 +103,34 @@
             .hero-sobre h1 { font-size: 2rem; }
             .agente-inner { grid-template-columns: 1fr; }
         }
+        /* Tema escuro azul/ciano */
+        :root {
+            --primary: #00D7FF;
+            --primary-dark: #020813;
+            --accent: #00E5FF;
+            --wa: #16D67A;
+            --white: #0B1220;
+            --off-white: #050A12;
+            --text-dark: #F7FBFF;
+            --text-medium: #A9B8C7;
+        }
+        body { background: #050A12; color: var(--text-dark); }
+        .header { background: rgba(2,8,19,.96); border-bottom: 1px solid rgba(0,229,255,.18); box-shadow: 0 10px 34px rgba(0,0,0,.36); }
+        .hdr-nav a, #sobre-mobile-panel a { color: var(--text-dark); }
+        .hdr-burger span { background: var(--accent); }
+        #sobre-mobile-panel { background: #070D18; border-bottom: 1px solid rgba(0,229,255,.18); }
+        .hero-sobre, .stats, .footer { background: #020813; }
+        .content, .clientes { background: #050A12; }
+        .agente, .cvc-banner { background: #070D18; }
+        .diff-item {
+            background: linear-gradient(180deg, #0B1220 0%, #070D18 100%);
+            border: 1px solid rgba(0,229,255,.18);
+            box-shadow: 0 18px 46px rgba(0,0,0,.24);
+        }
+        .text-section h2, .diff-item h4, .agente-text h2, .clientes h2, .cvc-banner h2 { color: var(--text-dark); }
+        .text-section p, .diff-item p, .agente-text p, .clientes .sub, .cvc-banner p { color: var(--text-medium); }
+        .stat-item h3, .diff-item i { color: var(--accent); }
+        .header-cta, .agente-text .tag, .btn-group { background: var(--accent); color: #020813; }
     </style>
 </head>
 <body>

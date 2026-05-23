@@ -637,6 +637,46 @@
         }
 
         @media (max-width: 640px) { .insta-2col { grid-template-columns: 1fr !important; } }
+        /* Tema escuro azul/ciano */
+        :root {
+            --navy: #00D7FF;
+            --navy-dark: #020813;
+            --accent: #00E5FF;
+            --accent-d: #00B8D8;
+            --gold: #36F4FF;
+            --text: #F7FBFF;
+            --muted: #A9B8C7;
+            --bg: #050A12;
+            --white: #0B1220;
+            --border: rgba(0,229,255,.18);
+            --wa: #16D67A;
+        }
+        body { background: #050A12; color: var(--text); }
+        #header { background: rgba(2,8,19,.78); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(0,229,255,.12); }
+        #header.solid { background: rgba(2,8,19,.96); box-shadow: 0 12px 38px rgba(0,0,0,.45); }
+        #header.solid .logo, #header.solid .hdr-nav a { color: var(--text); }
+        #header.solid .logo-sub { color: var(--muted); }
+        #mobile-panel { background: #070D18; border-bottom: 1px solid var(--border); }
+        #mobile-panel a:hover { background: rgba(0,229,255,.08); }
+        #home { background: #020813; }
+        .hero-badge { background: rgba(0,229,255,.10); border-color: rgba(0,229,255,.34); color: var(--text); }
+        .hero-h1 em, .label, .card-price, .stat-n, .dif-badge strong { color: var(--accent); }
+        .btn-accent, .btn-navy { background: var(--accent); color: #020813; box-shadow: 0 0 0 1px rgba(0,229,255,.16), 0 12px 30px rgba(0,229,255,.18); }
+        .btn-accent:hover, .btn-navy:hover { background: var(--accent-d); color: #020813; }
+        .btn-ghost { background: rgba(2,8,19,.48); border-color: rgba(255,255,255,.28); }
+        .stats-bar, footer, .dep-bg { background: #020813; border-color: var(--accent); }
+        .section, .dest-bg, .services-section, .contact-bg { background: #050A12; }
+        .step, .card-link, .service-card, .form-card, .cblock, .cat-card {
+            background: linear-gradient(180deg, #0B1220 0%, #070D18 100%);
+            border-color: var(--border);
+            box-shadow: 0 18px 46px rgba(0,0,0,.24);
+        }
+        .step:hover, .card-link:hover, .service-card:hover { border-color: rgba(0,229,255,.5); box-shadow: 0 22px 56px rgba(0,229,255,.12); }
+        .h2, .step h3, .card-body h3, .service-card h3, .dif-item h4, .finfo-row strong, .card-arrow { color: var(--text); }
+        .lead, .step p, .card-loc, .service-card > p, .dif-item p, .form-left p, .finfo-row span, .ft-links a { color: var(--muted); }
+        .card-flag, input, select, textarea { background: #07111F; color: var(--text); border-color: var(--border); }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,255,.13); }
+        .finfo-ico, .service-icon, .dif-icon { background: rgba(0,229,255,.09); color: var(--accent); }
 </style>
 </head>
 <body>

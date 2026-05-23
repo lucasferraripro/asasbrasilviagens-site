@@ -88,6 +88,35 @@
             .feed-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
             .insta-img { height: 350px; }
         }
+        /* Tema escuro azul/ciano */
+        :root {
+            --navy: #00D7FF;
+            --navy-dark: #020813;
+            --accent: #00E5FF;
+            --accent-d: #00B8D8;
+            --text: #F7FBFF;
+            --muted: #A9B8C7;
+            --bg: #050A12;
+            --white: #0B1220;
+            --border: rgba(0,229,255,.18);
+            --wa: #16D67A;
+        }
+        body { background: #050A12; color: var(--text); }
+        header { background: rgba(2,8,19,.96); border-bottom-color: var(--border); box-shadow: 0 10px 34px rgba(0,0,0,.36); }
+        .logo, .hdr-nav a, #mobile-panel a { color: var(--text); }
+        .hdr-nav a:hover, #mobile-panel a:hover, .insta-user strong, .insta-btn { color: var(--accent); }
+        .burger span { background: var(--accent); }
+        #mobile-panel { background: #070D18; border-bottom: 1px solid var(--border); }
+        .page-hero, footer { background: #020813; }
+        main { background: #050A12; }
+        .insta-card {
+            background: linear-gradient(180deg, #0B1220 0%, #070D18 100%);
+            border-color: var(--border);
+            box-shadow: 0 18px 46px rgba(0,0,0,.24);
+        }
+        .insta-text, footer { color: var(--muted); }
+        .insta-av { background: #07111F; border-color: var(--border); }
+        .btn-wa { background: var(--accent); color: #020813; }
     </style>
 </head>
 <body>

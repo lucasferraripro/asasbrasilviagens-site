@@ -422,6 +422,42 @@
         .cat-desc { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 16px; }
         .cat-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--accent); }
         .cat-card:hover .cat-btn { gap: 10px; }
+        /* Tema escuro azul/ciano */
+        :root {
+            --navy: #00D7FF;
+            --navy-dark: #020813;
+            --accent: #00E5FF;
+            --accent-d: #00B8D8;
+            --gold: #36F4FF;
+            --text: #F7FBFF;
+            --muted: #A9B8C7;
+            --bg: #050A12;
+            --white: #0B1220;
+            --border: rgba(0,229,255,.18);
+            --wa: #16D67A;
+        }
+        body { background: #050A12; color: var(--text); }
+        header { background: rgba(2,8,19,.96); border-bottom-color: var(--border); box-shadow: 0 10px 34px rgba(0,0,0,.36); }
+        .logo, .hdr-nav a, #mobile-panel a { color: var(--text); }
+        .hdr-nav a:hover, #mobile-panel a:hover { color: var(--accent); }
+        .burger span { background: var(--accent); }
+        #mobile-panel { background: #070D18; border-bottom: 1px solid var(--border); }
+        .pkg-hero { background: #020813; border-bottom: 1px solid var(--border); }
+        .label, .meta-tag i, .pm-row i, .price-acc, .card-price, .roteiro-day-num, .cat-btn { color: var(--accent); }
+        .h2, .cblock-title, .price-num, .card-body h3, .card-arr, .cat-title, .roteiro-body h4 { color: var(--text); }
+        .pkg-desc, .nao-incluso-list li, .nao-incluso-label, .roteiro-day-lbl, .roteiro-body p, .price-from, .price-note, .card-loc, .cat-desc { color: var(--muted); }
+        .cblock, .price-card, .card-link, .cat-card {
+            background: linear-gradient(180deg, #0B1220 0%, #070D18 100%);
+            border-color: var(--border);
+            box-shadow: 0 18px 46px rgba(0,0,0,.24);
+        }
+        .price-meta, .outros, .cat-section { background: #050A12; }
+        .thumb.on, .cat-card:hover { border-color: var(--accent); }
+        .btn-accent, .btn-navy, .car-btn:hover { background: var(--accent); color: #020813; }
+        .btn-outline { color: var(--accent); border-color: var(--accent); }
+        .btn-outline:hover { background: var(--accent); color: #020813; }
+        .card-flag { background: rgba(2,8,19,.82); color: var(--accent); border: 1px solid var(--border); }
+        footer { background: #020813; border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>

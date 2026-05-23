@@ -73,6 +73,19 @@
             border: 2px solid #E5E9F2;
         }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+        /* Tema escuro azul/ciano */
+        :root {
+            --primary: #00D7FF;
+            --accent: #00E5FF;
+            --text: #F7FBFF;
+            --muted: #A9B8C7;
+            --bg: #050A12;
+        }
+        body { background: #050A12; color: var(--text); }
+        .btn-primary { background: var(--accent); color: #020813; }
+        .btn-primary:hover { background: #00B8D8; }
+        .btn-outline { background: #0B1220; color: var(--text); border-color: rgba(0,229,255,.18); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
     </style>
 </head>
 <body>
