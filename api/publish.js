@@ -16,6 +16,10 @@ function cleanContent(content) {
     if (!content || typeof content !== 'object') return {};
     const out = {};
     Object.entries(content).forEach(([key, value]) => {
+        if (value === null) {
+            out[key] = null;
+            return;
+        }
         if (key === '__new_packages' && value && typeof value === 'object' && !Array.isArray(value)) {
             out[key] = {};
             Object.entries(value).forEach(([pkgId, pkg]) => {
@@ -38,11 +42,23 @@ function cleanContent(content) {
     return out;
 }
 
+function cleanPersistedContent(content) {
+    const cleaned = cleanContent(content);
+    Object.keys(cleaned).forEach(key => {
+        if (cleaned[key] === null) delete cleaned[key];
+    });
+    return cleaned;
+}
+
 function mergeContent(existing, incoming) {
-    const base = cleanContent(existing || {});
+    const base = cleanPersistedContent(existing || {});
     const next = cleanContent(incoming || {});
     const merged = { ...base };
     Object.entries(next).forEach(([key, value]) => {
+        if (value === null) {
+            delete merged[key];
+            return;
+        }
         if (
             value && typeof value === 'object' && !Array.isArray(value) &&
             merged[key] && typeof merged[key] === 'object' && !Array.isArray(merged[key])
@@ -52,16 +68,40 @@ function mergeContent(existing, incoming) {
             merged[key] = value;
         }
     });
-    return cleanContent(merged);
+    return cleanPersistedContent(merged);
 }
 
-/**
- * Asas Brasil Viagens — API de Publicação
- * Recebe o content.json do editor, commita no GitHub,
- * e o Vercel faz deploy automático em ~30 segundos.
- */
+function sameJson(a, b) {
+    return JSON.stringify(a) === JSON.stringify(b);
+}
+
+async function readGithubContent(apiBase, headers) {
+    const r = await fetch(apiBase + '?_=' + Date.now(), { headers });
+    if (!r.ok) throw new Error('Falha ao ler content.json no GitHub: HTTP ' + r.status);
+    const data = await r.json();
+    if (!data.content) return {};
+    return JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
+}
+
+async function waitForGithubContent(apiBase, headers, expected) {
+    const expectedClean = cleanPersistedContent(expected || {});
+    let lastContent = {};
+    for (let i = 0; i < 6; i++) {
+        lastContent = cleanPersistedContent(await readGithubContent(apiBase, headers));
+        if (sameJson(lastContent, expectedClean)) return lastContent;
+        await new Promise(resolve => setTimeout(resolve, 700));
+    }
+    throw new Error('O GitHub recebeu o commit, mas o content.json publicado nao bate com o conteudo enviado. Rascunho preservado.');
+}
+
+async function triggerDeployHook() {
+    const hook = process.env.VERCEL_DEPLOY_HOOK_URL;
+    if (!hook) return { skipped: true };
+    const r = await fetch(hook, { method: 'POST' });
+    return { skipped: false, ok: r.ok, status: r.status };
+}
+
 export default async function handler(req, res) {
-    // CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -71,7 +111,6 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    // Parse body (Vercel pode não parsear automaticamente)
     let body;
     try {
         body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -81,33 +120,32 @@ export default async function handler(req, res) {
             body = JSON.parse(Buffer.concat(chunks).toString());
         }
     } catch {
-        return res.status(400).json({ error: 'Body inválido' });
+        return res.status(400).json({ error: 'Body invalido' });
     }
 
     const { content, secret } = body;
 
-    // Verifica senha admin
     const adminSecret = process.env.ADMIN_SECRET || 'AsasBrasil@2025';
     if (secret !== adminSecret) {
-        return res.status(401).json({ error: 'Não autorizado' });
+        return res.status(401).json({ error: 'Nao autorizado' });
     }
 
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
-        return res.status(500).json({ error: 'GITHUB_TOKEN nÃ£o configurado no Vercel.' });
+        return res.status(500).json({ error: 'GITHUB_TOKEN nao configurado no Vercel.' });
     }
+
     const owner = process.env.GITHUB_OWNER || 'lucasferraripro';
-    const repo  = process.env.GITHUB_REPO  || 'asasbrasilviagens-site';
-    const path  = 'content.json';
+    const repo = process.env.GITHUB_REPO || 'asasbrasilviagens-site';
+    const path = 'content.json';
     const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
     const headers = {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'asasbrasil-editor/1.0'
+        Authorization: `token ${token}`,
+        Accept: 'application/vnd.github.v3+json',
+        'User-Agent': 'asasbrasil-editor/2.0'
     };
 
     try {
-        // 1. Pega o SHA atual do arquivo
         const getRes = await fetch(apiBase, { headers });
         const getJson = await getRes.json();
         const sha = getJson.sha || null;
@@ -115,42 +153,44 @@ export default async function handler(req, res) {
         if (getJson.content) {
             try {
                 existingContent = JSON.parse(Buffer.from(getJson.content, 'base64').toString('utf-8'));
-            } catch (_) {
+            } catch {
                 existingContent = {};
             }
         }
 
-        // 2. Mescla com o conteudo ja publicado para preservar edicoes do painel.
-        const contentStr = JSON.stringify(mergeContent(existingContent, content), null, 2);
+        const mergedContent = mergeContent(existingContent, content);
+        const contentStr = JSON.stringify(mergedContent, null, 2);
         if (contentStr.length > 500000) {
             return res.status(400).json({ error: 'Conteudo muito grande. Envie imagens pelo upload, nao como base64.' });
         }
-        const contentB64 = Buffer.from(contentStr).toString('base64');
-
-        // 3. Commita no GitHub
-        const body = {
-            message: `Editor: atualiza conteúdo do site (${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })})`,
-            content: contentB64,
-            ...(sha ? { sha } : {})
-        };
 
         const putRes = await fetch(apiBase, {
             method: 'PUT',
             headers: { ...headers, 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
+            body: JSON.stringify({
+                message: `Editor: atualiza conteudo do site (${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })})`,
+                content: Buffer.from(contentStr).toString('base64'),
+                ...(sha ? { sha } : {})
+            })
         });
 
-        if (putRes.ok) {
-            return res.status(200).json({
-                success: true,
-                message: 'Publicado! O site será atualizado em ~30 segundos.'
-            });
-        } else {
-            const err = await putRes.json();
+        if (!putRes.ok) {
+            const err = await putRes.json().catch(() => ({}));
             return res.status(500).json({ error: err.message || 'Erro ao commitar no GitHub' });
         }
 
+        const putJson = await putRes.json();
+        const verifiedContent = await waitForGithubContent(apiBase, headers, mergedContent);
+        const deploy = await triggerDeployHook();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Publicado e verificado no GitHub.',
+            commit: putJson.commit && putJson.commit.sha,
+            contentKeys: Object.keys(verifiedContent).length,
+            deploy
+        });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: err.message || 'Erro ao publicar' });
     }
 }

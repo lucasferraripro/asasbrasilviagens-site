@@ -13,6 +13,7 @@
     const AUTH_KEY    = 'asasbrasil_auth';
     const SECRET_KEY  = 'asasbrasil_secret';
     const CONTENT_URL = '/api/content';
+    const PUBLISH_BACKUP_KEY = 'asasbrasil_publish_backup_v1';
 
     /* ─── AUTH ─────────────────────────────────────────────────
        Usa localStorage (não sessionStorage) para que o token persista
@@ -307,6 +308,15 @@
             injectCSS();
             let draft = {};
             try { draft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}'); } catch (_) {}
+            if (!Object.keys(draft).length) {
+                try {
+                    const backup = JSON.parse(localStorage.getItem(PUBLISH_BACKUP_KEY) || 'null');
+                    if (backup && backup.content && !this.publishedContainsDraft(srv || {}, backup.content)) {
+                        draft = backup.content;
+                        localStorage.setItem(CMS_KEY, JSON.stringify(draft));
+                    }
+                } catch (_) {}
+            }
             this.cms = cleanContent({ ...(srv || {}), ...draft });
 
             document.body.classList.add('go-on');
@@ -1241,6 +1251,30 @@
             setTimeout(() => location.reload(), 900);
         },
 
+        sameValue(a, b) {
+            return JSON.stringify(a) === JSON.stringify(b);
+        },
+
+        publishedContainsDraft(published, draft) {
+            const cleanedDraft = cleanContent(draft || {});
+            return Object.entries(cleanedDraft).every(([key, value]) => {
+                if (value === null) return published[key] == null;
+                return this.sameValue(published[key], value);
+            });
+        },
+
+        async fetchPublishedContentWithRetry(draft) {
+            for (let i = 0; i < 8; i++) {
+                const res = await fetch(CONTENT_URL + '?verify=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const published = await res.json();
+                    if (this.publishedContainsDraft(published, draft)) return published;
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            throw new Error('O servidor ainda nao confirmou o conteudo publicado. Seu rascunho foi preservado; tente publicar novamente.');
+        },
+
         /* ── PUBLICAR ── */
         async publish() {
             if (isLocal) {
@@ -1299,14 +1333,22 @@
                 }
                 p.querySelector('.go-pb').innerHTML = `<div class="go-loading"><span class="go-spin">⏳</span>Publicando alterações…</div>`;
                 try {
+                    const draftToPublish = cleanContent(this.cms);
+                    localStorage.setItem(PUBLISH_BACKUP_KEY, JSON.stringify({
+                        at: new Date().toISOString(),
+                        content: draftToPublish
+                    }));
                     const res = await fetch('/api/publish', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ content: cleanContent(this.cms), secret })
+                        body: JSON.stringify({ content: draftToPublish, secret })
                     });
                     const data = await res.json();
                     if (res.ok && data.success) {
+                        p.querySelector('.go-pb').innerHTML = `<div class="go-loading"><span class="go-spin">⏳</span>Confirmando no site publicado…</div>`;
+                        await this.fetchPublishedContentWithRetry(draftToPublish);
                         localStorage.removeItem(CMS_KEY);
+                        localStorage.removeItem(PUBLISH_BACKUP_KEY);
                         const now = new Date().toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
                         localStorage.setItem('asasbrasil_last_pub', now);
                         document.querySelectorAll('.go-dirty-dot').forEach(d => d.remove());
@@ -1321,7 +1363,7 @@
                         applyContent(this.cms);
                         p.querySelector('.go-pb').innerHTML = `
                             <div class="go-pub-box">✅ <strong>Publicado com sucesso!</strong><br>
-                            A página vai recarregar em 3 segundos para confirmar.</div>
+                            Conteúdo confirmado no GitHub e no site publicado. A página vai recarregar em 3 segundos.</div>
                             <button class="go-ok" style="width:100%;margin-top:12px" onclick="location.reload()">🔄 Recarregar agora</button>`;
                         this.toast('✅ Publicado! Recarregando em 3s…', 'ok');
                         setTimeout(() => location.reload(), 3000);
@@ -1330,7 +1372,7 @@
                     }
                 } catch (err) {
                     p.querySelector('.go-pb').innerHTML = `
-                        <div class="go-pub-err">❌ <strong>Erro:</strong> ${err.message}</div>
+                        <div class="go-pub-err">❌ <strong>Erro:</strong> ${err.message}<br><br>Suas alterações continuam salvas no rascunho deste navegador. Não feche a página antes de tentar publicar novamente.</div>
                         <button class="go-ko" style="width:100%;margin-top:12px" onclick="this.closest('.go-panel').remove()">Fechar</button>`;
                     this.toast('❌ Erro ao publicar', 'err');
                 }
