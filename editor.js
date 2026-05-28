@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 321 GO! — EDITOR VISUAL CMS v2
  *
  * SINCRONIZAÇÃO TOTAL: campos de preço/título/parcelas editados em qualquer
@@ -222,6 +222,8 @@
         .go-btn.orange:hover{background:#c04418;}
         .go-btn.green{background:#16A34A;color:#fff;}
         .go-btn.green:hover{background:#15803D;}
+        .go-btn.blue{background:#2563EB;color:#fff;}
+        .go-btn.blue:hover{background:#1D4ED8;}
         .go-btn.red{color:rgba(255,255,255,.4);font-size:12px;}
         .go-btn.red:hover{color:#F87171;background:rgba(248,113,113,.1);}
         .go-sep{width:1px;height:28px;background:rgba(255,255,255,.1);margin:0 3px;flex-shrink:0;}
@@ -355,6 +357,8 @@
             <div class="go-sep"></div>
             <button class="go-btn green" id="go-pub">🚀 <span class="go-btn-lbl">Publicar</span></button>
             <div class="go-sep"></div>
+            <button class="go-btn blue" id="go-view-site" title="Abrir site publicado">👁 <span class="go-btn-lbl">Ver Site</span></button>
+            <div class="go-sep"></div>
             <button class="go-btn" id="go-revert" title="Descartar rascunho">↩ <span class="go-btn-lbl">Reverter</span></button>
             <button class="go-btn red" id="go-exit">✕ <span class="go-btn-lbl">Sair</span></button>`;
             document.body.prepend(bar);
@@ -366,6 +370,7 @@
             document.getElementById('go-add-pkg').onclick = () => this.pAddPacote();
             document.getElementById('go-colors').onclick  = () => this.pColors();
             document.getElementById('go-pub').onclick     = () => this.publish();
+            document.getElementById('go-view-site').onclick = () => window.open('https://asasbrasilviagens.vercel.app/index.html?preview=' + Date.now(), '_blank', 'noopener');
             document.getElementById('go-revert').onclick  = () => this.revert();
             document.getElementById('go-exit').onclick    = () => this.exit();
         },
@@ -1367,6 +1372,7 @@
 
             let items = '';
             if (elems.length) items += `<li>${elems.length} elemento(s) editados</li>`;
+            if (Object.keys(pageChanges).length) items += `<li>${Object.keys(pageChanges).length} alteração(ões) capturada(s) da página visível</li>`;
             if (hasCols) items += `<li>Cores globais do site</li>`;
             if (hasWA)   items += `<li>WhatsApp: ${this.cms.whatsapp}</li>`;
 
@@ -1616,3 +1622,5 @@
 
     window._GO_CMS = ED;
 })();
+
+
