@@ -302,6 +302,7 @@
 
     const ED = {
         cms: {},
+        baseline: {},
         panel: null,
 
         async start(srv) {
@@ -324,6 +325,7 @@
             this.buildBar();
             this.bindAll();
             this.injectRemoveButtons();
+            this.baseline = this.capturePageSnapshot();
             if (Object.keys(draft).length > 0) this.markDirty();
         },
 
@@ -1255,6 +1257,52 @@
             return JSON.stringify(a) === JSON.stringify(b);
         },
 
+        captureElementValue(el) {
+            if (!el || !el.dataset || !el.dataset.eid) return null;
+            const out = {};
+            if (el.dataset.iconValue != null) out.icon = el.dataset.iconValue;
+            else if (el.tagName === 'I') out.icon = el.className;
+            if (el.tagName === 'IMG') {
+                const src = el.getAttribute('src') || '';
+                if (src && isValidImageSrc(src)) out.src = src;
+                if (!src || getComputedStyle(el).display === 'none') out.hidden = true;
+            } else if (el.tagName === 'A') {
+                const href = el.getAttribute('href');
+                const target = el.getAttribute('target');
+                if (href != null) out.href = href;
+                if (target != null) out.target = target;
+                if (el.children.length === 0 && el.textContent.trim()) out.text = el.textContent;
+            } else if (!['INPUT', 'TEXTAREA', 'SELECT', 'OPTION', 'STYLE', 'SCRIPT'].includes(el.tagName)) {
+                if (el.children.length || /<\w+|&\w+;/.test(el.innerHTML)) out.html = el.innerHTML;
+                else out.text = el.textContent;
+            }
+            const style = {};
+            if (el.style.color) style.color = el.style.color;
+            if (el.style.fontSize) style.fontSize = el.style.fontSize;
+            if (Object.keys(style).length) out.style = style;
+            return Object.keys(out).length ? out : null;
+        },
+
+        capturePageSnapshot() {
+            const snap = {};
+            document.querySelectorAll('[data-eid]').forEach(el => {
+                const eid = el.dataset.eid;
+                if (!eid || snap[eid]) return;
+                const val = this.captureElementValue(el);
+                if (val) snap[eid] = val;
+            });
+            return cleanContent(snap);
+        },
+
+        capturePageChanges() {
+            const current = this.capturePageSnapshot();
+            const changed = {};
+            Object.entries(current).forEach(([key, value]) => {
+                if (!this.containsValue(this.baseline[key], value)) changed[key] = value;
+            });
+            return cleanContent(changed);
+        },
+
         containsValue(publishedValue, draftValue) {
             if (draftValue === null) return publishedValue == null;
             if (
@@ -1304,7 +1352,10 @@
                 return;
             }
 
-            this.cms = cleanContent(this.cms);
+            let persistedDraft = {};
+            try { persistedDraft = JSON.parse(localStorage.getItem(CMS_KEY) || '{}'); } catch (_) {}
+            const pageChanges = this.capturePageChanges();
+            this.cms = cleanContent({ ...this.cms, ...persistedDraft, ...pageChanges });
             localStorage.setItem(CMS_KEY, JSON.stringify(this.cms));
 
             const elems   = Object.keys(this.cms).filter(k => k !== 'colors' && k !== 'whatsapp');
