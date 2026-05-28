@@ -1255,11 +1255,23 @@
             return JSON.stringify(a) === JSON.stringify(b);
         },
 
+        containsValue(publishedValue, draftValue) {
+            if (draftValue === null) return publishedValue == null;
+            if (
+                draftValue && typeof draftValue === 'object' && !Array.isArray(draftValue) &&
+                publishedValue && typeof publishedValue === 'object' && !Array.isArray(publishedValue)
+            ) {
+                return Object.entries(draftValue).every(([prop, value]) => {
+                    return this.containsValue(publishedValue[prop], value);
+                });
+            }
+            return this.sameValue(publishedValue, draftValue);
+        },
+
         publishedContainsDraft(published, draft) {
             const cleanedDraft = cleanContent(draft || {});
             return Object.entries(cleanedDraft).every(([key, value]) => {
-                if (value === null) return published[key] == null;
-                return this.sameValue(published[key], value);
+                return this.containsValue(published[key], value);
             });
         },
 
@@ -1346,7 +1358,15 @@
                     const data = await res.json();
                     if (res.ok && data.success) {
                         p.querySelector('.go-pb').innerHTML = `<div class="go-loading"><span class="go-spin">⏳</span>Confirmando no site publicado…</div>`;
-                        await this.fetchPublishedContentWithRetry(draftToPublish);
+                        let confirmWarning = '';
+                        try {
+                            await this.fetchPublishedContentWithRetry(draftToPublish);
+                        } catch (verifyErr) {
+                            confirmWarning = `<div class="go-info" style="margin-top:12px;background:#FFF7ED;border:1px solid #FDBA74;color:#9A3412;border-radius:10px;padding:12px;line-height:1.5;">
+                                Publicação salva no GitHub. A confirmação visual do site pode levar mais alguns segundos por cache/deploy.
+                            </div>`;
+                            console.warn('Publish saved, content confirmation delayed:', verifyErr);
+                        }
                         localStorage.removeItem(CMS_KEY);
                         localStorage.removeItem(PUBLISH_BACKUP_KEY);
                         const now = new Date().toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
@@ -1363,7 +1383,8 @@
                         applyContent(this.cms);
                         p.querySelector('.go-pb').innerHTML = `
                             <div class="go-pub-box">✅ <strong>Publicado com sucesso!</strong><br>
-                            Conteúdo confirmado no GitHub e no site publicado. A página vai recarregar em 3 segundos.</div>
+                            Conteúdo confirmado no GitHub. A página vai recarregar em 3 segundos.</div>
+                            ${confirmWarning}
                             <button class="go-ok" style="width:100%;margin-top:12px" onclick="location.reload()">🔄 Recarregar agora</button>`;
                         this.toast('✅ Publicado! Recarregando em 3s…', 'ok');
                         setTimeout(() => location.reload(), 3000);
