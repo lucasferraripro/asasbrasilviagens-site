@@ -717,9 +717,46 @@
             padding: 0;
             align-items: center;
         }
-        #home > .container { display: block !important; }
-        #home .hero-body,
-        #home .hero-scroll { display: none !important; }
+        #home > .container {
+            display: block !important;
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            width: 100%;
+        }
+        #home .hero-body {
+            display: block !important;
+            position: absolute;
+            top: clamp(74px, 8.8vw, 132px);
+            left: clamp(48px, 18vw, 370px);
+            max-width: min(560px, 42vw);
+            color: #fff;
+            pointer-events: auto;
+        }
+        #home .hero-badge,
+        #home .hero-p,
+        #home .hero-btns,
+        #home .hero-scroll {
+            display: none !important;
+        }
+        #home .hero-h1 {
+            margin: 0;
+            font-size: clamp(2rem, 3.05vw, 4rem);
+            line-height: .98;
+            letter-spacing: 0;
+            color: #f7fbff;
+            text-shadow:
+                0 0 12px rgba(0,229,255,.45),
+                0 0 26px rgba(0,120,255,.26),
+                0 4px 18px rgba(0,0,0,.48);
+        }
+        #home .hero-h1 .neon-blue {
+            color: #28dfff;
+            text-shadow:
+                0 0 10px rgba(40,223,255,.82),
+                0 0 24px rgba(0,136,255,.58),
+                0 0 44px rgba(0,68,255,.34);
+        }
         #home .hero-bg img {
             object-fit: cover !important;
             object-position: center center;
@@ -805,7 +842,7 @@
     <div class="container">
         <div class="hero-body">
             <div class="hero-badge" data-eid="hero-badge" data-elabel="Badge Hero"><i class="fa-solid fa-star"></i> Consultoria de Viagens</div>
-            <h1 class="hero-h1" data-eid="hero-title" data-elabel="Título Principal">Tudo que Você Precisa para Sua Viagem em um Só Lugar. Viagens que <em data-eid="auto-home-019" data-elabel="Texto home 19">transformam</em> para sempre!</h1>
+            <h1 class="hero-h1" data-eid="hero-title" data-elabel="Título Principal">Viagem Reinicia,<br>Abastece, Reorganiza e<br><span class="neon-blue">transforma a vida!</span><br>Vem Voar com a Gente!</h1>
             <p class="hero-p" data-eid="hero-sub" data-elabel="Subtítulo Hero">A <strong>Asas Brasil Viagens com 19 ANOS</strong> no mercado, oferece roteiros exclusivos e sob medida para viajantes que não aceitam o comum. Do primeiro contato ao retorno pra casa — cuidamos de cada detalhe.</p>
             <div class="hero-btns">
                 <a href="#contato" class="btn btn-accent" data-eid="auto-home-020" data-elabel="Texto home 20">Solicitar Meu Roteiro <i class="fa-solid fa-arrow-right"></i></a>
