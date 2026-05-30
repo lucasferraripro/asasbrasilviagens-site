@@ -170,10 +170,14 @@
            HERO
         ══════════════════════════════════════ */
         #home {
-            position: relative; min-height: 640px;
-            display: flex; align-items: center; overflow: hidden;
-            padding: 118px 0 78px;
-            background: linear-gradient(135deg, var(--navy-dark) 0%, #0f2447 70%);
+            position: relative;
+            min-height: 0;
+            height: clamp(430px, 50vw, 760px);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: 0;
+            background: #06084a;
         }
         .hero-bg {
             position: absolute; inset: 0; overflow: hidden;
@@ -692,35 +696,34 @@
         #mobile-panel { background: #070D18; border-bottom: 1px solid var(--border); }
         #mobile-panel a:hover { background: rgba(0,229,255,.08); }
         #home {
-            background:
-                radial-gradient(circle at 48% 4%, rgba(0,229,255,.18), transparent 36%),
-                linear-gradient(180deg, #020813 0%, #050A12 100%);
+            background: #050845;
             box-shadow: inset 0 -1px 0 rgba(0,229,255,.24);
+        }
+        .hero-bg::before,
+        .hero-bg::after,
+        .hero-shade {
+            display: none !important;
         }
         .hero-bg img {
             object-fit: cover !important;
             object-position: center center;
-            background: #020813;
-            opacity: .30 !important;
-            filter: saturate(1.08) contrast(1.02);
-        }
-        .hero-shade {
-            background:
-                linear-gradient(90deg, rgba(2,8,19,.72) 0%, rgba(2,8,19,.42) 48%, rgba(2,8,19,.66) 100%),
-                radial-gradient(circle at 46% 20%, rgba(0,229,255,.14), transparent 36%) !important;
+            background: #050845;
+            opacity: 1 !important;
+            filter: none !important;
         }
         #home {
-            min-height: 640px;
-            padding: 120px 0 82px;
+            min-height: 0;
+            height: clamp(430px, 50vw, 760px);
+            padding: 0;
             align-items: center;
         }
         #home > .container { display: block !important; }
-        #home .hero-body { display: block !important; max-width: 720px; }
-        #home .hero-scroll { display: flex !important; }
+        #home .hero-body,
+        #home .hero-scroll { display: none !important; }
         #home .hero-bg img {
             object-fit: cover !important;
             object-position: center center;
-            opacity: .30 !important;
+            opacity: 1 !important;
         }
         .hero-badge { background: rgba(0,229,255,.10); border-color: rgba(0,229,255,.34); color: var(--text); }
         .hero-h1 em, .label, .card-price, .stat-n, .dif-badge strong { color: var(--accent); }
@@ -793,7 +796,7 @@
 <!-- ════════════ HERO ════════════ -->
 <section id="home">
     <div class="hero-bg" style="position:absolute;inset:0;overflow:hidden;">
-        <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=1920&q=80"
+        <img src="imagens/uploads/1779501173145_banner_asasbrasil_viagens.png"
              alt="Hero background"
              data-eid="hero-bg-img" data-elabel="Foto de Fundo do Hero"
              style="width:100%;height:100%;object-fit:cover;display:block;">
