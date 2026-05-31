@@ -800,44 +800,75 @@
 
         @media(max-width:768px) {
             #home {
-                height: clamp(330px, 70vw, 390px);
+                display: block;
+                height: auto;
                 min-height: 0;
-                padding: 0;
+                padding: 0 0 16px;
+                overflow: hidden;
+            }
+            #home .hero-bg {
+                position: relative !important;
+                inset: auto !important;
+                height: clamp(160px, 50vw, 255px);
                 overflow: hidden;
             }
             #home .hero-bg img {
                 object-fit: contain !important;
                 object-position: center top !important;
             }
+            #home > .container {
+                height: auto;
+                padding: 0 16px;
+            }
             #home .hero-body {
+                position: relative;
                 top: auto;
-                bottom: clamp(14px, 4vw, 24px);
-                left: 50%;
-                width: min(86vw, 430px);
-                max-width: min(86vw, 430px);
-                padding: 10px 14px;
+                bottom: auto;
+                left: auto;
+                transform: none;
+                width: min(100%, 430px);
+                max-width: 430px;
+                margin: -4px auto 0;
+                padding: 12px 14px;
                 border-radius: 14px;
                 background:
                     linear-gradient(135deg, rgba(2, 9, 35, .86), rgba(4, 24, 74, .72));
             }
             #home .hero-h1 {
-                font-size: clamp(.98rem, 4.15vw, 1.42rem);
+                font-size: clamp(1rem, 4.25vw, 1.45rem);
+                line-height: 1.08;
+            }
+            body > a.wa {
+                width: 48px !important;
+                height: 48px !important;
+                right: 14px !important;
+                bottom: 14px !important;
+                font-size: 1.25rem;
+            }
+            .steps-hdr {
+                margin-bottom: 36px;
+            }
+            .h2 {
+                font-size: clamp(1.8rem, 9vw, 2.45rem);
                 line-height: 1.08;
             }
         }
 
         @media(max-width:480px) {
             #home {
-                height: clamp(315px, 74vw, 360px);
+                padding-bottom: 14px;
+            }
+            #home .hero-bg {
+                height: clamp(156px, 50vw, 210px);
             }
             #home .hero-body {
-                bottom: 16px;
-                width: min(84vw, 390px);
-                max-width: min(84vw, 390px);
-                padding: 9px 10px;
+                width: 100%;
+                max-width: 390px;
+                margin-top: -2px;
+                padding: 11px 12px;
             }
             #home .hero-h1 {
-                font-size: clamp(.9rem, 4.45vw, 1.22rem);
+                font-size: clamp(.96rem, 4.6vw, 1.24rem);
             }
         }
 </style>
