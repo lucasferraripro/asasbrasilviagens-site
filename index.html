@@ -808,7 +808,7 @@
                 flex-direction: column-reverse;
                 height: auto;
                 min-height: 0;
-                padding: 18px 0 18px;
+                padding: calc(var(--hh) + 18px) 0 18px;
                 overflow: hidden;
                 align-items: flex-start;
             }
@@ -842,7 +842,7 @@
                 transform: none;
                 width: min(100%, 430px);
                 max-width: 430px;
-                margin: 22px auto 10px;
+                margin: 0 auto 10px;
                 padding: 12px 14px;
                 border-radius: 14px;
                 background:
@@ -891,7 +891,7 @@
 
         @media(max-width:480px) {
             #home {
-                padding: 20px 0 16px;
+                padding: calc(var(--hh) + 16px) 0 16px;
             }
             #home .hero-bg {
                 height: clamp(175px, 56vw, 230px);
