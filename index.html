@@ -805,47 +805,50 @@
             }
             #home {
                 display: flex;
-                height: clamp(300px, 70vw, 360px);
+                flex-direction: column-reverse;
+                height: auto;
                 min-height: 0;
-                padding: 0;
+                padding: 0 0 16px;
                 overflow: hidden;
                 align-items: flex-start;
             }
             #home .hero-bg {
-                position: absolute !important;
-                inset: 0 !important;
-                height: 100%;
+                position: relative !important;
+                inset: auto !important;
+                width: 100%;
+                height: clamp(150px, 46vw, 230px);
                 overflow: hidden;
             }
             #home .hero-bg img {
                 width: 100% !important;
                 height: 100% !important;
                 object-fit: contain !important;
-                object-position: center 30px !important;
-                opacity: .88 !important;
+                object-position: center bottom !important;
+                opacity: .90 !important;
             }
             #home > .container {
-                height: 100%;
+                width: 100%;
+                height: auto;
                 padding: 0 16px;
                 position: relative;
                 z-index: 2;
             }
             #home .hero-body {
-                position: absolute;
-                top: clamp(108px, 28vw, 150px);
+                position: relative;
+                top: auto;
                 bottom: auto;
-                left: 50%;
-                transform: translateX(-50%);
-                width: min(70vw, 330px);
-                max-width: 330px;
-                margin: 0;
-                padding: 10px 12px;
+                left: auto;
+                transform: none;
+                width: min(100%, 430px);
+                max-width: 430px;
+                margin: 14px auto 6px;
+                padding: 12px 14px;
                 border-radius: 14px;
                 background:
                     linear-gradient(135deg, rgba(2, 9, 35, .70), rgba(4, 24, 74, .58));
             }
             #home .hero-h1 {
-                font-size: clamp(.86rem, 3.45vw, 1.12rem);
+                font-size: clamp(1rem, 4.25vw, 1.45rem);
                 line-height: 1.08;
             }
             .stats-grid {
@@ -881,19 +884,19 @@
 
         @media(max-width:480px) {
             #home {
-                height: clamp(290px, 72vw, 330px);
+                padding-bottom: 14px;
             }
-            #home .hero-bg img {
-                object-position: center 28px !important;
+            #home .hero-bg {
+                height: clamp(145px, 45vw, 195px);
             }
             #home .hero-body {
-                width: min(72vw, 315px);
-                max-width: 315px;
-                top: clamp(104px, 27vw, 132px);
-                padding: 8px 10px;
+                width: min(100%, 390px);
+                max-width: 390px;
+                margin-top: 12px;
+                padding: 11px 12px;
             }
             #home .hero-h1 {
-                font-size: clamp(.78rem, 3.65vw, 1rem);
+                font-size: clamp(.96rem, 4.6vw, 1.24rem);
             }
         }
 </style>
