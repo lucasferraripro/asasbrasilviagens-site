@@ -808,7 +808,7 @@
                 flex-direction: column-reverse;
                 height: auto;
                 min-height: 0;
-                padding: 0 0 16px;
+                padding: 18px 0 18px;
                 overflow: hidden;
                 align-items: flex-start;
             }
@@ -816,7 +816,8 @@
                 position: relative !important;
                 inset: auto !important;
                 width: 100%;
-                height: clamp(150px, 46vw, 230px);
+                height: clamp(180px, 54vw, 270px);
+                margin-top: 8px;
                 overflow: hidden;
             }
             #home .hero-bg img {
@@ -841,7 +842,7 @@
                 transform: none;
                 width: min(100%, 430px);
                 max-width: 430px;
-                margin: 14px auto 6px;
+                margin: 22px auto 10px;
                 padding: 12px 14px;
                 border-radius: 14px;
                 background:
@@ -852,19 +853,25 @@
                 line-height: 1.08;
             }
             .stats-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(4, minmax(0, 1fr));
                 padding: 0;
             }
             .stat {
                 min-width: 0;
-                padding: 22px 8px;
-                border-bottom: 1px solid rgba(255,255,255,.07);
+                padding: 20px 3px;
+                border-right: 1px solid rgba(255,255,255,.07);
+                border-bottom: none;
             }
-            .stat:nth-child(2n) {
+            .stat:last-child {
                 border-right: none;
             }
-            .stat:nth-last-child(-n+2) {
-                border-bottom: none;
+            .stat-n {
+                font-size: clamp(1.15rem, 6vw, 1.55rem);
+            }
+            .stat-l {
+                font-size: clamp(7px, 2.2vw, 9px);
+                line-height: 1.3;
+                letter-spacing: 0;
             }
             body > a.wa {
                 width: 48px !important;
@@ -884,15 +891,16 @@
 
         @media(max-width:480px) {
             #home {
-                padding-bottom: 14px;
+                padding: 20px 0 16px;
             }
             #home .hero-bg {
-                height: clamp(145px, 45vw, 195px);
+                height: clamp(175px, 56vw, 230px);
+                margin-top: 10px;
             }
             #home .hero-body {
                 width: min(100%, 390px);
                 max-width: 390px;
-                margin-top: 12px;
+                margin-top: 24px;
                 padding: 11px 12px;
             }
             #home .hero-h1 {
