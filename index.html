@@ -814,9 +814,11 @@
                 overflow: hidden;
             }
             #home .hero-bg img {
+                width: 100% !important;
+                height: 100% !important;
                 object-fit: contain !important;
-                object-position: center 18px !important;
-                opacity: .82 !important;
+                object-position: center 28px !important;
+                opacity: .88 !important;
             }
             #home > .container {
                 height: 100%;
@@ -830,16 +832,16 @@
                 bottom: auto;
                 left: 50%;
                 transform: translateX(-50%);
-                width: min(100%, 430px);
-                max-width: 430px;
+                width: min(76vw, 360px);
+                max-width: 360px;
                 margin: 0;
-                padding: 12px 14px;
+                padding: 10px 12px;
                 border-radius: 14px;
                 background:
-                    linear-gradient(135deg, rgba(2, 9, 35, .80), rgba(4, 24, 74, .70));
+                    linear-gradient(135deg, rgba(2, 9, 35, .70), rgba(4, 24, 74, .58));
             }
             #home .hero-h1 {
-                font-size: clamp(1rem, 4.25vw, 1.45rem);
+                font-size: clamp(.92rem, 3.75vw, 1.28rem);
                 line-height: 1.08;
             }
             body > a.wa {
@@ -863,16 +865,16 @@
                 height: clamp(300px, 76vw, 355px);
             }
             #home .hero-bg img {
-                object-position: center 16px !important;
+                object-position: center 26px !important;
             }
             #home .hero-body {
-                width: 100%;
-                max-width: 390px;
-                top: clamp(104px, 29vw, 142px);
-                padding: 11px 12px;
+                width: min(76vw, 330px);
+                max-width: 330px;
+                top: clamp(108px, 30vw, 146px);
+                padding: 9px 10px;
             }
             #home .hero-h1 {
-                font-size: clamp(.96rem, 4.6vw, 1.24rem);
+                font-size: clamp(.86rem, 4vw, 1.08rem);
             }
         }
 </style>
