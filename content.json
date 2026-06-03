@@ -65,5 +65,14 @@
   },
   "srv-sub": {
     "html": "Temos viagem para todos os momentos.<div>Seja com a turma, ou uma viagem romantica, lua de mel,&nbsp; preparamos sua documentação. As viagens corporativas tambem fazem parte do nosso menu, e se Você tem um&nbsp; grupo de&nbsp; pessoas , seja mulheres, enologos, mãoes, profissionais liberais, fazemos tudo sob medida pra voces.</div>"
+  },
+  "srv-lua-desc": {
+    "text": "Pacotes românticos, cotas de lua de mel para seus convidados e experiências especiais para casais."
+  },
+  "srv-visto-desc": {
+    "text": "Toda assessoria para emissão do seu passaporte e também visto americano de turismo."
+  },
+  "srv-corp-desc": {
+    "html": "Gestão de viagens para empresas com eficiência, economia e suporte.<div>Viagens de incentivo e lazer para seus funcionários e colaboradores.</div>"
   }
 }
