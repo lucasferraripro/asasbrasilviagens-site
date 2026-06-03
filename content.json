@@ -6,13 +6,13 @@
     }
   },
   "hero-title": {
-    "html": "Viagem reinicia, abastece e reorganiza.<br><span class=\"neon-blue\">Transforma a vida. Vem voar com a gente...</span>"
+    "html": "Viagem reinicia, abastece !<br><span class=\"neon-blue\">&nbsp;Vem voar com a gente...</span>"
   },
   "hero-sub": {
     "html": "A <strong>Asas Brasil Viagens com 19 ANOS</strong> no mercado, oferece roteiros exclusivos e sob medida para viajantes que não aceitam o comum. Do primeiro contato ao retorno pra casa — cuidamos de cada detalhe."
   },
   "dif-foto": {
-    "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1778549189312_whatsapp_image_2026-05-06_at_18.30.57.jpeg"
+    "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780522046569_asasseguranca.jpeg"
   },
   "srv-sol-img": {
     "src": "imagens/destinos/fortaleza-2.webp"
@@ -34,5 +34,15 @@
   },
   "dif-title": {
     "html": "Uma equipe dedicada exclusivamente a você..."
+  },
+  "__publish_healthcheck": {
+    "at": "2026-06-03T21:29:00.5445493Z",
+    "source": "codex-live-test"
+  },
+  "logo-img": {
+    "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780521967219_logos_azul_transparente.png"
+  },
+  "ft-logo-img": {
+    "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780521998445_logos_azul_transparente.png"
   }
 }
