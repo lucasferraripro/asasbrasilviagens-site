@@ -59,5 +59,11 @@
   },
   "srv-corp-img": {
     "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780523969172_corporativo.png"
+  },
+  "srv-title": {
+    "text": "Escolha como refere viajar"
+  },
+  "srv-sub": {
+    "html": "Temos viagem para todos os momentos.<div>Seja com a turma, ou uma viagem romantica, lua de mel,&nbsp; preparamos sua documentação. As viagens corporativas tambem fazem parte do nosso menu, e se Você tem um&nbsp; grupo de&nbsp; pessoas , seja mulheres, enologos, mãoes, profissionais liberais, fazemos tudo sob medida pra voces.</div>"
   }
 }
