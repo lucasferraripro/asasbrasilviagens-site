@@ -21,7 +21,7 @@
     "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780523336714_passaporte.jpeg"
   },
   "srv-pers-img": {
-    "src": "https://agorarn.com.br/files/uploads/2020/01/viagem.jpg"
+    "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780523873803_personalizado.png"
   },
   "srv-lua-img": {
     "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780523313895_lua_de_mel.png"
@@ -56,5 +56,8 @@
   },
   "step3-desc": {
     "text": "Cuidamos de sua viagem desde a escolha, até a sua volta para casa em segurança com suporte 24h durante toda a sua viagem."
+  },
+  "srv-corp-img": {
+    "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780523969172_corporativo.png"
   }
 }
