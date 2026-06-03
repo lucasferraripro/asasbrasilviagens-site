@@ -50,5 +50,11 @@
   },
   "steps-title": {
     "html": "Cuidamos de tudo, para que sua<div>&nbsp;experiência seja Incrível.</div>"
+  },
+  "step1-desc": {
+    "html": "Entendemos seus desejos, suas datas e o seu&nbsp; perfil, e em seguida elaboramos tudo sob medida pra Você."
+  },
+  "step3-desc": {
+    "text": "Cuidamos de sua viagem desde a escolha, até a sua volta para casa em segurança com suporte 24h durante toda a sua viagem."
   }
 }
