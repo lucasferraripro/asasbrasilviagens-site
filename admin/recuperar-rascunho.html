@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Rascunho - Asas Brasil</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #050a12;
+            color: #e8f7ff;
+            padding: 28px;
+        }
+        .wrap {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        h1 { margin: 0 0 8px; color: #00e5ff; }
+        p { color: #b9c7d8; line-height: 1.6; }
+        .card {
+            background: #0c1422;
+            border: 1px solid rgba(0,229,255,.28);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 16px 0;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 14px 0;
+        }
+        button, a.btn {
+            border: 0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            background: #00e5ff;
+            color: #00101a;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button.secondary { background: #1d2a3d; color: #e8f7ff; border: 1px solid rgba(255,255,255,.14); }
+        textarea {
+            width: 100%;
+            min-height: 360px;
+            resize: vertical;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.16);
+            background: #030813;
+            color: #dff9ff;
+            padding: 14px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .ok { color: #44ff9a; font-weight: 800; }
+        .bad { color: #ff6b8a; font-weight: 800; }
+        .small { font-size: 13px; color: #8fa3bb; }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>Recuperar rascunho do painel</h1>
+        <p>Esta pagina le apenas os rascunhos salvos neste navegador para o dominio atual. Use o mesmo navegador onde as alteracoes foram feitas.</p>
+
+        <section class="card">
+            <div id="status">Verificando...</div>
+            <div class="row">
+                <button id="reload">Verificar novamente</button>
+                <button id="copy" class="secondary">Copiar JSON</button>
+                <button id="download" class="secondary">Baixar backup</button>
+                <a class="btn" href="/index.html?editor=1">Abrir editor</a>
+            </div>
+            <textarea id="out" spellcheck="false" placeholder="Se houver rascunho, ele aparece aqui."></textarea>
+            <p class="small">Chaves analisadas: <code>asasbrasil_cms_v3</code>, <code>asasbrasil_publish_backup_v1</code>, <code>asasbrasil_last_pub</code>.</p>
+        </section>
+    </main>
+
+    <script>
+        const keys = ['asasbrasil_cms_v3', 'asasbrasil_publish_backup_v1', 'asasbrasil_last_pub'];
+        const out = document.getElementById('out');
+        const statusEl = document.getElementById('status');
+
+        function readDrafts() {
+            const data = {};
+            keys.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (!value) return;
+                try {
+                    data[key] = JSON.parse(value);
+                } catch (_) {
+                    data[key] = value;
+                }
+            });
+            out.value = JSON.stringify(data, null, 2);
+            const count = Object.keys(data).length;
+            statusEl.innerHTML = count
+                ? `<span class="ok">Rascunho encontrado.</span> ${count} chave(s) recuperada(s).`
+                : '<span class="bad">Nenhum rascunho local encontrado neste navegador.</span>';
+        }
+
+        document.getElementById('reload').onclick = readDrafts;
+        document.getElementById('copy').onclick = async () => {
+            await navigator.clipboard.writeText(out.value || '{}');
+            statusEl.innerHTML = '<span class="ok">JSON copiado.</span>';
+        };
+        document.getElementById('download').onclick = () => {
+            const blob = new Blob([out.value || '{}'], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'asasbrasil-rascunho-local.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+        readDrafts();
+    </script>
+</body>
+</html>
