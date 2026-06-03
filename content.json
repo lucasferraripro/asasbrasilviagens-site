@@ -91,7 +91,14 @@
     "html": "Fale com a gente!<div>Vem fazer parte da nossa história.</div>"
   },
   "ft-contact-whats-icon": {
-    "icon": "fab fa-whatsapp go-sel",
-    "hidden": false
+    "icon": "fab fa-whatsapp",
+    "hidden": false,
+    "text": "",
+    "style": {
+      "color": "var(--wa)"
+    }
+  },
+  "ft-home-02": {
+    "html": "Asas Brasil Viagens, 100% de clientes indicados.<div>Consultoria em viagens com a qualidade, atendimento humanizado e segurança que você precisa.</div>"
   }
 }
