@@ -1,5 +1,5 @@
 ﻿/**
- * 321 GO! — EDITOR VISUAL CMS v2
+ * ASAS BRASIL VIAGENS — EDITOR VISUAL CMS v2
  *
  * SINCRONIZAÇÃO TOTAL: campos de preço/título/parcelas editados em qualquer
  * página são salvos em __db_overrides[pkgId] e aplicados ao DB antes de
@@ -182,7 +182,7 @@
         // file:// não tem servidor — retorna {} sem tentar fetch
         if (location.protocol === 'file:') return {};
         try {
-            const r = await fetch(CONTENT_URL + '?_=' + Date.now());
+            const r = await fetch(CONTENT_URL + '?_=' + Date.now(), { cache: 'no-store' });
             if (!r.ok) return {};
             const data = await r.json();
             return (data && typeof data === 'object') ? cleanContent(data) : {};
@@ -1348,7 +1348,7 @@
                     <div class="go-local-warn" style="margin-bottom:0;">
                         <strong>Você está no modo local.</strong><br>
                         Para publicar, acesse o editor pelo site publicado:<br><br>
-                        <a href="https://321go-psi.vercel.app/admin/login.html" target="_blank" style="color:#C2410C;font-weight:700;">
+                        <a href="https://asasbrasilviagens.vercel.app/admin/login.html" target="_blank" style="color:#C2410C;font-weight:700;">
                             → Abrir site no Vercel
                         </a>
                     </div>

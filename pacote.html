@@ -408,7 +408,7 @@
             .ft-top { grid-template-columns: 1fr; gap: 24px; }
         }
     
-        /* ------------ CATEGORIAS DE SERVI�OS ------------ */
+        /* ------------ CATEGORIAS DE SERVICOS ------------ */
         .cat-card {
             display: flex; flex-direction: column; align-items: flex-start;
             background: var(--white); border: 1.5px solid var(--border);
@@ -582,7 +582,7 @@
 </div><!-- /container -->
 
 <!-- ════════════ OUTROS DESTINOS ════════════ -->
-<!-- ------------ CATEGORIAS DE SERVI�OS ------------ -->
+<!-- ------------ CATEGORIAS DE SERVICOS ------------ -->
 <section class="outros">
     <div class="container">
         <div class="outros-hdr">
@@ -660,7 +660,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Busca CMS do servidor ANTES de renderizar
     let srvCms = {};
     try {
-        const r = await fetch('/api/content?_=' + Date.now());
+        const r = await fetch('/api/content?_=' + Date.now(), { cache: 'no-store' });
         if (r.ok) srvCms = await r.json();
     } catch (_) {}
 
@@ -926,6 +926,7 @@ burger.addEventListener('click', () => {
 // -- Solicitar categoria via WhatsApp --
 </script>
 <!-- ═══ EDITOR VISUAL ASAS BRASIL ═══ -->
-<script src="editor.js?v=20260528-view-site-and-dom-snapshot"></script>
+<script src="editor.js?v=20260603-content-sync-audit"></script>
 </body>
 </html>
+

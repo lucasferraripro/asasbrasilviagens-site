@@ -137,6 +137,7 @@ export default async function handler(req, res) {
 
     const owner = process.env.GITHUB_OWNER || 'lucasferraripro';
     const repo = process.env.GITHUB_REPO || 'asasbrasilviagens-site';
+    const branch = process.env.GITHUB_BRANCH || 'master';
     const path = 'content.json';
     const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
     const headers = {
@@ -170,6 +171,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 message: `Editor: atualiza conteudo do site (${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })})`,
                 content: Buffer.from(contentStr).toString('base64'),
+                branch,
                 ...(sha ? { sha } : {})
             })
         });

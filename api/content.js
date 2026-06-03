@@ -38,41 +38,60 @@ function cleanContent(content) {
     return out;
 }
 
+async function readFromGithubApi(owner, repo, path, token) {
+    if (!token) return null;
+    const r = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+        {
+            headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'asasbrasil-editor/2.1'
+            }
+        }
+    );
+
+    if (!r.ok) return null;
+    const data = await r.json();
+    if (!data.content) return null;
+    return Buffer.from(data.content, 'base64').toString('utf-8');
+}
+
+async function readFromRawGithub(owner, repo, branch, path) {
+    const r = await fetch(
+        `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}?_=${Date.now()}`,
+        { headers: { 'User-Agent': 'asasbrasil-editor/2.1' } }
+    );
+    if (!r.ok) return null;
+    return await r.text();
+}
+
 /**
  * GET /api/content
- * Retorna o content.json sempre atualizado (via GitHub API, sem cache CDN)
+ * Retorna o content.json sempre atualizado.
  */
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
 
     const token = process.env.GITHUB_TOKEN;
     const owner = process.env.GITHUB_OWNER || 'lucasferraripro';
     const repo  = process.env.GITHUB_REPO  || 'asasbrasilviagens-site';
+    const branch = process.env.GITHUB_BRANCH || 'master';
     const path  = 'content.json';
 
     try {
-        const r = await fetch(
-            `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-            {
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'User-Agent': 'asasbrasil-editor/1.0'
-                }
-            }
-        );
+        const text =
+            await readFromGithubApi(owner, repo, path, token) ||
+            await readFromRawGithub(owner, repo, branch, path);
 
-        if (!r.ok) {
-            return res.status(200).json({});
-        }
-
-        const data = await r.json();
-        if (!data.content) return res.status(200).json({});
+        if (!text) return res.status(200).json({});
 
         let content;
         try {
-            content = JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
+            content = JSON.parse(text);
         } catch (_) {
             return res.status(200).json({});
         }
