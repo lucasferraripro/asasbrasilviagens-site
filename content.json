@@ -74,5 +74,24 @@
   },
   "srv-corp-desc": {
     "html": "Gestão de viagens para empresas com eficiência, economia e suporte.<div>Viagens de incentivo e lazer para seus funcionários e colaboradores.</div>"
+  },
+  "dif-item1-desc": {
+    "text": "19 anos de atuação com sucesso absoluto de indicação.Zero pontuação de Reclame aqui."
+  },
+  "dif-item2-desc": {
+    "html": "Nossa equipe está disponível a qualquer hora. Qualquer imprevisto, resolvemos."
+  },
+  "dif-item3-desc": {
+    "text": "Parceiros e fornecedores mundiais, de hotelaria, serviços e Aéreas."
+  },
+  "dif-item4-desc": {
+    "text": "Nossa rede de parceiros oferece condições especiais, com formas de pagamento personalizada para sua necessidade."
+  },
+  "contato-title": {
+    "html": "Fale com a gente!<div>Vem fazer parte da nossa história.</div>"
+  },
+  "ft-contact-whats-icon": {
+    "icon": "fab fa-whatsapp go-sel",
+    "hidden": false
   }
 }
