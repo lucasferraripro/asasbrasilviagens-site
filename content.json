@@ -40,5 +40,15 @@
   },
   "ft-logo-img": {
     "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780521998445_logos_azul_transparente.png"
+  },
+  "__publish_healthcheck": {
+    "at": "2026-06-03T21:29:00.5445493Z",
+    "source": "codex-live-test"
+  },
+  "steps-sub": {
+    "html": "<div>Asas Brasil Viagens com 19 anos no mercado, oferece roteiros exclusivos e sob medida para viajantes que não aceitam o comum. Do primeiro contato ao retorno para casa, cuidamos de cada detalhe.</div><div><br></div>"
+  },
+  "steps-title": {
+    "html": "Cuidamos de tudo, para que sua<div>&nbsp;experiência seja Incrível.</div>"
   }
 }
