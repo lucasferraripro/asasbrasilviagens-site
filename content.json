@@ -6,7 +6,7 @@
     }
   },
   "hero-title": {
-    "html": "Viagem reinicia, abastece e reorganiza.<br><span class=\"neon-blue\">Transforma a vida. Vem voar com a gente!</span>"
+    "html": "Viagem reinicia, abastece e reorganiza.<br><span class=\"neon-blue\">Transforma a vida. Vem voar com a gente...</span>"
   },
   "hero-sub": {
     "html": "A <strong>Asas Brasil Viagens com 19 ANOS</strong> no mercado, oferece roteiros exclusivos e sob medida para viajantes que não aceitam o comum. Do primeiro contato ao retorno pra casa — cuidamos de cada detalhe."
@@ -31,5 +31,8 @@
   },
   "srv-60-img": {
     "src": "https://raw.githubusercontent.com/lucasferraripro/asasbrasilviagens-site/master/imagens/uploads/1780453657230_fabrica-foto-2.png"
+  },
+  "dif-title": {
+    "html": "Uma equipe dedicada exclusivamente a você..."
   }
 }
